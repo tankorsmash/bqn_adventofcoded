@@ -3,22 +3,31 @@ data ← •file.Lines "../../samples/2020/day1.txt"
 
 numbers ← •ParseFloat¨ data
 
-Part1 ← {
-	pairs ← ⥊(<⟨⟩) <⊸∾⌜´ 𝕏‿𝕏
+Logic ← {
+	# takes a list of numbers and groups it with itself
+	pairs ← ⥊(<⟨⟩) <⊸∾⌜´ 𝕩
+
+	# sums the pairs and checks if they are equal to 2020
 	sums ← 2020= (+´)¨ pairs
+
+	# finds the index of the first pair that sums to 2020
 	first_pair_idx ← ⊑sums⊐1
+
+	# finds the first pair that sums to 2020
 	first_pair ← first_pair_idx⊑pairs
-	•Show (×´ first_pair)
+
+	# returns the product of the first pair that sums to 2020
+	(×´ first_pair)
+}
+
+Part1 ← {
+	Logic 2⥊⟨𝕏⟩
 }
 
 Part2 ← {
-	pairs ← ⥊(<⟨⟩) <⊸∾⌜´ 𝕏‿𝕏‿𝕏
-	sums ← 2020= (+´)¨ pairs
-	first_pair_idx ← ⊑sums⊐1
-	first_pair ← first_pair_idx⊑pairs
-	•Show (×´ first_pair)
+	Logic 3⥊⟨𝕏⟩
 }
 
 
-Part1 numbers
-Part2 numbers
+•Show "part1: " Part1 numbers
+•Show "part2: " Part2 numbers
