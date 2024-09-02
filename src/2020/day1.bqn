@@ -21,13 +21,14 @@ Logic ← {
 }
 
 Part1 ← {
-	Logic 2⥊⟨𝕏⟩
+	Logic 2⥊ <𝕩
 }
 
 Part2 ← {
-	Logic 3⥊⟨𝕏⟩
+	Logic 3⥊ <𝕩
 }
 
 
 •Show "part1: " Part1 numbers
 •Show "part2: " Part2 numbers
+
