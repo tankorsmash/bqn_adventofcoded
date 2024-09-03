@@ -12,4 +12,13 @@ Split ←{
 	𝕨(EqualThenBar ⊔ ⊢)𝕩
 }
 
-•Show (≠⊑data)‿↑ ⥊ data
+array ← (≠⊑data)‿↑ ⥊ data
+•Show array
+
+
+n ← 0
+•Show (n×3)⊑0⊑(n×1)⊏ array
+n ↩ 1
+•Show (n×3)⊑0⊑(n×1)⊏ array
+n ↩ 2
+•Show (n×3)⊑0⊑(n×1)⊏ array
