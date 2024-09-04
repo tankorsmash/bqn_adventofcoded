@@ -1,5 +1,5 @@
-# data ← •file.Lines "../../samples/2020/day3.txt"
-data ← •file.Lines "../../inputs/2020/day3.txt"
+data ← •file.Lines "../../samples/2020/day3.txt"
+# data ← •file.Lines "../../inputs/2020/day3.txt"
 
 # numbers ← •ParseFloat¨ data
 
@@ -10,16 +10,20 @@ array ← data
 
 indices ← ↕≠ array
 
-GetTree ← {
-	x ← entry_length|𝕩×3
-	y ← 𝕩×1
+GetTreePart1 ← {
+	x_offset ← 3
+	y_offset ← 1
+	idx ← 𝕩
+
+	x ← entry_length|idx×x_offset
+	y ← idx×y_offset
 
 	y_row ← ⊑y ⊏array
 	'#'= x⊑ y_row
 }
 
 Part1 ← {
-	+´ GetTree¨ 𝕩
+	+´ GetTreePart1¨ 𝕩
 }
 # •Show 2 | 5
 •Show Part1 indices
@@ -31,11 +35,11 @@ Part1 ← {
 # •Show 0⊏data
 # •Show ⊑(1×3)⊏array
 
-# •Show GetTree 0
-# •Show GetTree 1
-# •Show GetTree 2
-# •Show GetTree 3
-# •Show GetTree 4
+# •Show GetTreePart1 0
+# •Show GetTreePart1 1
+# •Show GetTreePart1 2
+# •Show GetTreePart1 3
+# •Show GetTreePart1 4
 
 
 # •Show 10 (-+-) 5
