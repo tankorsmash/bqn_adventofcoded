@@ -25,23 +25,27 @@ GetTreePart1 ← {
 Part1 ← {
 	+´ GetTreePart1¨ 𝕩
 }
-# •Show 2 | 5
-•Show Part1 indices
-# •Show getTree2
-# •Show {𝕩 ⊏ array}¨ indices
-# •Show indices
-# •Show (entry_length | 2) × 3
+# •Show Part1 indices
 
-# •Show 0⊏data
-# •Show ⊑(1×3)⊏array
+
+GetTreePart2 ← {
+	x_offset ‿ y_offset‿idx ← 𝕩
+
+	x ← entry_length|idx×x_offset
+	y ← idx×y_offset
+
+	y_row ← ⊑y ⊏array
+	'#'= x⊑ y_row
+}
+
+Part2 ← {
+	{ GetTreePart2 3‿1‿𝕩 }¨ 𝕩
+}
+
+•Show Part2 indices
 
 # •Show GetTreePart1 0
 # •Show GetTreePart1 1
 # •Show GetTreePart1 2
 # •Show GetTreePart1 3
 # •Show GetTreePart1 4
-
-
-# •Show 10 (-+-) 5
-# •Show 10 -+- 5
-
