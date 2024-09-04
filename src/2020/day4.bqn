@@ -4,7 +4,8 @@ data ← •file.Lines "../../samples/2020/day4.txt"
 # numbers ← •ParseFloat¨ data
 
 
-entry_length ←(≠⊑data)
-# array ← entry_length‿↑ ⥊ data
-array ← data
+•Show ≠¨ data
+•Show ¬0=≠¨ data
+•Show  { ⊣˜𝕩 }⊸/¨  1/¨ 0(+`∘=⊔⊢) ¬0=≠¨ data
+# •Show data
 
