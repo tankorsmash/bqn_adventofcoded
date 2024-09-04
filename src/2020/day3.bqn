@@ -1,5 +1,5 @@
-data ← •file.Lines "../../samples/2020/day3.txt"
-# data ← •file.Lines "../../inputs/2020/day3.txt"
+# data ← •file.Lines "../../samples/2020/day3.txt"
+data ← •file.Lines "../../inputs/2020/day3.txt"
 
 # numbers ← •ParseFloat¨ data
 
@@ -29,9 +29,7 @@ Part1 ← {
 
 
 GetTreePart2 ← {
-	# •Show •Repr 𝕩
 	(x_offset‿y_offset)‿indices ← 𝕩
-	 # •Show ⟨"x_offset", x_offset, "y_offset", y_offset, "idx", indices⟩
 
 	 +´{
 		 idx ← 𝕩
@@ -45,10 +43,8 @@ GetTreePart2 ← {
 
 Part2 ← {
 	idxs ← 𝕩
-	# dirs ← ⟨3‿1, 1‿1, 5‿1, 7‿1, 1‿2⟩
-	# joined ← {(<idxs)∾˜(<𝕩)}¨dirs 
-	dirs_without_2 ← ⟨3‿1, 1‿1, 5‿1, 7‿1, 1‿2⟩
-	joined ← {(<(⌊y÷˜≠idxs)↑idxs)∾˜(<x‿y←𝕩)}¨dirs_without_2
+	dirs ← ⟨3‿1, 1‿1, 5‿1, 7‿1, 1‿2⟩
+	joined ← {(<(⌊y÷˜≠idxs)↑idxs)∾˜(<x‿y←𝕩)}¨dirs
 	×´ GetTreePart2¨ joined
 }
 •Show Part2 1↓indices
