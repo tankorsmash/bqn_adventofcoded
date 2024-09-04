@@ -29,19 +29,36 @@ Part1 ← {
 
 
 GetTreePart2 ← {
-	x_offset ‿ y_offset‿idx ← 𝕩
+	# •Show •Repr 𝕩
+	(x_offset‿y_offset)‿indices ← •Show 𝕩
+	 •Show ⟨"x_offset", x_offset, "y_offset", y_offset, "idx", indices⟩
 
-	x ← entry_length|idx×x_offset
-	y ← idx×y_offset
+	 {
+		 idx ← 𝕩
+		 x ← entry_length|idx×x_offset
+		 y ← idx×y_offset
 
-	y_row ← ⊑y ⊏array
-	'#'= x⊑ y_row
+		 y_row ← ⊑y ⊏array
+		 '#'= x⊑ y_row
+	 }¨indices
 }
 
 Part2 ← {
-	{ GetTreePart2 3‿1‿𝕩 }¨ 𝕩
+	idxs ← 𝕩
+	dirs ← ⟨3‿1, 1‿1, 5‿1, 7‿1, 1‿2⟩
+	joined ← {(<idxs)∾˜(<𝕩)}¨dirs 
+	# { GetTreePart2 3‿1‿𝕩 }¨ 𝕩
+	# •Show ⊑ joined
+	GetTreePart2¨ joined
 }
+# •Show ∾⟜(1¨∘⊏) •Show ↕5_5
 
+# •Show •Repr ⟨ ⟨3,1,⟩,⟨0,1,2,3,4,5,6,7,8,9,10,⟩⟩
+# (x‿y)‿idx ← ⟨ ⟨3,1,⟩,⟨0,1,2,3,4,5,6,7,8,9,10,⟩⟩
+# # left‿idx ← ⟨ ⟨3,1,⟩,⟨0,1,2,3,4,5,6,7,8,9,10,⟩⟩
+# # x‿y ← left
+# •Show x‿y
+# •Show idx
 •Show Part2 indices
 
 # •Show GetTreePart1 0
