@@ -1,3 +1,4 @@
+
 data ← •file.Lines "../../samples/2020/day1.txt"
 # data ← •file.Lines "../../inputs/2020/day1.txt"
 
@@ -24,11 +25,5 @@ Part1 ← {
 	Logic 2⥊ <𝕩
 }
 
-Part2 ← {
-	Logic 3⥊ <𝕩
-}
-
-
 •Show "part1: " Part1 numbers
-•Show "part2: " Part2 numbers
 
