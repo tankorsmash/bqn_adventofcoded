@@ -14,12 +14,17 @@ SplitBy ← (+`∘=⊔⊢)
 •Show "mask"‿mask
 •Show grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
 •Show grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
+# •Show "grouped_data"‿grouped_data
 •Show "rank"‿(=grouped_data)‿"shape"‿(≢grouped_data)‿"length"‿(≠grouped_data)
 
 •Show "@@@@@@@"
 
 TrimSpace ← (∨`' '⊸≠)⊸/
-PerLine ← •Show  ' 'SplitBy (TrimSpace( { 𝕨∾" "∾𝕩 }´ {¬0=≠}/⊢ ))
+PerLine ← {
+	# what does Foo do?
+	Foo ← TrimSpace ( {𝕨∾ " "∾𝕩}´ {¬0=≠}/⊢ )
+	•Show ' 'SplitBy Foo 𝕩
+}
 (•Show TrimSpace¨)¨ (PerLine)¨ grouped_data
 
 •Show "---"
