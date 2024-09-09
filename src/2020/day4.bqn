@@ -16,17 +16,14 @@ field_names ← ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"]
 
 SplitBy ← (+`∘=⊔⊢)
 # •Show data
-•Show "lengths"‿(≠¨ data)
-•Show mask ← ¬ 0= ≠¨ data
+# •Show "lengths"‿(≠¨ data)
+mask ← ¬ 0= ≠¨ data
 
-•Show "---"
-•Show "mask"‿mask
-•Show grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
-•Show grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
+mask
+grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
+grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
 # •Show "grouped_data"‿grouped_data
-•Show "rank"‿(=grouped_data)‿"shape"‿(≢grouped_data)‿"length"‿(≠grouped_data)
 
-•Show "@@@@@@@"
 
 RemoveSpaceOnlyLists ← (∨`' '⊸≠)⊸/
 RemoveSpaces ← (' '⊸≠)⊸/
@@ -34,7 +31,7 @@ RemoveSpaces ← (' '⊸≠)⊸/
 PerLine ← {
 	JoinWithSpace ← {𝕨∾ " "∾𝕩}´
 	Foo ← RemoveSpaceOnlyLists JoinWithSpace
-	•Show RemoveSpaces¨ ' 'SplitBy Foo 𝕩
+	RemoveSpaces¨ ' 'SplitBy Foo 𝕩
 }
 per_lined ← PerLine¨ grouped_data
 
