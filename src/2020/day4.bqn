@@ -3,7 +3,16 @@ data ← •file.Lines "../../samples/2020/day4.txt"
 
 # numbers ← •ParseFloat¨ data
 
-•Show « 1‿2‿3
+# byr (Birth Year)
+# iyr (Issue Year)
+# eyr (Expiration Year)
+# hgt (Height)
+# hcl (Hair Color)
+# ecl (Eye Color)
+# pid (Passport ID)
+# cid (Country ID)
+
+field_names ← ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"]
 
 SplitBy ← (+`∘=⊔⊢)
 # •Show data
@@ -19,16 +28,19 @@ SplitBy ← (+`∘=⊔⊢)
 
 •Show "@@@@@@@"
 
-RemoveSpaceLists ← (∨`' '⊸≠)⊸/
+RemoveSpaceOnlyLists ← (∨`' '⊸≠)⊸/
 RemoveSpaces ← (' '⊸≠)⊸/
+
 PerLine ← {
-	# what does Foo do?
-	Foo ← RemoveSpaceLists ( {𝕨∾ " "∾𝕩}´ {¬0=≠}/⊢ )
+	JoinWithSpace ← {𝕨∾ " "∾𝕩}´
+	Foo ← RemoveSpaceOnlyLists JoinWithSpace
 	•Show RemoveSpaces¨ ' 'SplitBy Foo 𝕩
 }
-(•Show RemoveSpaceLists¨)¨ (PerLine)¨ grouped_data
+per_lined ← PerLine¨ grouped_data
 
 •Show "---"
+
+•Show per_lined
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
 # •Show data
