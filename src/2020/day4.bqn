@@ -19,13 +19,14 @@ SplitBy ← (+`∘=⊔⊢)
 
 •Show "@@@@@@@"
 
-TrimSpace ← (∨`' '⊸≠)⊸/
+RemoveSpaceLists ← (∨`' '⊸≠)⊸/
+RemoveSpaces ← (' '⊸≠)⊸/
 PerLine ← {
 	# what does Foo do?
-	Foo ← TrimSpace ( {𝕨∾ " "∾𝕩}´ {¬0=≠}/⊢ )
-	•Show ' 'SplitBy Foo 𝕩
+	Foo ← RemoveSpaceLists ( {𝕨∾ " "∾𝕩}´ {¬0=≠}/⊢ )
+	•Show RemoveSpaces¨ ' 'SplitBy Foo 𝕩
 }
-(•Show TrimSpace¨)¨ (PerLine)¨ grouped_data
+(•Show RemoveSpaceLists¨)¨ (PerLine)¨ grouped_data
 
 •Show "---"
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
