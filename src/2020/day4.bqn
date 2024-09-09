@@ -12,7 +12,7 @@ data ← •file.Lines "../../samples/2020/day4.txt"
 # pid (Passport ID)
 # cid (Country ID)
 
-field_names ← ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"]
+field_names ← ⟨"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"⟩
 
 SplitBy ← (+`∘=⊔⊢)
 # •Show data
@@ -39,18 +39,23 @@ raw_passports ← GatherPassports¨ grouped_data
 
 raw_parsed_passports ← (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 PerRawPassport ← {
-	•Show "Per"
+	•Show "PASSPORT"
 	PerPair ← {
 		key‿value ← 𝕩
-		•Show key‿(':'⊸≠⊸/value)
+		# •Show key‿(':'⊸≠⊸/value)
+		key
 	}
 	PerEntryGroup ← {
 		PerPair¨ 𝕩
 	}
-	PerEntryGroup¨ 𝕩
+	sorted_keys ← ∨ ∾´ PerEntryGroup¨ 𝕩
+
+	•Show (∨field_names) ≡ sorted_keys
 }
 PerRawPassport¨ raw_parsed_passports
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
+
+•Show field_names
 # •Show data
 
