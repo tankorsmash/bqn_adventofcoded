@@ -28,16 +28,28 @@ grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
 RemoveSpaceOnlyLists ← (∨`' '⊸≠)⊸/
 RemoveSpaces ← (' '⊸≠)⊸/
 
-PerLine ← {
+# takes a list of strings and returns a single group of strings without spaces
+GatherPassports ← {
 	JoinWithSpace ← {𝕨∾ " "∾𝕩}´
 	Foo ← RemoveSpaceOnlyLists JoinWithSpace
 	RemoveSpaces¨ ' 'SplitBy Foo 𝕩
 }
-per_lined ← PerLine¨ grouped_data
-
+raw_passports ← GatherPassports¨ grouped_data
 •Show "---"
 
-•Show per_lined
+raw_parsed_passports ← (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
+PerRawPassport ← {
+	•Show "Per"
+	PerPair ← {
+		key‿value ← 𝕩
+		•Show key‿(':'⊸≠⊸/value)
+	}
+	PerEntryGroup ← {
+		PerPair¨ 𝕩
+	}
+	PerEntryGroup¨ 𝕩
+}
+PerRawPassport¨ raw_parsed_passports
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
 # •Show data
