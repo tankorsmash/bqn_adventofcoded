@@ -55,12 +55,43 @@ PerRawPassport ← {
 •Show +´ PerRawPassport¨ raw_parsed_passports
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
+ParseNum ← •ParseFloat⎊(-2˙)
+
+#BYR
 IsValidByrNum ← 1920⊸≤∧≤⟜2002
-IsValidByrLen ← 4⊸=≠
 IsValidByr ← {
 	correct_len ← 4=≠𝕩
-	correct_len ∧ IsValidByrNum (•ParseFloat⎊(-2˙)) 𝕩
+	correct_len ∧ IsValidByrNum ParseNum 𝕩
 }
+
+#IYR
+IsValidIyrNum ← 2010⊸≤∧≤⟜2020
+IsValidIyr ← {
+	correct_len ← 4=≠𝕩
+	correct_len ∧ IsValidIyrNum ParseNum 𝕩
+}
+
+#EYR
+IsValidEyrNum ← 2020⊸≤∧≤⟜2030
+IsValidEyr ← {
+	correct_len ← 4=≠𝕩
+	correct_len ∧ IsValidEyrNum ParseNum 𝕩
+}
+
+#HGT
+# TODO
+
+#HCL
+# TODO
+
+#ECL
+# TODO
+
+#PID
+# TODO
+
+#CID
+# TODO
 
 byr_asserts ← {
 	"expected BYR 1919 is wrong" !¬ IsValidByr "1919"
