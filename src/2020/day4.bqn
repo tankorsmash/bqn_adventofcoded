@@ -55,9 +55,16 @@ PerRawPassport ← {
 •Show +´ PerRawPassport¨ raw_parsed_passports
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
+IsValidByr ← 1920⊸≤∧≤⟜2002
 
-•Show 50/"-"
+byr_asserts ← {
+	"expected BYR 1919 is wrong" !¬ IsValidByr 1919
+	"expected BYR 1920 is valid" !  IsValidByr 1920
+	"expected BYR 1921 is valid" !  IsValidByr 1921
 
-•Show 
+	"expected BYR 2002 is valid" !  IsValidByr 2002
+	"expected BYR 2003 is wrong" !¬ IsValidByr 2003
+}
+
 # •Show data
 
