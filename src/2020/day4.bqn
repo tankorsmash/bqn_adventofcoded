@@ -98,10 +98,6 @@ IsValidHgt ← {
 	}𝕩
 }
 
-•Show "is valid height:"‿(IsValidHgt "60inche")
-
-# •Show "0aA"+⟜↕¨10‿26‿26
-•Show IsValidHgtInches •ParseFloat KeepDigits "59in"
 hgt_asserts ← {
 	"expected HGT 58in is false"  !¬ IsValidHgt "58in"
 	"expected HGT 59in is valid"  !  IsValidHgt "59in"
@@ -114,8 +110,31 @@ hgt_asserts ← {
 	"expected HGT 194cm is valid" !¬ IsValidHgt "194cm"
 }
 
+IsValidHcl ← {
+
+ •Show 𝕩
+ •Show starts_with_hash ← '#'=⊏𝕩
+
+ •Show 50/"_"
+ •Show nonhash ← (¬∊)⟜"#"⊸/𝕩
+ •Show is_length_correct ← 6=≠nonhash
+ •Show 50/"-"
+
+ is_length_correct
+}
+
 #HCL
-# TODO
+hcl_asserts ← {
+	"expected HCL #123abc  to be valid" !  IsValidHcl "#123abc"
+	"expected HCL #abc123  to be valid" !  IsValidHcl "#abc123"
+	"expected HCL #111111  to be valid" !  IsValidHcl "#111111"
+	"expected HCL #aaaaaa  to be valid" !  IsValidHcl "#aaaaaa"
+	"expected HCL #123abz  to be false" !¬ IsValidHcl "#123abz"
+	"expected HCL 123abc   to be false" !¬ IsValidHcl "123abc"
+	"expected HCL #123ab   to be false" !¬ IsValidHcl "#123ab"
+	"expected HCL #123abcd to be false" !¬ IsValidHcl "#123abcd"
+	"expected HCL #123abce to be false" !¬ IsValidHcl "#123abce"
+}
 
 #ECL
 # TODO
