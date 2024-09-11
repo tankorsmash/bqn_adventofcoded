@@ -52,7 +52,8 @@ PerRawPassport ← {
 
 	(∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
 }
-•Show +´ PerRawPassport¨ raw_parsed_passports
+# •Show +´ PerRawPassport¨ raw_parsed_passports
+
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
 ParseNum ← •ParseFloat⎊(-2˙)
@@ -78,8 +79,40 @@ IsValidEyr ← {
 	correct_len ∧ IsValidEyrNum ParseNum 𝕩
 }
 
+# keep only digits, anywhere in the string
+# "a1b2c3" -> "123"
+KeepDigits ← ∊⟜('0'+↕10)⊸/
+
 #HGT
-# TODO
+IsValidHgtInches ← 59⊸≤∧≤⟜76
+IsValidHgtCm ← 150⊸≤∧≤⟜193
+IsValidHgt ← {
+	contains_inches ← ∨´(≠"in")≠"in"⊐𝕩
+	contains_cm ← ∨´(≠"cm")≠"cm"⊐𝕩
+	digits ← KeepDigits 𝕩
+	# •Show "ASD"‿contains_cm‿contains_inches‿(contains_inches ∧ (IsValidHgtInches 𝕩))
+	{
+	contains_inches ? IsValidHgtInches •ParseFloat KeepDigits 𝕩;
+	contains_cm ? IsValidHgtCm •ParseFloat KeepDigits 𝕩;
+		0
+	}𝕩
+}
+
+•Show "is valid height:"‿(IsValidHgt "60inche")
+
+# •Show "0aA"+⟜↕¨10‿26‿26
+•Show IsValidHgtInches •ParseFloat KeepDigits "59in"
+hgt_asserts ← {
+	"expected HGT 58in is false"  !¬ IsValidHgt "58in"
+	"expected HGT 59in is valid"  !  IsValidHgt "59in"
+	"expected HGT 76in is valid"  !  IsValidHgt "76in"
+	"expected HGT 77in is false"  !¬ IsValidHgt "77in"
+
+	"expected HGT 149cm is false" !¬ IsValidHgt "149cm"
+	"expected HGT 150cm is valid" !  IsValidHgt "150cm"
+	"expected HGT 193cm is valid" !  IsValidHgt "193cm"
+	"expected HGT 194cm is valid" !¬ IsValidHgt "194cm"
+}
 
 #HCL
 # TODO
