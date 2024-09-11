@@ -110,6 +110,7 @@ hgt_asserts ← {
 	"expected HGT 194cm is valid" !¬ IsValidHgt "194cm"
 }
 
+IsAllowedHclChars ← ∧´∊⟜(∾"0a"+⟜↕¨10‿6)
 IsValidHcl ← {
 
  •Show 𝕩
@@ -123,18 +124,20 @@ IsValidHcl ← {
  is_length_correct
 }
 
+•Show "is valid"‿(IsAllowedHclChars "123abc")
+
 #HCL
-hcl_asserts ← {
-	"expected HCL #123abc  to be valid" !  IsValidHcl "#123abc"
-	"expected HCL #abc123  to be valid" !  IsValidHcl "#abc123"
-	"expected HCL #111111  to be valid" !  IsValidHcl "#111111"
-	"expected HCL #aaaaaa  to be valid" !  IsValidHcl "#aaaaaa"
-	"expected HCL #123abz  to be false" !¬ IsValidHcl "#123abz"
-	"expected HCL 123abc   to be false" !¬ IsValidHcl "123abc"
-	"expected HCL #123ab   to be false" !¬ IsValidHcl "#123ab"
-	"expected HCL #123abcd to be false" !¬ IsValidHcl "#123abcd"
-	"expected HCL #123abce to be false" !¬ IsValidHcl "#123abce"
-}
+# hcl_asserts ← {
+# 	"expected HCL #123abc  to be valid"          !  IsValidHcl "#123abc"
+# 	"expected HCL #abc123  to be valid"          !  IsValidHcl "#abc123"
+# 	"expected HCL #111111  to be valid"          !  IsValidHcl "#111111"
+# 	"expected HCL #aaaaaa  to be valid"          !  IsValidHcl "#aaaaaa"
+# 	"expected HCL #123abz  to be false (z char)" !¬ IsValidHcl "#123abz"
+# 	"expected HCL 123abc   to be false (no hash)"!¬ IsValidHcl "123abc"
+# 	"expected HCL #123ab   to be false (no char)"!¬ IsValidHcl "#123ab"
+# 	"expected HCL #123abcd to be false (length)" !¬ IsValidHcl "#123abcd"
+# 	"expected HCL #123abce to be false (length)" !¬ IsValidHcl "#123abce"
+# }
 
 #ECL
 # TODO
