@@ -113,31 +113,31 @@ hgt_asserts ← {
 IsAllowedHclChars ← ∧´∊⟜(∾"0a"+⟜↕¨10‿6)
 IsValidHcl ← {
 
- •Show 𝕩
- •Show starts_with_hash ← '#'=⊏𝕩
+ starts_with_hash ← '#'=⊑𝕩
+ "type"‿(•Type starts_with_hash)
 
- •Show 50/"_"
- •Show nonhash ← (¬∊)⟜"#"⊸/𝕩
- •Show is_length_correct ← 6=≠nonhash
- •Show 50/"-"
+#  •Show 50/"_"
+ nonhash_chars ← (¬∊)⟜"#"⊸/𝕩
+ is_length_correct ← 6=≠nonhash_chars
+ only_valid_chars ← IsAllowedHclChars nonhash_chars
+ starts_with_hash
+#  •Show 50/"-"
 
- is_length_correct
+ is_length_correct ∧ only_valid_chars ∧ starts_with_hash
 }
 
-•Show "is valid"‿(IsAllowedHclChars "123abc")
-
 #HCL
-# hcl_asserts ← {
-# 	"expected HCL #123abc  to be valid"          !  IsValidHcl "#123abc"
-# 	"expected HCL #abc123  to be valid"          !  IsValidHcl "#abc123"
-# 	"expected HCL #111111  to be valid"          !  IsValidHcl "#111111"
-# 	"expected HCL #aaaaaa  to be valid"          !  IsValidHcl "#aaaaaa"
-# 	"expected HCL #123abz  to be false (z char)" !¬ IsValidHcl "#123abz"
-# 	"expected HCL 123abc   to be false (no hash)"!¬ IsValidHcl "123abc"
-# 	"expected HCL #123ab   to be false (no char)"!¬ IsValidHcl "#123ab"
-# 	"expected HCL #123abcd to be false (length)" !¬ IsValidHcl "#123abcd"
-# 	"expected HCL #123abce to be false (length)" !¬ IsValidHcl "#123abce"
-# }
+hcl_asserts ← {
+	"expected HCL #123abc  to be valid"          !  IsValidHcl "#123abc"
+	"expected HCL #abc123  to be valid"          !  IsValidHcl "#abc123"
+	"expected HCL #111111  to be valid"          !  IsValidHcl "#111111"
+	"expected HCL #aaaaaa  to be valid"          !  IsValidHcl "#aaaaaa"
+	"expected HCL #123abz  to be false (z char)" !¬ IsValidHcl "#123abz"
+	"expected HCL 123abc   to be false (no hash)"!¬ IsValidHcl "123abc"
+	"expected HCL #123ab   to be false (no char)"!¬ IsValidHcl "#123ab"
+	"expected HCL #123abcd to be false (length)" !¬ IsValidHcl "#123abcd"
+	"expected HCL #123abce to be false (length)" !¬ IsValidHcl "#123abce"
+}
 
 #ECL
 # TODO
