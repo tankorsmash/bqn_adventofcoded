@@ -139,8 +139,16 @@ hcl_asserts ← {
 	"expected HCL #123abce to be false (length)" !¬ IsValidHcl "#123abce"
 }
 
+
 #ECL
-# TODO
+eye_colors ← ⟨"amb", "blu", "brn", "gry", "grn", "hzl", "oth"⟩
+IsValidEcl ← ∊⟜eye_colors⌾<
+ecl_asserts ← {
+	"expected ECL amb  to be valid" !   IsValidEcl "amb"
+	"expected ECL ambb to be valid" !¬  IsValidEcl "ambb"
+	"expected ECL wat  to be false" !¬	IsValidEcl "wat"
+	"expected ECL oth  to be valid" ! 	IsValidEcl "oth"
+}
 
 #PID
 # TODO
