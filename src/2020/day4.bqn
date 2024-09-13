@@ -151,6 +151,15 @@ ecl_asserts ← {
 }
 
 #PID
+IsValidPid ← ∧´∊⟜(∾"0"+⟜↕¨10)∧(9=≠)
+•Show IsValidPid "123456789"
+pid_asserts ← {
+	"expected PID 000000001  to be valid" !  IsValidPid "000000001"
+	"expected PID 0123456789 to be false" !¬ IsValidPid "0123456789"
+	"expected PID 123456789  to be valid" !  IsValidPid "123456789"
+	"expected PID 1234567890 to be false" !¬ IsValidPid "1234567890"
+	"expected PID 000000000  to be valid" !  IsValidPid "000000000"
+}
 # TODO
 
 #CID
