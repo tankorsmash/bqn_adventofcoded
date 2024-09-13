@@ -38,21 +38,6 @@ GatherPassports ← {
 raw_passports ← GatherPassports¨ grouped_data
 •Show "---"
 
-raw_parsed_passports ← (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
-PerRawPassport ← {
-	PerPair ← {
-		key‿value ← 𝕩
-		# •Show key‿(':'⊸≠⊸/value)
-		key
-	}
-	PerEntryGroup ← {
-		PerPair¨ 𝕩
-	}
-	sorted_keys ← ∨ ∾´ PerEntryGroup¨ 𝕩
-
-	(∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
-}
-# •Show +´ PerRawPassport¨ raw_parsed_passports
 
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
 
@@ -160,10 +145,9 @@ pid_asserts ← {
 	"expected PID 1234567890 to be false" !¬ IsValidPid "1234567890"
 	"expected PID 000000000  to be valid" !  IsValidPid "000000000"
 }
-# TODO
 
 #CID
-# TODO
+# ignored, missing or not
 
 byr_asserts ← {
 	"expected BYR 1919 is wrong" !¬ IsValidByr "1919"
@@ -174,6 +158,29 @@ byr_asserts ← {
 	"expected BYR 2003 is wrong" !¬ IsValidByr "2003"
 }
 
+validators ← [
+	"byr"‿IsValidByr, "iyr"‿IsValidIyr, "eyr"‿IsValidEyr,
+	"hgt"‿IsValidHgt, "hcl"‿IsValidHcl, "ecl"‿IsValidEcl,
+	"pid"‿IsValidPid
+]
+
+raw_parsed_passports ← (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
+PerRawPassport ← {
+	PerPair ← {
+		key‿value ← 𝕩
+		# •Show key‿(':'⊸≠⊸/value)
+		key
+	}
+	PerEntryGroup ← {
+		PerPair¨ 𝕩
+	}
+	sorted_keys ← ∨ ∾´ PerEntryGroup¨ 𝕩
+
+	has_enough_keys ← (∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
+}
+
+
 
 # •Show data
+•Show +´ PerRawPassport¨ raw_parsed_passports
 
