@@ -182,5 +182,7 @@ PerRawPassport ← {
 
 
 # •Show data
-•Show +´ PerRawPassport¨ raw_parsed_passports
+# •Show +´ PerRawPassport¨ raw_parsed_passports
+
+•Show (∨´˘(<"byr")≡¨ validators)/validators
 
