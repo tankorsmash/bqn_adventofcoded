@@ -184,5 +184,7 @@ PerRawPassport ← {
 # •Show data
 # •Show +´ PerRawPassport¨ raw_parsed_passports
 
-•Show (∨´˘(<"byr")≡¨⊢ )⊸/validators
+•Show 50/"-"
 
+•Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
+•Show Validator "1920"
