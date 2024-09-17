@@ -158,7 +158,7 @@ byr_asserts ← {
 	"expected BYR 2003 is wrong" !¬ IsValidByr "2003"
 }
 
-validators ← [
+validators ← (0⊸⊏˘ •Hashmap 1⊸⊏˘)[
 	"byr"‿IsValidByr, "iyr"‿IsValidIyr, "eyr"‿IsValidEyr,
 	"hgt"‿IsValidHgt, "hcl"‿IsValidHcl, "ecl"‿IsValidEcl,
 	"pid"‿IsValidPid
@@ -187,13 +187,18 @@ PerRawPassport ← {
 # •Show +´ PerRawPassport¨ raw_parsed_passports
 
 •Show 50/"-"
-qwe ← [[1,'a'], [2,'b'], [3,'c']]
-# •Show ({ 0⊏𝕩 }˘)∾({ 0⊏𝕩 }˘) qwe
-# •Show [1,2,3](⊣∾⊢)[4,5,6]
-hashmap ←  ((0⊸⊏˘ ) •Hashmap (1⊸⊏˘ )) qwe
-•Show hashmap.Get 2
 
+# qwe ← [[1,100], [2,200], [3,300]]
+# # •Show (({ 0⊏𝕩 }˘)•Hashmap({ 1⊏𝕩 }˘)) qwe
+# # # •Show [1,2,3](⊣∾⊢)[4,5,6]
+# hashmap ←  (0⊸⊏˘ •Hashmap 1⊸⊏˘) qwe
+# •Show hashmap.Get 2
+
+•Show validator←(validators.Get "byr")
+•Show Validator "1920"
 # •Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
 # •Show Validator "1920"
+
+
 
 
