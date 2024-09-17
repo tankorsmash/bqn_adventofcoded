@@ -187,9 +187,10 @@ PerRawPassport ← {
 # •Show +´ PerRawPassport¨ raw_parsed_passports
 
 •Show 50/"-"
-
 qwe ← [[1,'a'], [2,'b'], [3,'c']]
-hashmap ←  (0⊏˘ qwe) •Hashmap (1⊏˘ qwe)
+# •Show ({ 0⊏𝕩 }˘)∾({ 0⊏𝕩 }˘) qwe
+# •Show [1,2,3](⊣∾⊢)[4,5,6]
+hashmap ←  ((0⊸⊏˘ ) •Hashmap (1⊸⊏˘ )) qwe
 •Show hashmap.Get 2
 
 # •Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
