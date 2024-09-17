@@ -174,9 +174,11 @@ PerRawPassport ← {
 	PerEntryGroup ← {
 		PerPair¨ 𝕩
 	}
+	rows ← 𝕩
 	sorted_keys ← ∨ ∾´ PerEntryGroup¨ 𝕩
 
 	has_enough_keys ← (∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
+
 }
 
 
@@ -186,5 +188,11 @@ PerRawPassport ← {
 
 •Show 50/"-"
 
-•Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
-•Show Validator "1920"
+qwe ← [[1,'a'], [2,'b'], [3,'c']]
+hashmap ←  (0⊏˘ qwe) •Hashmap (1⊏˘ qwe)
+•Show hashmap.Get 2
+
+# •Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
+# •Show Validator "1920"
+
+
