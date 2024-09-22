@@ -1,5 +1,5 @@
-data ← •file.Lines "../../samples/2020/day4.txt"
-# data ← •file.Lines "../../inputs/2020/day4.txt"
+# data ← •file.Lines "../../samples/2020/day4.txt"
+data ← •file.Lines "../../inputs/2020/day4.txt"
 
 # numbers ← •ParseFloat¨ data
 
@@ -210,5 +210,5 @@ raw_parsed_passports ←  (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 # mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
 # •Show mapped_passport.Keys mapped_passport
 
-•Show (PerRawPassport>)¨ raw_parsed_passports
+•Show +´(PerRawPassport>)¨ raw_parsed_passports
 
