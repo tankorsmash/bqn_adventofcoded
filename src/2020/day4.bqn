@@ -199,7 +199,8 @@ PerRawPassport ← {
 # •Show ¨ raw_parsed_passports
 # •Show (>(({ ⊑0⊏𝕩 })¨)) ⊑raw_parsed_passports
 # •Show ⥊((({ ⊑1⊏𝕩 })¨)) ⊑raw_parsed_passports
-mapped_passport ← ((⥊{ ⥊0⊏𝕩 }¨)•Hashmap(⥊{ ⥊1⊏𝕩 }¨))  ⊑raw_parsed_passports
+Taker ← (⥊{ ⥊𝕨⊏𝕩 }¨)
+mapped_passport ← (0⊸Taker •Hashmap 1⊸Taker)  ⊑raw_parsed_passports
 •Show mapped_passport
 # •Show (({ ⥊0⊏𝕩 }¨)•Hashmap({ ⥊1⊏𝕩 }¨)) •Show  ⊑raw_parsed_passports
 # •Show (({ 0⊏𝕩 }˘)•Hashmap({ 1⊏𝕩 }˘)) •Show  ⊑raw_parsed_passports
