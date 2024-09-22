@@ -35,7 +35,6 @@ GatherPassports ← {
 	Foo ← RemoveSpaceOnlyLists JoinWithSpace
 	RemoveSpaces¨ ' 'SplitBy Foo 𝕩
 }
-raw_passports ← GatherPassports¨ grouped_data
 
 
 # •Show  ⊣˜⊸/¨ 1/¨ 0 SplitBy ¬0=≠¨ data
@@ -163,10 +162,6 @@ validators ← (0⊸⊏˘ •Hashmap 1⊸⊏˘)[
 	"pid"‿IsValidPid
 ]
 
-
-# TODO: figure out the reason why they're all nested and we need to > them.
-raw_parsed_passports ←  (>( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
-
 PerRawPassport ← {
 	PerPair ← {
 		key‿value ← 𝕩
@@ -188,41 +183,15 @@ PerRawPassport ← {
 }
 
 
+raw_passports ← GatherPassports¨ grouped_data
+# TODO: figure out the reason why they're all nested and we need to > them.
+raw_parsed_passports ←  (>( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
+
 •Show 50/"∧"
-# •Show "abc" ⊐ "hi how are you"
-# •Show (≠"abc") ≠⌈´ ("abc" ⊐˜ "ABC")
-# •Show data
 
-# •Show +´ PerRawPassport¨ raw_parsed_passports
-# •Show PerRawPassport¨ raw_parsed_passports
-# •Show PerRawPassport ⊑ raw_parsed_passports
-# •Show ¨ raw_parsed_passports
-# •Show (>(({ ⊑0⊏𝕩 })¨)) ⊑raw_parsed_passports
-# •Show ⥊((({ ⊑1⊏𝕩 })¨)) ⊑raw_parsed_passports
-Taker ← ∾´({ 𝕨⊏𝕩 }¨)
-# mapped_passport ← (0⊸Taker •Hashmap 1⊸Taker)  ⊑raw_parsed_passports
+Taker ← ∾´{ 𝕨⊏𝕩 }¨
 mapped_passport ←  (0⊸Taker •Hashmap 1⊸Taker) ⥊ ⊑raw_parsed_passports
-•Show mapped_passport.Get "byr"
-# •Show  (0⊸Taker •Hashmap 1⊸Taker) ⥊ ⊑raw_parsed_passports
-
-# •Show (({ ⥊0⊏𝕩 }¨)•Hashmap({ ⥊1⊏𝕩 }¨)) •Show  ⊑raw_parsed_passports
-# •Show (({ 0⊏𝕩 }˘)•Hashmap({ 1⊏𝕩 }˘)) •Show  ⊑raw_parsed_passports
+•Show mapped_passport.Keys mapped_passport
 
 •Show 50/"∨"
-
-# qwe ← [[1,100], [2,200], [3,300]]
-# •Show qwe
-# # •Show (({ 0⊏𝕩 }˘)•Hashmap({ 1⊏𝕩 }˘)) qwe
-# # # •Show [1,2,3](⊣∾⊢)[4,5,6]
-# hashmap ←  (0⊸⊏˘ •Hashmap 1⊸⊏˘) qwe
-# •Show hashmap.Get 2
-
-# •Show validator←(validators.Get "byr")
-# •Show Validator "1920"
-
-# •Show validator←(1⊑⊏(∨´˘(<"byr")≡¨⊢ )⊸/validators)
-# •Show Validator "1920"
-
-
-
 
