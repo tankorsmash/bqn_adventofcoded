@@ -18,9 +18,6 @@ fields_no_cid ← ((¬"cid"⊸≡)¨/⊢)field_names
 SplitBy ← (+`∘=⊔⊢)
 # •Show ' 'SplitBy "a b c   d"
 
-grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
-grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
-# •Show "grouped_data"‿grouped_data
 
 
 RemoveSpaceOnlyLists ← (∨`' '⊸≠)⊸/
@@ -159,8 +156,10 @@ validators ← (0⊸⊏˘ •Hashmap 1⊸⊏˘)[
 	"pid"‿IsValidPid
 ]
 
-Taker ←  ⥊{  𝕨⊏𝕩 }¨
+
+Taker ← ⥊{ 𝕨⊏𝕩 }¨
 PerRawPassport ← {
+	("takes lists of pairs"⊸! 2⊸≡≢>)˘ 𝕩
 	PerPair ← {
 		key‿value ←  ⥊ 𝕩
 		# •Show key‿(':'⊸≠⊸/value)
@@ -170,40 +169,45 @@ PerRawPassport ← {
 		PerPair 𝕩
 	}
 	rows ← ⥊⚇¯1𝕩
-	sorted_keys ← ∨ ⊑˘ 𝕩
-	# sorted_keys ← ∨ ∾´ rows
-	keys_ ← >(0⊸Taker rows)
-	values_ ← (1⊸Taker rows)
-	mapped_passport ← (keys_ •Hashmap values_)
+
+	keys ← >(0⊸Taker rows)
+	sorted_keys ← ∨ keys
+
+	values ← (1⊸Taker rows)
+	mapped_passport ← (keys •Hashmap values)
+
 	FieldValid ← {
 		field ← 𝕩
 		# TODO: remove mapped_passport
 		# dropping 1, because SplitBy leaves the split value in the non-first parts
-		stripped_value ← 1↓ mapped_passport.Get •Show field
+		stripped_value ← 1↓ mapped_passport.Get  field
 		validator ← validators.Get field
 		is_valid ← Validator stripped_value
 		# •Show field‿stripped_value‿is_valid
 	}
 
-	fields_valid ← ∧´ FieldValid¨ fields_no_cid
 
-	has_enough_keys ← (∨fields_no_cid≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
+	has_enough_keys ← (∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢) sorted_keys
 
-	{ has_enough_keys ? fields_valid ; 0 }
+	{ has_enough_keys ?
+		{ fields_valid ← ∧´ FieldValid¨ fields_no_cid
+		}
+		; 0
+	}
 
 }
 
+grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
+grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
+# •Show (⊏grouped_data)
 
 raw_passports ← GatherPassports¨ grouped_data
 # TODO: figure out the reason why they're all nested and we need to > them.
 raw_parsed_passports ←  (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 
-•Show 50/"∧"
 
 # mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
 # •Show mapped_passport.Keys mapped_passport
 
 •Show (PerRawPassport>)¨ raw_parsed_passports
-
-•Show 50/"∨"
 
