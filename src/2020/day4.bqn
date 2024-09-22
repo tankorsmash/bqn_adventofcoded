@@ -180,7 +180,7 @@ PerRawPassport ← {
 		field ← 𝕩
 		# TODO: remove mapped_passport
 		# dropping 1, because SplitBy leaves the split value in the non-first parts
-		stripped_value ← 1↓ mapped_passport.Get  field
+		stripped_value ← 1↓>mapped_passport.Get  field
 		validator ← validators.Get field
 		is_valid ← Validator stripped_value
 		# •Show field‿stripped_value‿is_valid
@@ -190,7 +190,8 @@ PerRawPassport ← {
 	has_enough_keys ← (∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢) sorted_keys
 
 	{ has_enough_keys ?
-		{ fields_valid ← ∧´ FieldValid¨ fields_no_cid
+		{ valid_fields ← FieldValid¨ fields_no_cid
+		∧´valid_fields
 		}
 		; 0
 	}
