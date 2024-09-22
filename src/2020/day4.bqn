@@ -1,5 +1,5 @@
-# data ← •file.Lines "../../samples/2020/day4.txt"
-data ← •file.Lines "../../inputs/2020/day4.txt"
+data ← •file.Lines "../../samples/2020/day4.txt"
+# data ← •file.Lines "../../inputs/2020/day4.txt"
 
 # numbers ← •ParseFloat¨ data
 
@@ -93,7 +93,7 @@ hgt_asserts ← {
 IsAllowedHclChars ← ∧´∊⟜(∾"0a"+⟜↕¨10‿6)
 IsValidHcl ← {
 
- starts_with_hash ← '#'=⊑𝕩
+ starts_with_hash ← {0≠≠𝕩 ? '#'=⊑𝕩 ; 0}𝕩
  "type"‿(•Type starts_with_hash)
 
 #  •Show 50/"_"
@@ -159,47 +159,51 @@ validators ← (0⊸⊏˘ •Hashmap 1⊸⊏˘)[
 	"pid"‿IsValidPid
 ]
 
+Taker ←  ⥊{  𝕨⊏𝕩 }¨
 PerRawPassport ← {
 	PerPair ← {
-		key‿value ← 𝕩
+		key‿value ←  ⥊ 𝕩
 		# •Show key‿(':'⊸≠⊸/value)
 		key
 	}
 	PerEntryGroup ← {
-		PerPair¨ 𝕩
+		PerPair 𝕩
 	}
-	rows ← 𝕩
-	sorted_keys ← ∨ ∾´ PerEntryGroup¨ 𝕩
+	rows ← ⥊⚇¯1𝕩
+	sorted_keys ← ∨ ⊑˘ 𝕩
+	# sorted_keys ← ∨ ∾´ rows
+	keys_ ← >(0⊸Taker rows)
+	values_ ← (1⊸Taker rows)
+	mapped_passport ← (keys_ •Hashmap values_)
+	FieldValid ← {
+		field ← 𝕩
+		# TODO: remove mapped_passport
+		# dropping 1, because SplitBy leaves the split value in the non-first parts
+		stripped_value ← 1↓ mapped_passport.Get •Show field
+		validator ← validators.Get field
+		is_valid ← Validator stripped_value
+		# •Show field‿stripped_value‿is_valid
+	}
 
-	has_enough_keys ← (∨fields_no_cid) ≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
+	fields_valid ← ∧´ FieldValid¨ fields_no_cid
 
-	# { has_enough_keys ? validators.Get¨sorted_keys ; 0 }
-	𝕩
+	has_enough_keys ← (∨fields_no_cid≡ ((¬"cid"⊸≡)¨/⊢)sorted_keys
 
+	{ has_enough_keys ? fields_valid ; 0 }
 
 }
 
 
 raw_passports ← GatherPassports¨ grouped_data
 # TODO: figure out the reason why they're all nested and we need to > them.
-raw_parsed_passports ←  (>( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
+raw_parsed_passports ←  (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 
 •Show 50/"∧"
 
-Taker ← ∾´{ 𝕨⊏𝕩 }¨
-mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
-•Show mapped_passport.Keys mapped_passport
-FieldValid ← {
-	field ← 𝕩
-	# TODO: remove mapped_passport
-	# dropping 1, because SplitBy leaves the split value in the non-first parts
-	stripped_value ← 1↓ mapped_passport.Get field
-	validator ← validators.Get field
-	is_valid ← Validator stripped_value
-	# •Show field‿stripped_value‿is_valid
-}
+# mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
+# •Show mapped_passport.Keys mapped_passport
 
-•Show ∧´ FieldValid¨ fields_no_cid
+•Show (PerRawPassport>)¨ raw_parsed_passports
 
 •Show 50/"∨"
 
