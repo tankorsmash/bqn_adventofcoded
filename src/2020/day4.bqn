@@ -16,11 +16,8 @@ field_names ← ⟨"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"⟩
 fields_no_cid ← ((¬"cid"⊸≡)¨/⊢)field_names
 
 SplitBy ← (+`∘=⊔⊢)
-# •Show data
-# •Show "lengths"‿(≠¨ data)
-mask ← ¬ 0= ≠¨ data
+# •Show ' 'SplitBy "a b c   d"
 
-mask
 grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
 grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
 # •Show "grouped_data"‿grouped_data
@@ -190,8 +187,19 @@ raw_parsed_passports ←  (>( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 •Show 50/"∧"
 
 Taker ← ∾´{ 𝕨⊏𝕩 }¨
-mapped_passport ←  (0⊸Taker •Hashmap 1⊸Taker) ⥊ ⊑raw_parsed_passports
+mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
 •Show mapped_passport.Keys mapped_passport
+FieldValid ← {
+	field ← 𝕩
+	# TODO: remove mapped_passport
+	# dropping 1, because SplitBy leaves the split value in the non-first parts
+	stripped_value ← 1↓ mapped_passport.Get field
+	validator ← validators.Get field
+	is_valid ← Validator stripped_value
+	# •Show field‿stripped_value‿is_valid
+}
+
+•Show ∧´ FieldValid¨ fields_no_cid
 
 •Show 50/"∨"
 
