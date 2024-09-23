@@ -3,6 +3,16 @@ data ← •file.Lines "../../samples/2020/day6.txt"
 
 SplitBy ← (+`∘=⊔⊢)
 
+
+UniqueChars ← {
+	joined ← ∾´𝕩
+	(∊/⊢) joined
+}
+
+PartOne ← {
+	UniqueChars¨ 𝕩
+}
+
 # •Show data
 mask ← 0=≠∘>˘ data
 rows ← +` mask
@@ -10,20 +20,4 @@ rows ← +` mask
 # •Show "rows"‿rows
 
 grouped_data ←  (¯1¨⌾(mask⊸/)rows)⊔data
-•Show grouped_data
-
-# •Show (¬mask)/data
-# •Show (¬mask)/data
-
-# x0¨⌾(b1⊸/)y1
-
-
-
-
-
-
-
-
-
-
-
+•Show PartOne grouped_data
