@@ -18,8 +18,6 @@ fields_no_cid ← ((¬"cid"⊸≡)¨/⊢)field_names
 SplitBy ← (+`∘=⊔⊢)
 # •Show ' 'SplitBy "a b c   d"
 
-
-
 RemoveSpaceOnlyLists ← (∨`' '⊸≠)⊸/
 RemoveSpaces ← (' '⊸≠)⊸/
 
@@ -200,15 +198,9 @@ PerRawPassport ← {
 
 grouped_idxs ← 0 ((+`∘=){ 𝕨⊔↕≠𝕩 }⊢) ¬ 0= ≠¨ data
 grouped_data ← {𝕩⊏data}˘¨ grouped_idxs
-# •Show (⊏grouped_data)
 
 raw_passports ← GatherPassports¨ grouped_data
-# TODO: figure out the reason why they're all nested and we need to > them.
 raw_parsed_passports ←  (( ':'⊸SplitBy¨ ' '⊸SplitBy)¨)¨ raw_passports
 
 
-# mapped_passport ←  (0⊸Taker •Hashmap (1⊸Taker)) ⥊ ⊑raw_parsed_passports
-# •Show mapped_passport.Keys mapped_passport
-
 •Show +´(PerRawPassport>)¨ raw_parsed_passports
-
