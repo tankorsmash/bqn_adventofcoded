@@ -27,5 +27,13 @@ seat_ids ← {
 	(row × 8)+seat
 }˘ data
 
+part_one ← ⌈´ ⥊seat_ids
+# •Show part_one
 
-•Show ⌈´ ⥊seat_ids
+sorted_seat_ids ← ∧⥊ seat_ids
+
+min_seat_id←0⊑sorted_seat_ids # eg 47
+max_seat_id←¯1⊑sorted_seat_ids # eg 354
+all_seats ← min_seat_id+ ↕¬˜´ min_seat_id‿max_seat_id # [47, 48, 49, ..., 354]
+valid_seats ← (all_seats ∊ sorted_seat_ids) # [0, 0, 0, ..., 1, 0, ..., 0]
+•Show part_two ← (¬valid_seats)/all_seats
