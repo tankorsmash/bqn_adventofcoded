@@ -1,5 +1,5 @@
-data ← •file.Lines "../../samples/2020/day6.txt"
-# data ← •file.Lines "../../inputs/2020/day6.txt"
+# data ← •file.Lines "../../samples/2020/day6.txt"
+data ← •file.Lines "../../inputs/2020/day6.txt"
 
 SplitBy ← (+`∘=⊔⊢)
 
@@ -10,7 +10,7 @@ UniqueChars ← {
 }
 
 PartOne ← {
-	UniqueChars¨ 𝕩
+	+´ ≠¨ UniqueChars¨ 𝕩
 }
 
 # •Show data
