@@ -1,7 +1,10 @@
-# data ← •file.Lines "../../samples/2020/day7.txt"
-data ← •file.Lines "../../inputs/2020/day7.txt"
+data ← •file.Lines "../../samples/2020/day7.txt"
+# data ← •file.Lines "../../inputs/2020/day7.txt"
 
 SplitBy ← (+`∘=⊔⊢)
+
+# from bqncrate
+FindInString ← {∊⟜𝕩⌾<𝕨}
 
 ParseBagLine ← {
 	𝕩
@@ -26,8 +29,11 @@ ParseBagLine ← {
 		(starts_with_space × 1)↓without_comma
 	}
 
-	•Show prefix_len↑line
+	# •Show prefix_len↑line
 	•Show raw_contained_bags ← StripCommas¨ ',' SplitBy ¯1↓suffix_len↓line
+	# •Show "is a 'no other bags' bag?"‿(∊⟜raw_contained_bags⌾<"no other bags")
+	•Show "is a 'no other bags' bag?"‿("no other bags" FindInString raw_contained_bags)
+	# •Show [ "no other bags" ]∊raw_contained_bags
 
 	•Show 80/"-"
 	# •Show (+`' '=line)⊔line
