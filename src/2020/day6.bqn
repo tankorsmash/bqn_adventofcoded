@@ -1,5 +1,5 @@
-# data ← •file.Lines "../../samples/2020/day6.txt"
-data ← •file.Lines "../../inputs/2020/day6.txt"
+data ← •file.Lines "../../samples/2020/day6.txt"
+# data ← •file.Lines "../../inputs/2020/day6.txt"
 
 UniqueChars ← {
 	joined ← ∾´𝕩
