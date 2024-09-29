@@ -32,9 +32,9 @@ ParseBagLine ← {
 	}
 
 	# •Show prefix_len↑line
-	•Show raw_contained_bags ← StripCommas¨ ',' SplitBy ¯1↓(suffix_len)↓line
+	raw_contained_bags ← StripCommas¨ ',' SplitBy ¯1↓(suffix_len)↓line
 	# •Show "is a 'no other bags' bag?"‿(∊⟜raw_contained_bags⌾<"no other bags")
-	is_no_other ← "no other bags"∊raw_contained_bags
+	•Show¨ only_bags ← ("no other bags"⊸≢¨/⊣)raw_contained_bags
 	# •Show "is a 'no other bags' bag?"‿("no other bags" FindInString raw_contained_bags)
 	# •Show [ "no other bags" ]∊raw_contained_bags
 
@@ -42,4 +42,10 @@ ParseBagLine ← {
 	# •Show (+`' '=line)⊔line
 }
 
-ParseBagLine¨ data
+# ParseBagLine¨ data
+
+data ↩ ⟨"300 bright white bags", "food ball 98 food", "4 muted yellow bags"⟩
+# •Show data
+nums ← '0'+↕10
+•Show •Parsefloat⌾⊑˘ >((¬+´∘(nums⊸=))<∘⊔>)˘ data
+# •Show (<(¬+´∘(nums⊸=) ))˘ data
