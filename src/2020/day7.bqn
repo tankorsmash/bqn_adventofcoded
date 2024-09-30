@@ -55,7 +55,7 @@ SplitNumbers ← {
 
 # Clone ← {𝕩}
 # # •Show¨ ((>∘1⊸Show)⌾1⊸⊏)˘ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
-(•Show)¨  1⊸↓⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+(•Show)¨  {('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
 # (•Show∘{10⊸+⌾(•Show⊸/)𝕩}∘•Show)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
 
 # •Show ((∞⊸≠↕∘≠)/⊣) ↕10
@@ -63,7 +63,9 @@ SplitNumbers ← {
 # •Show (<(¬+´∘(nums⊸=) ))˘ data
 
 
-# •Show 1↓"hello there"
+text ← "hello mr bags, how are you?"
+mask←(1⌈((≠"bags")×"bags"⍷text))
+•Show (¬1≠mask/mask)/text
 
 # arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
 # •Show (1⊸↓)⌾(1⊸⊑)¨ arr
