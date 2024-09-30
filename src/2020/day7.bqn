@@ -64,8 +64,12 @@ SplitNumbers ← {
 
 
 text ← "hello mr bags, how are you?"
-mask←(1⌈((≠"bags")×"bags"⍷text))
-•Show (¬1≠mask/mask)/text
+RemoveBags ← {
+		mask ← 1⌈ " bags"((≠⊣)×⍷)𝕩
+		•Show (¬ 1≠/˜mask)/𝕩
+}
+
+RemoveBags text
 
 # arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
 # •Show (1⊸↓)⌾(1⊸⊑)¨ arr
