@@ -63,9 +63,21 @@ StripBags ← {
 
 	# because ⍷ is always less than the to_strip, we need to append 1s
 	# to make sure we dont accidentally remove the last chars
-	padding ← (1˘↕(1-˜≠to_strip))
-	((padding∾˜ ¬ 1≠/˜1⌈ to_strip ((1⊸-˜∘≠⊣)×⍷)𝕩)/⊢)𝕩
+	padding ← (0˘↕(1-˜≠to_strip))
+	# •Show to_strip ({1-˜≠to_strip}⊸×∘⍷)𝕩
+	# •Show to_strip (1-˜≠to_strip)⊸×∘⍷𝕩
+	•Show 𝕩
+	mask←to_strip (≠to_strip)⊸×∘⍷𝕩
+	•Show 2×≠to_strip
+	•Show ≠'0'+mask
+	final_mask←(¬ 1≠/˜1⌈ mask)
+	•Show ≠'0'+final_mask
+	•Show " "
+	res ← (final_mask/⊢)𝕩
+	•Show '0'+res
+	res
 }
+
 
 # qwe ← " bags"
 # •Show [1]∾(0˘↕(1-˜≠qwe))
