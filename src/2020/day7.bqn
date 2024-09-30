@@ -1,5 +1,5 @@
 data ← •file.Lines "../../samples/2020/day7.txt"
-# data ← •file.Lines "../../inputs/2020/day7.txt"
+# data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
 SplitBy ← (+`∘=⊔⊢)
 
@@ -44,7 +44,7 @@ ParseBagLine ← {
 
 # ParseBagLine¨ data
 
-data ↩ ⟨"2 dark red bags", "4 bright white bags","5 muted yellow bags."⟩
+# data ↩ ⟨"2 dark red bags", "4 bright white bags","5 muted yellow bags."⟩
 # •Show data
 nums ← '0'+↕10
 
@@ -55,22 +55,43 @@ SplitNumbers ← {
 
 # Removes the word "bags" from the body of a string, as many times as it exists
 StripBags ← {
+	𝕩
+	# •Show "𝕩"‿𝕩
 	to_strip ← " bags"
-	((¬ 1≠/˜1⌈ to_strip ((≠⊣)×⍷)𝕩)/⊢)𝕩
+	# •Show ≠( 1≠/˜1⌈ to_strip ((1⊸-∘≠⊣)×⍷)𝕩)
+	# •Show "len"‿(≠𝕩)
+
+	# because ⍷ is always less than the to_strip, we need to append 1s
+	# to make sure we dont accidentally remove the last chars
+	padding ← (1˘↕(1-˜≠to_strip))
+	((padding∾˜ ¬ 1≠/˜1⌈ to_strip ((1⊸-˜∘≠⊣)×⍷)𝕩)/⊢)𝕩
 }
 
-# Clone ← {𝕩}
-# # •Show¨ ((>∘1⊸Show)⌾1⊸⊏)˘ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
-(•Show)¨  {StripBags ('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
-# (•Show∘{10⊸+⌾(•Show⊸/)𝕩}∘•Show)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+# qwe ← " bags"
+# •Show [1]∾(0˘↕(1-˜≠qwe))
+
+(•Show)¨  {StripBags ('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (((•Parsefloat⎊0) )⌾(⊑))¨ (SplitNumbers <∘⊔ >)˘ data
+
+# •Show [3, 3, 3]/"abc"
+
+# text ← "cake is cake. yet, cake is not cake!"
+# text ↩ "cake"
+# •Show  "cake"⍷text
+# •Show  "masked len:"‿(≠ "cake"⍷text)
+# •Show  text
+# •Show  "text len:"‿(≠text)
+#
+# •Show 50/"-"
+# •Show "cake" ⍷ "cake! i am cake."
+# •Show "⟨1 0 0 0 0 0 0 0 0 0 0 1 0⟩"
 
 # •Show ((∞⊸≠↕∘≠)/⊣) ↕10
 
 # •Show (<(¬+´∘(nums⊸=) ))˘ data
 
 
-text ← "hello mr bags, how are you?"
-•Show StripBags text
+# text ← "hello mr bags, how are you?"
+# •Show StripBags text
 
 # arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
 # •Show (1⊸↓)⌾(1⊸⊑)¨ arr
