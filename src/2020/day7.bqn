@@ -61,7 +61,7 @@ StripBags ← {
 
 # Clone ← {𝕩}
 # # •Show¨ ((>∘1⊸Show)⌾1⊸⊏)˘ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
-(•Show)¨  {('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+(•Show)¨  {StripBags ('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
 # (•Show∘{10⊸+⌾(•Show⊸/)𝕩}∘•Show)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
 
 # •Show ((∞⊸≠↕∘≠)/⊣) ↕10
