@@ -44,8 +44,26 @@ ParseBagLine ← {
 
 # ParseBagLine¨ data
 
-data ↩ ⟨"300 bright white bags", "food ball 98 food", "4 muted yellow bags"⟩
+data ↩ ⟨"2 dark red bags", "4 bright white bags","5 muted yellow bags."⟩
 # •Show data
 nums ← '0'+↕10
-•Show •Parsefloat⌾⊑˘ >((¬+´∘(nums⊸=))<∘⊔>)˘ data
+
+# Moves numbers to the start of the list
+SplitNumbers ← {
+	res ← > ¬⌈˝ nums⊸= 𝕩
+}
+
+# Clone ← {𝕩}
+# # •Show¨ ((>∘1⊸Show)⌾1⊸⊏)˘ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+(•Show)¨  1⊸↓⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+# (•Show∘{10⊸+⌾(•Show⊸/)𝕩}∘•Show)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
+
+# •Show ((∞⊸≠↕∘≠)/⊣) ↕10
+
 # •Show (<(¬+´∘(nums⊸=) ))˘ data
+
+
+# •Show 1↓"hello there"
+
+# arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
+# •Show (1⊸↓)⌾(1⊸⊑)¨ arr
