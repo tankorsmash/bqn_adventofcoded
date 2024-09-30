@@ -53,6 +53,12 @@ SplitNumbers ← {
 	res ← > ¬⌈˝ nums⊸= 𝕩
 }
 
+# Removes the word "bags" from the body of a string, as many times as it exists
+StripBags ← {
+	to_strip ← " bags"
+	((¬ 1≠/˜1⌈ to_strip ((≠⊣)×⍷)𝕩)/⊢)𝕩
+}
+
 # Clone ← {𝕩}
 # # •Show¨ ((>∘1⊸Show)⌾1⊸⊏)˘ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
 (•Show)¨  {('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (•Parsefloat⌾⊑)¨ (SplitNumbers <∘⊔ >)˘ data
@@ -64,12 +70,7 @@ SplitNumbers ← {
 
 
 text ← "hello mr bags, how are you?"
-RemoveBags ← {
-		mask ← 1⌈ " bags"((≠⊣)×⍷)𝕩
-		•Show (¬ 1≠/˜mask)/𝕩
-}
-
-RemoveBags text
+•Show StripBags text
 
 # arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
 # •Show (1⊸↓)⌾(1⊸⊑)¨ arr
