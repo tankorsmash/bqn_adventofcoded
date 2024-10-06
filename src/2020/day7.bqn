@@ -50,7 +50,7 @@ nums ← '0'+↕10
 
 # Moves numbers to the start of the list
 SplitNumbers ← {
-	res ← > ¬⌈˝ nums⊸= 𝕩
+	res ← >¬⌈˝ nums= 𝕩
 }
 
 # Removes the word "bags" from the body of a string, as many times as it exists
@@ -91,9 +91,15 @@ res← {
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
 } data
-•Show¨ data
-•Show¨ res
+# •Show¨ data
+# •Show¨ res
 
+string ← "29 men 1 can, 0 parents"
+mask ← ( ¬SplitNumbers < string)
+•Show "strg"‿(string)
+•Show "mask"‿mask
+•Show "shft"‿(shft←»mask)
+•Show "eqls"‿(/shft≠mask)
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
