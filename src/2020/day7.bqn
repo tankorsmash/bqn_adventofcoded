@@ -63,47 +63,49 @@ StripBags ← {
 
 	# because ⍷ is always less than the to_strip, we need to append 1s
 	# to make sure we dont accidentally remove the last chars
-	padding ← (0˘↕(1-˜≠to_strip))
+	padding ← (1˘↕(1-˜≠to_strip))
 	# •Show to_strip ({1-˜≠to_strip}⊸×∘⍷)𝕩
 	# •Show to_strip (1-˜≠to_strip)⊸×∘⍷𝕩
-	•Show 𝕩
-	mask←to_strip (≠to_strip)⊸×∘⍷𝕩
-	•Show 2×≠to_strip
-	•Show ≠'0'+mask
-	final_mask←(¬ 1≠/˜1⌈ mask)
-	•Show ≠'0'+final_mask
-	•Show " "
+	# •Show "𝕩"‿𝕩
+	# •Show "≠𝕩"‿(≠𝕩)
+	# •Show "to_strip ⍷ 𝕩"‿(to_strip ⍷ 𝕩)
+	mask← to_strip (≠to_strip)⊸×∘⍷𝕩
+	# •Show "≠to_strip"‿(≠to_strip)
+	# •Show "≠to_strip"‿(≠to_strip)
+	# •Show ≠'0'+mask
+	final_mask ← (≠𝕩)↑(1¨)/˜padding∾(1⌈ mask)
+	# •Show ≠'0'+final_mask
+	# •Show "final_mask" ‿(final_mask)
+	# •Show "≠final_mask"‿(≠final_mask)
+	# •Show " "
 	res ← (final_mask/⊢)𝕩
-	•Show '0'+res
 	res
 }
 
 
-# qwe ← " bags"
-# •Show [1]∾(0˘↕(1-˜≠qwe))
+# res← {StripBags ('.'⊸≠/⊢)}⌾(1⊸⊑)¨ (((•Parsefloat⎊0) )⌾(⊑))¨ (SplitNumbers <∘⊔ >)˘ data
+res← {
+	split ← (SplitNumbers <∘⊔ >)˘ 𝕩
+	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
+	# becomes 12 bags
+	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
+	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
+} data
+•Show¨ data
+•Show¨ res
 
-(•Show)¨  {StripBags ('.'⊸≠/⊢)1⊸↓𝕩}⌾(1⊸⊑)¨ (((•Parsefloat⎊0) )⌾(⊑))¨ (SplitNumbers <∘⊔ >)˘ data
 
-# •Show [3, 3, 3]/"abc"
+# •Show a←(≠"strings")↕"lots of strings"
+# •Show b←("strings")⍷"lots of strings"
 
-# text ← "cake is cake. yet, cake is not cake!"
-# text ↩ "cake"
-# •Show  "cake"⍷text
-# •Show  "masked len:"‿(≠ "cake"⍷text)
-# •Show  text
-# •Show  "text len:"‿(≠text)
+# MakePerson ← {
+#  ⟨"John", 𝕩, "123 Main St."⟩
+# }
 #
-# •Show 50/"-"
-# •Show "cake" ⍷ "cake! i am cake."
-# •Show "⟨1 0 0 0 0 0 0 0 0 0 0 1 0⟩"
+# names ← ⟨"Mike", "John", "Sally"⟩
+# ages ← ⟨23, 45, 32⟩
+# addresses ← ⟨"123 Main St.", "456 Elm St.", "789 Oak St."⟩
+#
+# •Show names
+# •Show ((<"John")∊names)⊏ages
 
-# •Show ((∞⊸≠↕∘≠)/⊣) ↕10
-
-# •Show (<(¬+´∘(nums⊸=) ))˘ data
-
-
-# text ← "hello mr bags, how are you?"
-# •Show StripBags text
-
-# arr ← ⟨⟨123, "a b c"⟩, ⟨456, "d e f"⟩⟩
-# •Show (1⊸↓)⌾(1⊸⊑)¨ arr
