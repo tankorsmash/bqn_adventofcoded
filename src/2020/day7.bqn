@@ -99,7 +99,16 @@ mask ← ( ¬SplitNumbers < string)
 •Show "strg"‿(string)
 •Show "mask"‿mask
 •Show "shft"‿(shft←»mask)
-•Show "eqls"‿(/shft≠mask)
+•Show "test"‿(1»≠⟜«mask)
+•Show "bnds"‿(bnds←∘‿2⥊/0(∾≠∾˜)mask)
+•Show "wths"‿(widths←-˜˝˘bnds)
+# the index and widths of the digits i need to pull out
+•Show "join"‿((widths)∾˘˜(⊏˘bnds))
+•Show 50/"-"
+•Show "lft0"‿(0∾mask)
+•Show "rgt0"‿(mask∾0)
+
+•Show "test"‿(0(∾˜)[1,1])
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
