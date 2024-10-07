@@ -91,14 +91,18 @@ ParseBagNew ← {
 	# mostly from bqnrate, splits on mask 𝕨
 	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
 
-	preclean ← "." StripSubstring " bag" StripSubstring " bags" StripSubstring 𝕩
+	# run many precleaners on the input
+	preclean ← 𝕩 StripSubstring´ ⟨".", " bags", " bag"⟩
 
 	mask ← ¬" contain " MarkAllowed preclean
 	container‿raw_children← (mask) Split preclean
 
 	comma_mask ← ¬ "," MarkAllowed raw_children
 	•Show comma_mask
-	container‿(comma_mask Split raw_children)
+
+	DropLeadingSpace ← ((' '=⊏)↓⊢)
+	children ← DropLeadingSpace¨ (comma_mask) Split raw_children
+	container‿children
 }
 •Show ParseBagNew ⊑ data
 
