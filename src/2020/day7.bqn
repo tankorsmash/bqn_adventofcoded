@@ -92,9 +92,9 @@ ParseAllNumbers ← {
 	# start index and end index of each number within the string
 	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
 	# the start index plus its offset
-	•Show "join"‿(join ← (⊏∾-˜´)˘bounds)
+	join ← (⊏∾-˜´)˘bounds
 	# each index in the string a digit is at
-	•Show "idxs"‿(idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join)
+	idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join
 	# pull out each char at each index, and parse the whole number
 	parsed ←(•ParseFloat ⊏⟜𝕩 )¨idxs
 	parsed
