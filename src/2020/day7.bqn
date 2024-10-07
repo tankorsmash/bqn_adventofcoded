@@ -95,21 +95,17 @@ res← {
 # •Show¨ res
 
 string ← "29 men 1 can, 0 parents"
-mask ← ( ¬SplitNumbers < string)
-•Show "strg"‿(string)
-•Show "mask"‿mask
-# •Show "shft"‿(shft←»mask)
-# •Show "test"‿(1»≠⟜«mask)
-"bnds"‿(bnds←∘‿2⥊/0(∾≠∾˜)mask)
-"wths"‿(widths←-˜˝˘bnds)
-# the index and widths of the digits i need to pull out
-•Show "join"‿(join←(widths)∾˘˜(⊏˘bnds))
-•Show 50/"-"
-•Show "idxs"‿(idxs←(((<↕)∘(1⊸⊑)(+˘)⊑)˘join))
-# •Show ⊑idxs
-•Show "nums"‿(nums←(⊑idxs)⊏string)
-•Show "res "‿({ 𝕩⊏string }¨(idxs))
-•Show "prsd "‿(•ParseFloat∘⊏⟜string¨(idxs))
+ParseAllNumbers ← {
+	mask ← ( ¬SplitNumbers < 𝕩)
+	# •Show "strg"‿(string)
+	bnds ← ∘‿2⥊/0 (∾≠∾˜) mask
+	widths ← -˜˝˘ bnds
+	# the index and widths of the digits i need to pull out
+	•Show "join"‿(join←widths∾˘˜(⊏˘bnds))
+	•Show "idxs"‿(idxs←((<↕)∘(1⊸⊑)+˘⊑)˘join)
+	•Show "prsd"‿(•ParseFloat∘⊏⟜string¨(idxs))
+}
+ParseAllNumbers string
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
