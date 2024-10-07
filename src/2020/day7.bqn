@@ -46,10 +46,10 @@ ParseBagLine ← {
 
 # data ↩ ⟨"2 dark red bags", "4 bright white bags","5 muted yellow bags."⟩
 # •Show data
-nums ← '0'+↕10
 
 # Moves numbers to the start of the list
 SplitNumbers ← {
+	nums ← '0'+↕10
 	res ← >¬⌈˝ nums= 𝕩
 }
 
@@ -98,17 +98,22 @@ string ← "29 men 1 can, 0 parents"
 mask ← ( ¬SplitNumbers < string)
 •Show "strg"‿(string)
 •Show "mask"‿mask
-•Show "shft"‿(shft←»mask)
-•Show "test"‿(1»≠⟜«mask)
-•Show "bnds"‿(bnds←∘‿2⥊/0(∾≠∾˜)mask)
-•Show "wths"‿(widths←-˜˝˘bnds)
+# •Show "shft"‿(shft←»mask)
+# •Show "test"‿(1»≠⟜«mask)
+"bnds"‿(bnds←∘‿2⥊/0(∾≠∾˜)mask)
+"wths"‿(widths←-˜˝˘bnds)
 # the index and widths of the digits i need to pull out
-•Show "join"‿((widths)∾˘˜(⊏˘bnds))
+•Show "join"‿(join←(widths)∾˘˜(⊏˘bnds))
 •Show 50/"-"
-•Show "lft0"‿(0∾mask)
-•Show "rgt0"‿(mask∾0)
+•Show "idxs"‿(idxs←(((<↕)∘(1⊸⊑)(+˘)⊑)˘join))
+# •Show ⊑idxs
+•Show "nums"‿(nums←(⊑idxs)⊏string)
+•Show "res "‿({ 𝕩⊏string }¨(idxs))
+•Show "prsd "‿(•ParseFloat∘⊏⟜string¨(idxs))
 
-•Show "test"‿(0(∾˜)[1,1])
+# •Show a←(≠"strings")↕"lots of strings"
+# •Show b←("strings")⍷"lots of strings"
+
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
