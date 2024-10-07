@@ -60,9 +60,9 @@ StripBags ← {
 
 	# because ⍷ is always less than the to_strip, we need to append 1s
 	# to make sure we dont accidentally remove the last chars
-	padding ← (1˘↕(1-˜≠to_strip))
-	mask← to_strip (≠to_strip)⊸×∘⍷𝕩
-	final_mask ← (≠𝕩)↑1¨/˜padding∾ 1⌈ mask
+	# padding ← (1˘↕(1-˜≠to_strip))
+	mask← to_strip (≠to_strip)⊸×∘(≢∘⊢↑⍷)𝕩
+	final_mask ← (≠𝕩)↑1¨ 1⌈ mask
 	res ← (final_mask/⊢)𝕩
 	res
 }
@@ -76,10 +76,14 @@ TryToParseBags ← {
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
 }
-# res ← TryToParseBags data
-# •Show¨ res
+res ← TryToParseBags data
+•Show¨ res
 
-•Show "bags"⍷⊑data
+•Show mask←(" bags"(≢∘⊢↑⍷)⊑data)
+length ← ≠" bags"
+range ← ↕≠mask
+•Show (range(¬∊)(⥊((↕length)⊸+)˘mask/range))/⊑data
+
 
 
 ParseAllNumbers ← {
