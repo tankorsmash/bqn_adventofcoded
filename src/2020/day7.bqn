@@ -86,6 +86,19 @@ MarkAllowed ← {
 }
 
 
+ParseAllNumbers ← {
+	# 1s where a digit is found
+	mask ← (¬SplitNumbers < 𝕩)
+	# start index and end index of each number within the string
+	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
+	# the start index plus its offset
+	•Show "join"‿(join ← (⊏∾-˜´)˘bounds)
+	# each index in the string a digit is at
+	•Show "idxs"‿(idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join)
+	# pull out each char at each index, and parse the whole number
+	parsed ←(•ParseFloat ⊏⟜𝕩 )¨idxs
+	parsed
+}
 
 ParseBagNew ← {
 	# mostly from bqnrate, splits on mask 𝕨
@@ -101,26 +114,13 @@ ParseBagNew ← {
 	•Show comma_mask
 
 	DropLeadingSpace ← ((' '=⊏)↓⊢)
-	children ← DropLeadingSpace¨ (comma_mask) Split raw_children
+	children ← (((ParseAllNumbers)∾<) DropLeadingSpace)¨ (comma_mask) Split raw_children
 	container‿children
 }
 •Show ParseBagNew ⊑ data
 
 
 
-ParseAllNumbers ← {
-	# 1s where a digit is found
-	mask ← (¬SplitNumbers < 𝕩)
-	# start index and end index of each number within the string
-	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
-	# the start index plus its offset
-	•Show "join"‿(join ← (⊏∾-˜´)˘bounds)
-	# each index in the string a digit is at
-	•Show "idxs"‿(idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join)
-	# pull out each char at each index, and parse the whole number
-	parsed ←(•ParseFloat ⊏⟜𝕩 )¨idxs
-	parsed
-}
 # ParseAllNumbers "29 men 1 can, 0 parents"
 
 # •Show a←(≠"strings")↕"lots of strings"
