@@ -94,20 +94,21 @@ res← {
 # •Show¨ data
 # •Show¨ res
 
-string ← "29 men 1 can, 0 parents"
+
 ParseAllNumbers ← {
 	# 1s where a digit is found
 	mask ← (¬SplitNumbers < 𝕩)
 	# start index and end index of each number within the string
 	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
 	# the start index plus its offset
-	•Show "join"‿(join ← (⊏∾-˜˝)˘bounds)
+	•Show "join"‿(join ← (⊏∾-˜´)˘bounds)
 	# each index in the string a digit is at
 	•Show "idxs"‿(idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join)
 	# pull out each char at each index, and parse the whole number
-	•Show "prsd"‿(•ParseFloat∘⊏⟜string¨(idxs))
+	parsed ←(•ParseFloat ⊏⟜𝕩 )¨idxs
+	parsed
 }
-ParseAllNumbers string
+ParseAllNumbers "29 men 1 can, 0 parents"
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
