@@ -56,43 +56,30 @@ SplitNumbers ← {
 # Removes the word "bags" from the body of a string, as many times as it exists
 StripBags ← {
 	𝕩
-	# •Show "𝕩"‿𝕩
 	to_strip ← " bags"
-	# •Show ≠( 1≠/˜1⌈ to_strip ((1⊸-∘≠⊣)×⍷)𝕩)
-	# •Show "len"‿(≠𝕩)
 
 	# because ⍷ is always less than the to_strip, we need to append 1s
 	# to make sure we dont accidentally remove the last chars
 	padding ← (1˘↕(1-˜≠to_strip))
-	# •Show to_strip ({1-˜≠to_strip}⊸×∘⍷)𝕩
-	# •Show to_strip (1-˜≠to_strip)⊸×∘⍷𝕩
-	# •Show "𝕩"‿𝕩
-	# •Show "≠𝕩"‿(≠𝕩)
-	# •Show "to_strip ⍷ 𝕩"‿(to_strip ⍷ 𝕩)
 	mask← to_strip (≠to_strip)⊸×∘⍷𝕩
-	# •Show "≠to_strip"‿(≠to_strip)
-	# •Show "≠to_strip"‿(≠to_strip)
-	# •Show ≠'0'+mask
-	final_mask ← (≠𝕩)↑(1¨)/˜padding∾(1⌈ mask)
-	# •Show ≠'0'+final_mask
-	# •Show "final_mask" ‿(final_mask)
-	# •Show "≠final_mask"‿(≠final_mask)
-	# •Show " "
+	final_mask ← (≠𝕩)↑1¨/˜padding∾ 1⌈ mask
 	res ← (final_mask/⊢)𝕩
 	res
 }
 
 
 # res← {StripBags ('.'⊸≠/⊢)}⌾(1⊸⊑)¨ (((•Parsefloat⎊0) )⌾(⊑))¨ (SplitNumbers <∘⊔ >)˘ data
-res← {
+TryToParseBags ← {
 	split ← (SplitNumbers <∘⊔ >)˘ 𝕩
 	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
 	# becomes 12 bags
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
-} data
-# •Show¨ data
+}
+# res ← TryToParseBags data
 # •Show¨ res
+
+•Show "bags"⍷⊑data
 
 
 ParseAllNumbers ← {
@@ -108,7 +95,7 @@ ParseAllNumbers ← {
 	parsed ←(•ParseFloat ⊏⟜𝕩 )¨idxs
 	parsed
 }
-ParseAllNumbers "29 men 1 can, 0 parents"
+# ParseAllNumbers "29 men 1 can, 0 parents"
 
 # •Show a←(≠"strings")↕"lots of strings"
 # •Show b←("strings")⍷"lots of strings"
