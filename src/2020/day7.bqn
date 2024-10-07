@@ -77,12 +77,19 @@ TryToParseBags ← {
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
 }
 res ← TryToParseBags data
-•Show¨ res
+# •Show¨ res
 
-•Show mask←(" bags"(≢∘⊢↑⍷)⊑data)
-length ← ≠" bags"
-range ← ↕≠mask
-•Show (range(¬∊)(⥊((↕length)⊸+)˘mask/range))/⊑data
+# remove substring from string
+StripSubstring ← {
+	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
+	sub_range ← ↕≠𝕨
+	full_range ← ↕≠𝕩
+
+	# characters not in the substring
+	mask ← full_range ¬∘∊⥊ (sub_range⊸+)˘ full_find/full_range
+	mask/𝕩
+}
+•Show " bag" StripSubstring " bags" StripSubstring ⊑data
 
 
 
