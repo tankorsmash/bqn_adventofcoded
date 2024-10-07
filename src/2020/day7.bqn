@@ -96,13 +96,15 @@ res← {
 
 string ← "29 men 1 can, 0 parents"
 ParseAllNumbers ← {
-	mask ← ( ¬SplitNumbers < 𝕩)
-	# •Show "strg"‿(string)
-	bnds ← ∘‿2⥊/0 (∾≠∾˜) mask
-	widths ← -˜˝˘ bnds
-	# the index and widths of the digits i need to pull out
-	•Show "join"‿(join←widths∾˘˜(⊏˘bnds))
-	•Show "idxs"‿(idxs←((<↕)∘(1⊸⊑)+˘⊑)˘join)
+	# 1s where a digit is found
+	mask ← (¬SplitNumbers < 𝕩)
+	# start index and end index of each number within the string
+	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
+	# the start index plus its offset
+	•Show "join"‿(join ← (⊏∾-˜˝)˘bounds)
+	# each index in the string a digit is at
+	•Show "idxs"‿(idxs ← (<↕∘(1⊸⊑)+˘⊑)˘join)
+	# pull out each char at each index, and parse the whole number
 	•Show "prsd"‿(•ParseFloat∘⊏⟜string¨(idxs))
 }
 ParseAllNumbers string
