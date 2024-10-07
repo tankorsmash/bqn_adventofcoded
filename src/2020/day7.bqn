@@ -88,15 +88,17 @@ MarkAllowed ← {
 
 
 ParseBagNew ← {
-	# mostly from bqnrate, splits on 𝕨
+	# mostly from bqnrate, splits on mask 𝕨
 	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
 
-	preclean ← " bag" StripSubstring " bags" StripSubstring 𝕩
+	preclean ← "." StripSubstring " bag" StripSubstring " bags" StripSubstring 𝕩
 
 	mask ← ¬" contain " MarkAllowed preclean
 	container‿raw_children← (mask) Split preclean
 
-	container‿raw_children
+	comma_mask ← ¬ "," MarkAllowed raw_children
+	•Show comma_mask
+	container‿(comma_mask Split raw_children)
 }
 •Show ParseBagNew ⊑ data
 
