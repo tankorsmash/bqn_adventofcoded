@@ -6,6 +6,17 @@ SplitBy ← (+`∘=⊔⊢)
 # from bqncrate
 FindInString ← {∊⟜𝕩⌾<𝕨}
 
+# remove substring from string
+StripSubstring ← {
+	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
+	sub_range ← ↕≠𝕨
+	full_range ← ↕≠𝕩
+
+	# characters not in the substring
+	mask ← full_range ¬∘∊⥊ (sub_range⊸+)˘ full_find/full_range
+	mask/𝕩
+}
+
 ParseBagLine ← {
 	𝕩
 
@@ -53,43 +64,41 @@ SplitNumbers ← {
 	res ← >¬⌈˝ nums= 𝕩
 }
 
-# Removes the word "bags" from the body of a string, as many times as it exists
-StripBags ← {
-	𝕩
-	to_strip ← " bags"
 
-	# because ⍷ is always less than the to_strip, we need to append 1s
-	# to make sure we dont accidentally remove the last chars
-	# padding ← (1˘↕(1-˜≠to_strip))
-	mask← to_strip (≠to_strip)⊸×∘(≢∘⊢↑⍷)𝕩
-	final_mask ← (≠𝕩)↑1¨ 1⌈ mask
-	res ← (final_mask/⊢)𝕩
-	res
-}
-
-
-# res← {StripBags ('.'⊸≠/⊢)}⌾(1⊸⊑)¨ (((•Parsefloat⎊0) )⌾(⊑))¨ (SplitNumbers <∘⊔ >)˘ data
 TryToParseBags ← {
 	split ← (SplitNumbers <∘⊔ >)˘ 𝕩
 	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
 	# becomes 12 bags
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
+	StripBags ← " bags"⊸StripSubstring
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
 }
 res ← TryToParseBags data
 # •Show¨ res
 
-# remove substring from string
-StripSubstring ← {
+MarkAllowed ← {
 	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
 	sub_range ← ↕≠𝕨
 	full_range ← ↕≠𝕩
 
 	# characters not in the substring
 	mask ← full_range ¬∘∊⥊ (sub_range⊸+)˘ full_find/full_range
-	mask/𝕩
 }
-•Show " bag" StripSubstring " bags" StripSubstring ⊑data
+
+
+
+ParseBagNew ← {
+	# mostly from bqnrate, splits on 𝕨
+	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
+
+	preclean ← " bag" StripSubstring " bags" StripSubstring 𝕩
+
+	mask ← ¬" contain " MarkAllowed preclean
+	container‿raw_children← (mask) Split preclean
+
+	container‿raw_children
+}
+•Show ParseBagNew ⊑ data
 
 
 
