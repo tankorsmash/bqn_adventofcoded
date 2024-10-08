@@ -53,28 +53,23 @@ ParseBagLine ← {
 	# •Show (+`' '=line)⊔line
 }
 
-# ParseBagLine¨ data
-
-# data ↩ ⟨"2 dark red bags", "4 bright white bags","5 muted yellow bags."⟩
-# •Show data
-
-# Moves numbers to the start of the list
-SplitNumbers ← {
+# find which character is a digit character
+IndexOfDigits ← {
 	nums ← '0'+↕10
 	res ← >¬⌈˝ nums= 𝕩
 }
 
 
 TryToParseBags ← {
-	split ← (SplitNumbers <∘⊔ >)˘ 𝕩
+	split ← (IndexOfDigits <∘⊔ >)˘ 𝕩
 	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
 	# becomes 12 bags
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
 	StripBags ← " bags"⊸StripSubstring
 	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
 }
-res ← TryToParseBags data
-# •Show¨ res
+
+TryToParseBags data
 
 MarkAllowed ← {
 	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
@@ -88,7 +83,7 @@ MarkAllowed ← {
 
 ParseAllNumbers ← {
 	# 1s where a digit is found
-	mask ← (¬SplitNumbers < 𝕩)
+	mask ← (¬IndexOfDigits < 𝕩)
 	# start index and end index of each number within the string
 	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
 	# the start index plus its offset
@@ -117,27 +112,13 @@ ParseBagNew ← {
 	children ← (((ParseAllNumbers)∾<) DropLeadingSpace)¨ (comma_mask) Split raw_children
 	container‿children
 }
+
+
+
+
 •Show ParseBagNew ⊑ data
 
 
 
 # ParseAllNumbers "29 men 1 can, 0 parents"
-
-# •Show a←(≠"strings")↕"lots of strings"
-# •Show b←("strings")⍷"lots of strings"
-
-
-# •Show a←(≠"strings")↕"lots of strings"
-# •Show b←("strings")⍷"lots of strings"
-
-# MakePerson ← {
-#  ⟨"John", 𝕩, "123 Main St."⟩
-# }
-#
-# names ← ⟨"Mike", "John", "Sally"⟩
-# ages ← ⟨23, 45, 32⟩
-# addresses ← ⟨"123 Main St.", "456 Elm St.", "789 Oak St."⟩
-#
-# •Show names
-# •Show ((<"John")∊names)⊏ages
 
