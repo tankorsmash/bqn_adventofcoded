@@ -60,18 +60,6 @@ IsNonNumericChar ← {
 }
 # •Show IsNonNumericChar <"99i 2 am 55 years old"
 
-
-TryToParseBags ← {
-	split ← (IsNonNumericChar <∘⊔ >)˘ 𝕩
-	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
-	# becomes 12 bags
-	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
-	StripBags ← " bags"⊸StripSubstring
-	StripBags∘('.'⊸≠/⊢)⌾(1⊸⊑)¨ nums
-}
-
-TryToParseBags data
-
 MarkAllowed ← {
 	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
 	sub_range ← ↕≠𝕨
