@@ -54,14 +54,15 @@ ParseBagLine ← {
 }
 
 # find which character is a digit character
-IndexOfDigits ← {
+IsNonNumericChar ← {
 	nums ← '0'+↕10
 	res ← >¬⌈˝ nums= 𝕩
 }
+# •Show IsNonNumericChar <"99i 2 am 55 years old"
 
 
 TryToParseBags ← {
-	split ← (IndexOfDigits <∘⊔ >)˘ 𝕩
+	split ← (IsNonNumericChar <∘⊔ >)˘ 𝕩
 	#FIXME: contains all the numbers pulled together, so 1 bags and 2 bags
 	# becomes 12 bags
 	nums ← ((•Parsefloat⎊0 )⌾⊑)¨ split
@@ -83,7 +84,7 @@ MarkAllowed ← {
 
 ParseAllNumbers ← {
 	# 1s where a digit is found
-	mask ← (¬IndexOfDigits < 𝕩)
+	mask ← (¬IsNonNumericChar < 𝕩)
 	# start index and end index of each number within the string
 	bounds ← ∘‿2⥊/0 (∾≠∾˜) mask
 	# the start index plus its offset
@@ -100,16 +101,17 @@ ParseBagNew ← {
 	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
 
 	# run many precleaners on the input
-	preclean ← 𝕩 StripSubstring´ ⟨".", " bags", " bag"⟩
+	preclean ← 𝕩 StripSubstring´ ⟨".", " bag", " bags"⟩
 
 	mask ← ¬" contain " MarkAllowed preclean
 	container‿raw_children← (mask) Split preclean
 
 	comma_mask ← ¬ "," MarkAllowed raw_children
-	•Show comma_mask
+	# •Show comma_mask
 
 	DropLeadingSpace ← ((' '=⊏)↓⊢)
-	children ← (((ParseAllNumbers)∾<) DropLeadingSpace)¨ (comma_mask) Split raw_children
+	JoinFunc ← (ParseAllNumbers)∾(<(DropLeadingSpace (IsNonNumericChar<)/⊢))
+	children ← (JoinFunc DropLeadingSpace)¨ comma_mask Split raw_children
 	container‿children
 }
 
