@@ -62,7 +62,7 @@ ParseBagNew ← {
 	# •Show comma_mask
 
 	DropLeadingSpace ← ((' '=⊏)↓⊢)
-	JoinFunc ← (ParseAllNumbers)∾(<(DropLeadingSpace (IsNonNumericChar<)/⊢))
+	JoinFunc ← ParseAllNumbers∾(<∘DropLeadingSpace IsNonNumericChar∘</⊢)
 	children ← (JoinFunc DropLeadingSpace)¨ comma_mask Split raw_children
 	container‿children
 }
