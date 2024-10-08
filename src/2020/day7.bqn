@@ -17,30 +17,6 @@ StripSubstring ← {
 	mask/𝕩
 }
 
-ParseBagLine ← {
-	line ← ((≠𝕩) ⌊ 100)↑𝕩
-
-	to_remove ← " contain "
-	mask ← 1⌈(≠to_remove)×(to_remove⍷line)
-
-	bags ← "bags"
-
-	prefix_len ← (/to_remove⍷line)
-	suffix_len ← (≠to_remove)+prefix_len
-
-	StripCommas ← {
-		raw_bag ← 𝕩
-		starts_with_comma ←  ','=⊏raw_bag
-		without_comma ← (starts_with_comma × 1)↓raw_bag
-
-		starts_with_space ←  ' '=⊏without_comma
-		(starts_with_space × 1)↓without_comma
-	}
-
-	raw_contained_bags ← StripCommas¨ ',' SplitBy ¯1↓(suffix_len)↓line
-	only_bags ← ("no other bags"⊸≢¨/⊣)raw_contained_bags
-}
-
 # find which character is a digit character
 IsNonNumericChar ← {
 	nums ← '0'+↕10
@@ -72,15 +48,35 @@ ParseAllNumbers ← {
 	parsed
 }
 
+ParseBagNew ← {
+	# mostly from bqnrate, splits on mask 𝕨
+	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
+
+	# run many precleaners on the input
+	preclean ← 𝕩 StripSubstring´ ⟨".", " bag", " bags"⟩
+
+	mask ← ¬" contain " MarkAllowed preclean
+	container‿raw_children← (mask) Split preclean
+
+	comma_mask ← ¬ "," MarkAllowed raw_children
+	# •Show comma_mask
+
+	DropLeadingSpace ← ((' '=⊏)↓⊢)
+	JoinFunc ← (ParseAllNumbers)∾(<(DropLeadingSpace (IsNonNumericChar<)/⊢))
+	children ← (JoinFunc DropLeadingSpace)¨ comma_mask Split raw_children
+	container‿children
+}
+
+
 # which bags can eventually contain a shiny gold bag?
 PartOne ← {
-	bags ← ParseBagLine¨ 𝕩
+	bags ← ParseBagNew¨ 𝕩
 
 	•Show¨ bags
 }
 
 
-•Show PartOne data
+PartOne data
 
 # •Show ParseBagNew ⊑ data
 
