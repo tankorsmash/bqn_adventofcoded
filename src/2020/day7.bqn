@@ -72,7 +72,12 @@ ParseBagNew ← {
 PartOne ← {
 	bags ← ParseBagNew¨ 𝕩
 
-	•Show¨ bags
+	ConcatChildren ← {
+		container‿children ← 𝕩
+		((<container)⊸∾∘<)¨ children
+
+	}
+	•Show ∾⥊˘ (>ConcatChildren)¨ bags
 }
 
 
