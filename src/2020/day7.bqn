@@ -1,5 +1,5 @@
 data ← •file.Lines "../../samples/2020/day7.txt"
-# data ↩ •file.Lines "../../inputs/2020/day7.txt"
+data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
 SplitBy ← (+`∘=⊔⊢)
 
@@ -83,48 +83,66 @@ BreakIntoParentChildPairs ← {
 
 Sep ← {
 	num ← 10
-	•Out  ∾´ ⥊ ∾´ ((num/"-")‿(𝕩)‿(num/"-"))
+	# •Out  ∾´ ⥊ ∾´ ((num/"-")‿(𝕩)‿(num/"-"))
+	𝕩
+	•Out  ∾´ ⥊ ∾´ ((num/"-")‿(•Repr 𝕩)‿(num/"-"))
 }
 
 PartOne ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
 	# •Show parent_child_pairs
 
+
 	all_found_bags ← ⟨⟩
 
 	containing_target ← ⟨⟩
 
 	FindBags ← {
-		# Sep 𝕩
 
 		target ← 𝕩
+		# •Show 50/"-"
+		# •Show "target"‿target
+
 		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
 		# •Show bags_containing_target_mask
 
 		containing_target ↩ ⊏˘ bags_containing_target_mask/parent_child_pairs
 		# •Show "containing_target"‿containing_target
 
-		# Sep "done"
-		# •Show " "
-
-		found_new_containers ← (0≠≠ containing_target) 
+		found_new_containers ← (0≠≠ containing_target)
 		{ found_new_containers ?
 			{ all_found_bags ↩ ⍷all_found_bags ∾ containing_target}
 			; 0
 		}
 		containing_target
 	}
-	new_bags ← <"shiny gold"
+	new_bags ← ⟨"shiny gold", "shiny gold"⟩
 	# new_bags ↩ FindBags˘ new_bags
 	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
 	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
-	Body ← {new_bags ↩ ⍷⥊(FindBags˘)𝕩}
-	Cond ← {
-		𝕩
-			# •Show "loop check"
-			0≠≠ new_bags
+
+	Massage ← {
+		found ←  FindBags 𝕩
+		# •Show "massaged"‿(≠found)‿found
+		found
 	}
-	Body •_while_ Cond new_bags
+
+	Body ← {
+		# •Show "to finds"‿𝕩
+		raw_new_bags ← ⥊ Massage˘ 𝕩
+		new_bags ↩ ⍷∘({ "shape"‿(≢𝕩)}⊢⊢)raw_new_bags
+
+		# •Show "new_bags"‿new_bags
+		new_bags
+	}
+
+	Condition ← {
+		𝕩
+		# •Show "loop check"
+		res ← 0≠≠ new_bags
+		res
+	}
+	Body •_while_ Condition new_bags
 
 	all_found_bags
 	•Show ≠all_found_bags
@@ -133,9 +151,7 @@ PartOne ← {
 
 PartOne data
 
-# •Show ParseBagNew ⊑ data
 
-
-
-# ParseAllNumbers "29 men 1 can, 0 parents"
+# a ← ⟨"hey there!", "how are ya? Im good"⟩
+# •Show ≢a
 
