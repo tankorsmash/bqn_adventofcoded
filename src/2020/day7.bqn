@@ -104,7 +104,7 @@ PartOne ← {
 		# •Show "target"‿target
 
 		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
-		# •Show bags_containing_target_mask
+		# •Show ≢ bags_containing_target_mask
 
 		containing_target ↩ ⊏˘ bags_containing_target_mask/parent_child_pairs
 		# •Show "containing_target"‿containing_target
@@ -129,10 +129,12 @@ PartOne ← {
 
 	Body ← {
 		# •Show "to finds"‿𝕩
-		raw_new_bags ← ⥊ Massage˘ 𝕩
-		new_bags ↩ ⍷∘({ "shape"‿(≢𝕩)}⊢⊢)raw_new_bags
+		raw_new_bags ← ((<∘Massage)˘) 𝕩
 
-		# •Show "new_bags"‿new_bags
+		# •Show¨ raw_new_bags
+		new_bags ↩ ⍷∘({ "shape"‿(≢𝕩)}⊢⊢) (∾⥊) raw_new_bags
+
+		# •Show "new_bags"‿(≢new_bags)‿(new_bags)
 		new_bags
 	}
 
@@ -152,6 +154,9 @@ PartOne ← {
 PartOne data
 
 
-# a ← ⟨"hey there!", "how are ya? Im good"⟩
+# •Show ≢⟨"a", "hey there!"⟩∾⟨ "how are ya? Im good"⟩
+•Show ∾⥊⟨⟨"a", "hey there!"⟩, ⟨"pop", "chute"⟩⟩
+# •Show ≢⟨"a", "hey there!"⟩
+# •Show ≢⟨ "how are ya? Im good"⟩
 # •Show ≢a
 
