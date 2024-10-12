@@ -81,11 +81,35 @@ BreakIntoParentChildPairs ← {
 	parent_child_pairs
 }
 
+Sep ← {
+	num ← 10
+	•Show  ∾´ ⥊ ∾´ ((num/"-")‿(𝕩)‿(num/"-"))
+}
+
 PartOne ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
+	•Show parent_child_pairs
 
-	parent_child_pairs
-	bags_containing_target ←•Show ((((<"shiny gold")⊸∊∘>)∘<1⊸⊑)(∾)(<⊑))˘ parent_child_pairs
+	FindBags ← {
+		Sep 𝕩
+
+		target ← 𝕩
+		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
+		bags_containing_target_mask
+
+		containing_target ← ⊏˘ bags_containing_target_mask/parent_child_pairs
+		•Show "containing_target"‿containing_target
+
+		Sep "done"
+		•Show " "
+		containing_target
+	}
+	new_bags ← FindBags˘ <"shiny gold"
+	•Show new_bags
+	new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
+	•Show new_bags
+	new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
+	•Show new_bags
 
 	parent_child_pairs
 }
