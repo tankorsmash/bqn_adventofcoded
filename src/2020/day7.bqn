@@ -88,31 +88,43 @@ Sep ← {
 
 PartOne ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
-	•Show parent_child_pairs
+	# •Show parent_child_pairs
 
 	all_found_bags ← ⟨⟩
+
+	containing_target ← ⟨⟩
 
 	FindBags ← {
 		Sep 𝕩
 
 		target ← 𝕩
 		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
-		bags_containing_target_mask
+		# •Show bags_containing_target_mask
 
-		containing_target ← ⊏˘ bags_containing_target_mask/parent_child_pairs
+		containing_target ↩ ⊏˘ bags_containing_target_mask/parent_child_pairs
 		# •Show "containing_target"‿containing_target
 
 		# Sep "done"
 		# •Show " "
-		{ (0≠≠ containing_target) ? { all_found_bags ↩ ⍷all_found_bags ∾ containing_target}; 0}
+
+		found_new_containers ← (0≠≠ containing_target) 
+		{ found_new_containers ?
+			{ all_found_bags ↩ ⍷all_found_bags ∾ containing_target}
+			; 0
+		}
 		containing_target
 	}
-	new_bags ← FindBags˘ <"shiny gold"
-	# •Show new_bags
-	new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
-	# •Show new_bags
-	new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
-	# •Show new_bags
+	new_bags ← <"shiny gold"
+	# new_bags ↩ FindBags˘ new_bags
+	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
+	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
+	Body ← {new_bags ↩ ⍷⥊(FindBags˘)𝕩}
+	Cond ← {
+		𝕩
+			# •Show "loop check"
+			0≠≠ new_bags
+	}
+	Body •_while_ Cond new_bags
 
 	•Show all_found_bags
 
