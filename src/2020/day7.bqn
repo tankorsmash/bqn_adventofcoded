@@ -69,7 +69,7 @@ ParseBagNew ← {
 
 
 # which bags can eventually contain a shiny gold bag?
-PartOne ← {
+BreakIntoParentChildPairs ← {
 	bags ← ParseBagNew¨ 𝕩
 
 	ConcatChildren ← {
@@ -77,11 +77,28 @@ PartOne ← {
 		((<container)⊸∾∘<)¨ children
 
 	}
-	•Show ∾⥊˘ (>ConcatChildren)¨ bags
+	parent_child_pairs ← ∾⥊˘ (>ConcatChildren)¨ bags
+	parent_child_pairs
 }
 
+PartOne ← {
+	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
+
+	parent_child_pairs
+	bags_containing_target ←•Show ((((<"shiny gold")⊸∊∘>)∘<1⊸⊑)(∾)(<⊑))˘ parent_child_pairs
+
+	parent_child_pairs
+}
 
 PartOne data
+
+ContainsBag ← {
+	•Show (<"shiny gold")⊸∊ (•Show 𝕩)
+}
+# ContainsBag ⟨"shiny"⟩
+# ContainsBag ⟨1, "bright white"⟩
+# ContainsBag ⟨2, "muted yellow"⟩
+# ContainsBag ⟨1, "shiny gold"⟩
 
 # •Show ParseBagNew ⊑ data
 
