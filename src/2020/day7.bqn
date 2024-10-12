@@ -95,7 +95,7 @@ PartOne ← {
 	containing_target ← ⟨⟩
 
 	FindBags ← {
-		Sep 𝕩
+		# Sep 𝕩
 
 		target ← 𝕩
 		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
@@ -126,20 +126,12 @@ PartOne ← {
 	}
 	Body •_while_ Cond new_bags
 
-	•Show all_found_bags
+	all_found_bags
+	•Show ≠all_found_bags
 
-	parent_child_pairs
 }
 
 PartOne data
-
-ContainsBag ← {
-	•Show (<"shiny gold")⊸∊ (•Show 𝕩)
-}
-# ContainsBag ⟨"shiny"⟩
-# ContainsBag ⟨1, "bright white"⟩
-# ContainsBag ⟨2, "muted yellow"⟩
-# ContainsBag ⟨1, "shiny gold"⟩
 
 # •Show ParseBagNew ⊑ data
 
