@@ -154,16 +154,16 @@ PartOne ← {
 PartTwo ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
 	# •Show parent_child_pairs
-	parent_child_pairs ↩ ({
+	parent_child_pairs ↩ {
 		key‿value ← 𝕩
-		(⋈"no other")⊸≡ ∘ (1⊸⊑) 𝕩
-		? ⟨key, ⟨0,"no other"⟩⟩
+		((⋈"no other")⊸≡value)
+		? ⟨key, 0⋈"no other"⟩
 		; 𝕩
-		})˘ parent_child_pairs
-	•Show parent_child_pairs
+	}˘ parent_child_pairs
+	# •Show parent_child_pairs
 	# •Show no_other_mask
 
-	target‿value ← ⟨⋈"no other", 10⟩
+	target‿value ← ⟨"no other", 10⟩
 
 	total_contained ← 0
 
@@ -176,11 +176,12 @@ PartTwo ← {
 		target ← 𝕩
 
 		# •Show ("⊑old") ≡ ("gold")
-		mask ← (target⊸≡∘ (1⊸⊑))˘ parent_child_pairs
+		mask ← ((target⊸≡)∘ ((1⊸⊑))∘(1⊸⊑))˘ parent_child_pairs
 		# mask ← ((•Show (1⊸⊑)))˘ parent_child_pairs
 		•Show mask
-		res ← PerPair˘ (mask/parent_child_pairs)
-		res
+		•Show found_targets ← (mask/parent_child_pairs)
+		res ← PerPair˘ found_targets
+		•Show res
 		# gained_bags_count ← ((⊑)¨) (1⊸⊏)˘ (mask/parent_child_pairs)
 		# targets ← ((1⊸⊑)¨) (1⊸⊏)˘ (mask/parent_child_pairs)
 		# •Show gained_bags_count‿targets
