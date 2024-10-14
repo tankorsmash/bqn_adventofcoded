@@ -50,7 +50,8 @@ ParseAllNumbers ← {
 
 ParseBagNew ← {
 	# mostly from bqnrate, splits on mask 𝕨
-	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜+`×¬)⊸⊔)
+	Qwe ← +`(×⎊•Show)¬
+	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜Qwe)⊸⊔)
 
 	# run many precleaners on the input
 	preclean ← 𝕩 StripSubstring´ ⟨".", " bag", " bags"⟩
@@ -153,41 +154,48 @@ PartOne ← {
 
 PartTwo ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
-	# •Show parent_child_pairs
-	parent_child_pairs ↩ {
-		key‿value ← 𝕩
-		((⋈"no other")⊸≡value)
-		? ⟨key, 0⋈"no other"⟩
-		; 𝕩
-	}˘ parent_child_pairs
-	# •Show parent_child_pairs
-	# •Show no_other_mask
 
-	target‿value ← ⟨"no other", 10⟩
+	# normalize the no other bags to 0 value
+	NormalizeNoOther ← {
+		bag_name‿· ← 𝕩
+		((⋈"no other")≡(1⊑𝕩))
+		? ⟨bag_name, 0⋈"no other"⟩
+		; 𝕩
+	}
+	parent_child_pairs ↩ NormalizeNoOther˘ parent_child_pairs
+
+	•Show parent_child_pairs
+
 
 	total_contained ← 0
 
 
+	target‿value ← ⟨"no other", 1⟩
 	PerPair ← {
-		•Show (0⊸≠≠)◶[⊢, (value⟜×∘•Show∘(1⊸⊏))∾⊏]𝕩
+		CalcValue ← {
+			# scale the number of bags by the value
+			ScaleValue ← {
+				res ← value× 0⊑ > 1⊏𝕩
+				res
+			}
+
+			(⊏∾ScaleValue )𝕩
+		}
+		CalcValue 𝕩
 	}
 
-	FindTarget ←{
+	ScaleTargetByValue ←{
 		target ← 𝕩
 
-		# •Show ("⊑old") ≡ ("gold")
-		mask ← ((target⊸≡)∘ ((1⊸⊑))∘(1⊸⊑))˘ parent_child_pairs
-		# mask ← ((•Show (1⊸⊑)))˘ parent_child_pairs
-		•Show mask
-		•Show found_targets ← (mask/parent_child_pairs)
+		mask ← (target⊸≡·1⊸⊑1⊸⊑)˘ parent_child_pairs
+		# •Show mask
+		found_targets ← (mask/parent_child_pairs)
+		•Show found_targets
 		res ← PerPair˘ found_targets
 		•Show res
-		# gained_bags_count ← ((⊑)¨) (1⊸⊏)˘ (mask/parent_child_pairs)
-		# targets ← ((1⊸⊑)¨) (1⊸⊏)˘ (mask/parent_child_pairs)
-		# •Show gained_bags_count‿targets
 	}
 
-	FindTarget target
+	ScaleTargetByValue target
 }
 
 # PartOne data
