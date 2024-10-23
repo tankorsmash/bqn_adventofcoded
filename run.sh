@@ -16,4 +16,5 @@ if ! [[ "$YEAR" =~ ^[0-9]+$ ]] || ! [[ "$DAY" =~ ^[0-9]+$ ]]; then
 fi
 
 # Run the watch command with the provided YEAR and DAY
-watch -c -n 0.05 ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn
+# watch -n 0.05 ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn
+watchexec -c -- ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn

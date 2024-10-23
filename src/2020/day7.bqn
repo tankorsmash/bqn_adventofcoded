@@ -164,14 +164,14 @@ PartTwo ← {
 	}
 	parent_child_pairs ↩ NormalizeNoOther˘ parent_child_pairs
 
-	•Show parent_child_pairs
+	# •Show parent_child_pairs
 
 
 	total_contained ← 0
 
 
-	target‿value ← ⟨"no other", 1⟩
 	PerPair ← {
+		value ← 𝕨
 		CalcValue ← {
 			# scale the number of bags by the value
 			ScaleValue ← {
@@ -184,22 +184,37 @@ PartTwo ← {
 		CalcValue 𝕩
 	}
 
-	ScaleTargetByValue ←{
+	ScaleTargetByValue ← {
+		value ← 𝕨
 		target ← 𝕩
+		•Show "target:"‿target
 
 		mask ← (target⊸≡·1⊸⊑1⊸⊑)˘ parent_child_pairs
-		# •Show mask
 		found_targets ← (mask/parent_child_pairs)
-		•Show found_targets
-		res ← PerPair˘ found_targets
-		•Show res
+		# •Show "found_targets"‿found_targets
+		res ← value PerPair ˘ found_targets
+		•Show "res"‿res
+		# •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
+
+		res
 	}
 
-	ScaleTargetByValue target
+	targets_and_values ← •Show ⟨⟨"no other", 2⟩⟩
+	•Show "targets"‿targets_and_values
+
+	new_targets_and_values ←  ∘‿2⥊(1⊸⊑ ScaleTargetByValue ⊑)∘>˘  targets_and_values
+	•Show "new1"‿(new_targets_and_values)
+	•Show 50/"-"
+
+	new_targets_and_values ↩ ∾ <∘(1⊸⊑ ScaleTargetByValue ⊑)˘  new_targets_and_values
+	•Show "new2"‿(new_targets_and_values)
+	•Show 50/"-"
+
 }
 
 # PartOne data
 PartTwo data
+
 
 
 # •Show ≢⟨"a", "hey there!"⟩∾⟨ "how are ya? Im good"⟩
