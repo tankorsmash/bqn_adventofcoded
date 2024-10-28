@@ -17,4 +17,4 @@ fi
 
 # Run the watch command with the provided YEAR and DAY
 # watch -n 0.05 ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn
-watchexec --quiet -c -- ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn
+watchexec --quiet -e txt,bqn -c -- ~/langs/bqn/CBQN/BQN src/"$YEAR"/day"$DAY".bqn
