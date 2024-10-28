@@ -2,6 +2,7 @@ data ← •file.Lines "../../samples/2020/day7.txt"
 # data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
 # data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
+
 SplitBy ← (+`∘=⊔⊢)
 
 # from bqncrate
@@ -158,9 +159,9 @@ null ← @+0
 
 PartTwo ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
-	•Show parent_child_pairs
+	# •Show parent_child_pairs
 	parent_scores ← (null∾˜ 0⊸⊏)˘ parent_child_pairs
-	•Show "scores"‿parent_scores
+	# •Show "scores"‿parent_scores
 
 	# normalize the no other bags to 0 value
 	NormalizeNoOther ← {
@@ -187,14 +188,14 @@ PartTwo ← {
 		target ← 𝕩
 		# •Show "target:"‿target
 
-		mask ← {target≡ 1⊑1⊑𝕩}˘ parent_child_pairs
-		found_targets ← (mask/parent_child_pairs)
-		# •Show "found_targets"‿found_targets
-		res ← value ScaleValue ˘ found_targets
-		•Show ["target"‿target, "res"‿res]
-		# •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
-
-		res
+		mask ← (target≡·1⊸⊑1⊸⊑)˘ parent_child_pairs
+		found_targets ← ⊏˘ (mask/parent_child_pairs)
+		•Show "found_targets"‿found_targets
+		# res ← value ScaleValue ˘ found_targets
+		# •Show ["target"‿target, "res"‿res]
+		# # •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
+    #
+		# res
 	}
 
 	targets_and_values ← [⟨"no other", 1⟩]
@@ -204,9 +205,7 @@ PartTwo ← {
 		new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
 		res ← > Gather new_targets_and_values
 
-		•Show ⊏ res
-
-		res
+		•Show "res"‿res
 	}
 
 	new_targets_and_values ←  Iter  targets_and_values
