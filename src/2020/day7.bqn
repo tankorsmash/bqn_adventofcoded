@@ -1,5 +1,5 @@
 data ← •file.Lines "../../samples/2020/day7.txt"
-data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
+# data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
 # data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
 SplitBy ← (+`∘=⊔⊢)
@@ -176,18 +176,10 @@ PartTwo ← {
 	total_contained ← 0
 
 
-	PerPair ← {
+	ScaleValue ← {
 		value ← 𝕨
-		CalcValue ← {
-			# scale the number of bags by the value
-			ScaleValue ← {
-				res ← value× 0⊑ > 1⊏𝕩
-				res
-			}
-
-			(⊏∾ScaleValue )𝕩
-		}
-		CalcValue 𝕩
+		# scale the number of bags by the value
+		(⊏∾(value⊸× 0⊑·> 1⊸⊏) )𝕩
 	}
 
 	ScaleTargetByValue ← {
@@ -198,18 +190,23 @@ PartTwo ← {
 		mask ← {target≡ 1⊑1⊑𝕩}˘ parent_child_pairs
 		found_targets ← (mask/parent_child_pairs)
 		# •Show "found_targets"‿found_targets
-		res ← value PerPair ˘ found_targets
+		res ← value ScaleValue ˘ found_targets
 		•Show ["target"‿target, "res"‿res]
 		# •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
 
 		res
 	}
 
-	targets_and_values ← [⟨"no other", 0⟩]
+	targets_and_values ← [⟨"no other", 1⟩]
 	•Show "targets"‿targets_and_values
 
 	Iter ← {
 		new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
+		res ← > Gather new_targets_and_values
+
+		•Show ⊏ res
+
+		res
 	}
 
 	new_targets_and_values ←  Iter  targets_and_values
@@ -244,12 +241,4 @@ PartTwo ← {
 }
 
 # PartOne data
-# PartTwo data
-
-
-data ↩ [
-	⟨"alex", 1⟩, ⟨"simon", 2⟩, ⟨"micheal", 3⟩,
-	⟨"joseph", 100⟩, ⟨"alex", 4⟩, ⟨"simon", 5⟩
-]
-•Show "grouped"‿(Gather data)
-
+PartTwo data
