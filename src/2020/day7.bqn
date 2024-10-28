@@ -51,8 +51,8 @@ ParseAllNumbers ← {
 
 ParseBagNew ← {
 	# mostly from bqnrate, splits on mask 𝕨
-	Qwe ← +`(×⎊•Show)¬
-	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜Qwe)⊸⊔)
+	Gather ← +`(×⎊•Show)¬
+	Split ← ((0⊸≠∘≠¨)/⊢)((⊢-˜Gather)⊸⊔)
 
 	# run many precleaners on the input
 	preclean ← 𝕩 StripSubstring´ ⟨".", " bag", " bags"⟩
@@ -153,8 +153,14 @@ PartOne ← {
 
 }
 
+Gather ← {∧((⊏⊏)∾(+´1⊏⍉))¨ (((⊐⊏˘)⊔⊢)) 𝕩}
+null ← @+0
+
 PartTwo ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
+	•Show parent_child_pairs
+	parent_scores ← (null∾˜ 0⊸⊏)˘ parent_child_pairs
+	•Show "scores"‿parent_scores
 
 	# normalize the no other bags to 0 value
 	NormalizeNoOther ← {
@@ -175,7 +181,7 @@ PartTwo ← {
 		CalcValue ← {
 			# scale the number of bags by the value
 			ScaleValue ← {
-				res ← value× 1+ 0⊑ > 1⊏𝕩
+				res ← value× 0⊑ > 1⊏𝕩
 				res
 			}
 
@@ -199,41 +205,51 @@ PartTwo ← {
 		res
 	}
 
-	targets_and_values ← •Show ⟨⟨"no other", 1⟩⟩
+	targets_and_values ← [⟨"no other", 0⟩]
 	•Show "targets"‿targets_and_values
 
-	new_targets_and_values ←  ∘‿2⥊(1⊸⊑ ScaleTargetByValue ⊑)∘>˘  targets_and_values
-	# •Show "new1"‿(new_targets_and_values)
+	Iter ← {
+		new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
+	}
+
+	new_targets_and_values ←  Iter  targets_and_values
+	•Show "new1"‿(new_targets_and_values)
 	•Show 50/"-"
 
-	Iter ← {∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩}
 
-	new_targets_and_values ↩ Iter new_targets_and_values
-	•Show "new2"‿(new_targets_and_values)
-	•Show 50/"-"
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new2"‿(new_targets_and_values)
+	# # •Show 50/"-"
 
-	new_targets_and_values ↩ Iter new_targets_and_values
-	•Show "new3"‿(new_targets_and_values)
-	•Show 50/"-"
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new3"‿(new_targets_and_values)
+	# # •Show 50/"-"
 
-	new_targets_and_values ↩ Iter new_targets_and_values
-	•Show "new4"‿(new_targets_and_values)
-	•Show 50/"-"
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new4"‿(new_targets_and_values)
+	# # •Show 50/"-"
 
-	new_targets_and_values ↩ Iter new_targets_and_values
-	•Show "new5"‿(new_targets_and_values)
-	•Show 50/"-"
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new5"‿(new_targets_and_values)
+	# # •Show 50/"-"
+
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new6"‿(new_targets_and_values)
+	# # •Show 50/"-"
+
+	# new_targets_and_values ↩ Iter new_targets_and_values
+	# •Show "new7"‿(new_targets_and_values)
+	# # •Show 50/"-"
 
 }
 
 # PartOne data
-PartTwo data
+# PartTwo data
 
 
-
-# •Show ≢⟨"a", "hey there!"⟩∾⟨ "how are ya? Im good"⟩
-# •Show ∾⥊⟨⟨"a", "hey there!"⟩, ⟨"pop", "chute"⟩⟩
-# •Show ≢⟨"a", "hey there!"⟩
-# •Show ≢⟨ "how are ya? Im good"⟩
-# •Show ≢a
+data ↩ [
+	⟨"alex", 1⟩, ⟨"simon", 2⟩, ⟨"micheal", 3⟩,
+	⟨"joseph", 100⟩, ⟨"alex", 4⟩, ⟨"simon", 5⟩
+]
+•Show "grouped"‿(Gather data)
 
