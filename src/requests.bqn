@@ -35,15 +35,12 @@ submissions ← 1‿4⊑ 1‿1⊑ content
 
 # finds the data associated to the field
 FindColumn ← {
-	column ← 𝕨
-	column ({(𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
+	column_name ← <𝕨
+	column_name ({((≠⊏𝕩)↑𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
 }
 
 # Rr submissions
 
 submission ← 1⊑ KindData 0⊏ submissions
-# # •Show { ((<"title")⊸FindColumn ) KindDataChildren •Show 𝕩 }˘ Rr submissions
-# •Show { ((<"title")⊸FindColumn ) •Show 𝕩 } 4⊑ submissions
-# •Show 0‿3⊑ 1⊑  1⊏>⊏  children
 columns_names ← 0⊏ submission
-•Show columns_names
+•Show "title" FindColumn submission
