@@ -12,8 +12,26 @@ filename ← "reddit.json"
 # filename •file.Chars (Export Parse content)
 
 content ←  Parse •file.Bytes filename
+listing ←  Parse •file.Bytes filename
 
-submissions ← children ← 1⊏ 1⊑ data ← 1⊏ content
+
+KindData ← 1⊏⊑
+KindDataChildren ← 1⊑ KindData
+
+
+Jj ← {•Show (100↑ Export 𝕩)⋄𝕩}
+
+# use jq to format the json
+Jq ← {
+	raw_json ← Export 𝕩
+	filter ← " | ."
+	exitcode‿stdout‿stderr ← •SH ⟨"jq", "-n", raw_json ∾ filter ⟩
+	•Out 300↑ stdout
+	𝕩
+}
+
+submissions ← 1‿4⊑ 1‿1⊑ content
+# submissions ← children ← 1⊏ 1⊑ data ← 1⊏ content
 
 # finds the data associated to the field
 FindColumn ← {
@@ -21,11 +39,11 @@ FindColumn ← {
 	column ({(𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
 }
 
-KindData ← 1⊏⊑
-KindDataChildren ← 1⊑ KindData
+# Rr submissions
 
-submission ← KindDataChildren 4⊑ submissions
-•Show ((<"title")⊸FindColumn )  submission
+submission ← 1⊑ KindData 0⊏ submissions
+# # •Show { ((<"title")⊸FindColumn ) KindDataChildren •Show 𝕩 }˘ Rr submissions
+# •Show { ((<"title")⊸FindColumn ) •Show 𝕩 } 4⊑ submissions
 # •Show 0‿3⊑ 1⊑  1⊏>⊏  children
 columns_names ← 0⊏ submission
 •Show columns_names
