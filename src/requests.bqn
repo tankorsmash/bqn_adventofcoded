@@ -36,6 +36,7 @@ submissions ← 1‿4⊑ 1‿1⊑ content
 # finds the data associated to the field
 FindColumn ← {
 	column_name ← <𝕨
+	# •Show "col"‿column_name‿"x"‿𝕩
 	column_name ({((≠⊏𝕩)↑𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
 }
 
@@ -43,4 +44,9 @@ FindColumn ← {
 
 submission ← 1⊑ KindData 0⊏ submissions
 columns_names ← 0⊏ submission
-•Show "title" FindColumn submission
+
+•Show˘ {
+	to_find ← ⟨"author", "title"⟩
+	raw_submission ← 𝕩
+	∾ to_find { 𝕨FindColumn¨ <  1⊑ KindData 𝕩 }˘ raw_submission
+}˘ submissions
