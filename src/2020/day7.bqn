@@ -2,6 +2,12 @@ data ← •file.Lines "../../samples/2020/day7.txt"
 # data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
 # data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
+Log ← {
+	msg‿val ← 𝕩
+	•Show msg‿val
+	val
+}
+
 
 SplitBy ← (+`∘=⊔⊢)
 
@@ -154,7 +160,7 @@ PartOne ← {
 
 }
 
-Gather ← {∧((⊏⊏)∾(+´1⊏⍉))¨ (((⊐⊏˘)⊔⊢)) 𝕩}
+Gather ← {∧((⊏⊏)∾(+´1⊏⍉))¨ ((⊐⊏˘)⊔⊢) 𝕩}
 null ← @+0
 
 PartTwo ← {
@@ -189,17 +195,13 @@ PartTwo ← {
 		# •Show "target:"‿target
 
 		mask ← (target≡·1⊸⊑1⊸⊑)˘ parent_child_pairs
-		found_targets ← ⊏˘ (mask/parent_child_pairs)
-		•Show "found_targets"‿found_targets
-		# res ← value ScaleValue ˘ found_targets
-		# •Show ["target"‿target, "res"‿res]
-		# # •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
-    #
-		# res
-	}
+		found_targets ← (mask/parent_child_pairs)
+		res ← value ScaleValue ˘ found_targets
+		•Show ["target"‿target, "res"‿res]
+		# •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
 
-	targets_and_values ← [⟨"no other", 1⟩]
-	•Show "targets"‿targets_and_values
+		res
+	}
 
 	Iter ← {
 		new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
@@ -208,7 +210,10 @@ PartTwo ← {
 		•Show "res"‿res
 	}
 
-	new_targets_and_values ←  Iter  targets_and_values
+	targets_and_values ← [⟨"no other", 1⟩]
+	•Show "targets"‿targets_and_values
+
+	new_targets_and_values ←  Iter targets_and_values
 	•Show "new1"‿(new_targets_and_values)
 	•Show 50/"-"
 

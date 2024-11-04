@@ -12,6 +12,16 @@ content ←  Parse •file.Bytes filename
 
 children ← >4⊏1⊏>1⊏1⊏ content
 
-•Show (<"title") ({(𝕨⊸⍷)∘⊏𝕩}/1⊸⊏)  >1⊏1⊏>0⊏ children
+Pp ← {100↑•Fmt⋄𝕩}
+
+FindColumn ← {
+	column ← 𝕨
+	column ({(𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
+}
+# •Show ((<"title")⊸FindColumn  >·1⊸⊏1⊸⊏)  Pp ⊏>⊏  children
+
+# grid ← ((↕10)⊸(≍¨) )˘↕9
+grid ← | 9- +´¨ ⍉↕10‿9
+•Show grid
 
 
