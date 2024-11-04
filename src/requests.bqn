@@ -12,16 +12,18 @@ content ←  Parse •file.Bytes filename
 
 children ← >4⊏1⊏>1⊏1⊏ content
 
-Pp ← {100↑•Fmt⋄𝕩}
+Pp ← {•Show 100↑•Fmt𝕩⋄𝕩}
+Rr ← { •Show (100⊸↑ •Repr 𝕩)⋄𝕩}
 
+# finds the data associated to the field
 FindColumn ← {
 	column ← 𝕨
+	# •Show 𝕩
 	column ({(𝕨⊸⍷)∘⊏𝕩}/1⊸⊏) 𝕩
 }
-# •Show ((<"title")⊸FindColumn  >·1⊸⊏1⊸⊏)  Pp ⊏>⊏  children
+•Show ((<"title")⊸FindColumn )  1⊑ 1⊏ ⊑  children
+# •Show 0‿3⊑ 1⊑  1⊏>⊏  children
+columns_names ← 0⊏ actual_data← 1⊑ t3_pair← 1⊏ ⊑  children
 
-# grid ← ((↕10)⊸(≍¨) )˘↕9
-grid ← | 9- +´¨ ⍉↕10‿9
-•Show grid
 
 
