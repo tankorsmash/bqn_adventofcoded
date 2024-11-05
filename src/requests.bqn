@@ -45,8 +45,14 @@ FindColumn ← {
 submission ← 1⊑ KindData 0⊏ submissions
 columns_names ← 0⊏ submission
 
-•Show˘ {
-	to_find ← ⟨"author", "title"⟩
+Trim ← {(∨`∧∨`⌾⌽)' '≠𝕩}⊸/
+
+short ←  {
+	to_find ← ⟨"author", "title", "subreddit"⟩
 	raw_submission ← 𝕩
-	∾ to_find { 𝕨FindColumn¨ <  1⊑ KindData 𝕩 }˘ raw_submission
+	(Trim∘(75⊸↑))¨ > to_find { 𝕨FindColumn¨ <  1⊑ KindData 𝕩 }˘ raw_submission
 }˘ submissions
+
+•Show˘   short
+
+•Show "done"
