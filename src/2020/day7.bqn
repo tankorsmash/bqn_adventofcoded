@@ -9,11 +9,6 @@ Log ← {
 }
 
 
-SplitBy ← (+`∘=⊔⊢)
-
-# from bqncrate
-FindInString ← {∊⟜𝕩⌾<𝕨}
-
 # remove substring from string
 StripSubstring ← {
 	full_find ← 𝕨(≢∘⊢↑⍷)𝕩
