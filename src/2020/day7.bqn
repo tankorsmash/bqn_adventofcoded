@@ -177,7 +177,7 @@ PartTwo ← {
 		; 𝕩
 	}
 	parent_child_pairs ↩ NormalizeNoOther˘ parent_child_pairs
-	# •Show parent_child_pairs
+	•Show parent_child_pairs
 
 
 	total_contained ← 0
@@ -210,12 +210,33 @@ PartTwo ← {
 		•Show "res"‿res
 	}
 
-	targets_and_values ← [⟨"no other", 1⟩]
-	•Show "targets"‿targets_and_values
 
-	new_targets_and_values ←  Iter targets_and_values
-	•Show "new1"‿(new_targets_and_values)
-	•Show 50/"-"
+	targets ← ⟨"shiny gold", "light red"⟩
+	# •Show (⊐⟜targets⊸⊏)˝ ⍉parent_child_pairs
+
+	•Show ∘‿1⥊(1⊏⍉parent_child_pairs) ⊏˜(⊢/↕∘≠)(⊏⍉parent_child_pairs)∊ targets
+	# •Show (⊢/↕∘≠)•Show (targets⊸∊ •Show )¨ ⟨"abc","def", 123⟩
+
+	# •Show 32 -˜ (<'t')
+	vowels ← "aeiou"
+
+	RemVow ← ((¬ vowels⊸(∊˜))/⊢)
+	Shorten ← {𝕊word:
+		⍷((32⊸(-˜)⊏)∾((1⊸⊏∾¯1⊸⊏)∘RemVow))word
+	}
+	•Show ↑‿1⥊((Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢))¨⍷⊏˘ parent_child_pairs
+
+	# •Show {+`∘(' '⊸=⊔⊢)𝕩}"big white"
+	•Show (Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢)"big white lies"
+ 
+
+
+	# targets_and_values ← [⟨"no other", 1⟩]
+	# •Show "targets"‿targets_and_values
+
+	# new_targets_and_values ←  Iter targets_and_values
+	# •Show "new1"‿(new_targets_and_values)
+	# •Show 50/"-"
 
 
 	# new_targets_and_values ↩ Iter new_targets_and_values
