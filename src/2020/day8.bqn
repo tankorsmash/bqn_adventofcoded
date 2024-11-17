@@ -21,16 +21,15 @@ PartOne ← {
 	acc ← 0
 	idx ← 0
 	all_idxs ← ⟨⟩
-	insts ← (•ParseFloat )⌾(1⊸⊑)¨ ('+'⊸≠/⊢)¨¨ (' '⊸≠/⊢)¨¨ ' 'SplitBy¨ 𝕩
+	insts ← {•ParseFloat⌾(1⊸⊑) (('+'⊸≠/⊢)' '⊸≠/⊢)¨ ' 'SplitBy 𝕩}¨ 𝕩
 	•Show  ∘‿1⥊ insts
 
 	i ← 0
 
-	{𝕊idx2‿acc2:
+	{ 𝕩
 		offset‿to_add ← Parse idx⊑ insts
 		# •Show "acc"‿acc
 		Log "offset, to add"‿(offset‿(to_add))
-	# }•_while_{𝕊offset‿to_add: 
 	}•_while_{𝕊offset‿to_add:
 
 		i ↩ i+1
@@ -39,7 +38,7 @@ PartOne ← {
 		# •Delay 0.25
 
 		exists ← 1= ( +´ ⥊ (idx+offset)∊all_idxs)
-		{ ((i> 100) ∨ exists) ?
+		{ ((i> 1_000_000) ∨ exists) ?
 			0 ;
 
 			idx ↩ (idx+offset)
@@ -48,7 +47,7 @@ PartOne ← {
 			1
 		}
 	} 1‿0
-	•Show "final"‿acc
+	acc
 }
 
 PartTwo ← {
@@ -56,9 +55,7 @@ PartTwo ← {
 }
 
 
-•Show  ⟨"hello", "123"⟩
-
-•Show PartOne data
+•Show "part1"‿(PartOne data)
 # PartTwo data
 
 •Show "done"
