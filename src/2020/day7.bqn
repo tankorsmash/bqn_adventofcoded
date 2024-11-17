@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2020/day7.txt"
 data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
-# data ↩ •file.Lines "../../inputs/2020/day7.txt"
+data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
 Log ← {
 	msg‿val ← 𝕩
@@ -173,11 +173,13 @@ PartTwo ← {
 	•Show ∘‿1⥊(1⊏⍉parent_child_pairs) ⊏˜(⊢/↕∘≠)(⊏⍉parent_child_pairs)∊ targets
 	vowels ← "aeiou"
 
-	RemVow ← ((¬ vowels⊸(∊˜))/⊢)
-	Shorten ← {𝕊word:
-		⍷((32⊸(-˜)⊏)∾((1⊸⊏∾¯1⊸⊏)∘RemVow))word
-	}
-	•Show ↑‿1⥊((Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢))¨⍷⊏˘ parent_child_pairs
+	# RemVow ← ((¬ vowels⊸(∊˜))/⊢)
+  #
+	# Shorten ← {𝕊word:
+	# 	•Show word
+	# 	⍷((32⊸(-˜)⊏)∾((1⊸⊏∾¯1⊸⊏)∘RemVow))word
+	# }
+	# •Show ↑‿1⥊((Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢))¨⍷⊏˘ parent_child_pairs
 
 
 	old_targets ← ⟨⟩
@@ -193,17 +195,10 @@ PartTwo ← {
 		⥊ count/(⋈bag)
 	}
 
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	targets ↩ {
+		∾ ⥊ SplitIter¨ · ∾´ Iter¨ 𝕩}•_while_(0≠≠) targets
 
-	targets ↩ {∾ ⥊ SplitIter ¨ · > Iter¨ 𝕩}•_while_(0≠≠) targets
-
+	# •Show old_targets
 	•Show "solution:"‿(1-˜ ≠old_targets)
 
 
