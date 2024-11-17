@@ -203,15 +203,15 @@ PartTwo ← {
 		res
 	}
 
-	Iter ← {
-		new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
-		res ← > Gather new_targets_and_values
+	# Iter ← {
+	# 	new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
+	# 	res ← > Gather new_targets_and_values
+  #
+	# 	•Show "res"‿res
+	# }
 
-		•Show "res"‿res
-	}
 
-
-	targets ← ⟨"shiny gold", "light red"⟩
+	targets ← ⟨"shiny gold"⟩
 	# •Show (⊐⟜targets⊸⊏)˝ ⍉parent_child_pairs
 
 	•Show ∘‿1⥊(1⊏⍉parent_child_pairs) ⊏˜(⊢/↕∘≠)(⊏⍉parent_child_pairs)∊ targets
@@ -226,18 +226,18 @@ PartTwo ← {
 	}
 	•Show ↑‿1⥊((Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢))¨⍷⊏˘ parent_child_pairs
 
-	# •Show {+`∘(' '⊸=⊔⊢)𝕩}"big white"
-	•Show (Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢)"big white lies"
- 
-
-
-	# targets_and_values ← [⟨"no other", 1⟩]
-	# •Show "targets"‿targets_and_values
 
 	# new_targets_and_values ←  Iter targets_and_values
 	# •Show "new1"‿(new_targets_and_values)
 	# •Show 50/"-"
 
+
+	Iter ← {𝕊target :
+		(((/(target⊸≡)¨)·⊏⍉)(⥊1⊏·⍉⊏)⊢) parent_child_pairs
+	}
+
+	•Show matches ← Iter "shiny gold"
+	 •Show ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ matches
 
 	# new_targets_and_values ↩ Iter new_targets_and_values
 	# •Show "new2"‿(new_targets_and_values)
