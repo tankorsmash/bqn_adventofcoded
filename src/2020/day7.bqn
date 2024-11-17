@@ -1,5 +1,5 @@
 data ← •file.Lines "../../samples/2020/day7.txt"
-# data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
+data ↩ •file.Lines "../../samples/2020/day7_alt.txt"
 # data ↩ •file.Lines "../../inputs/2020/day7.txt"
 
 Log ← {
@@ -247,38 +247,19 @@ PartTwo ← {
 	}
 
 	# •Show old_targets
-	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
-	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+
+	targets ↩ {∾ ⥊ SplitIter ¨ · > Iter¨ 𝕩}•_while_(0≠≠) targets
 
 	•Show 1-˜ ≠old_targets
-	# •Show total_children
-	# •Show new_targets ↩ ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ · Iter¨ targets
-	# •Show new_targets ← ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ · Iter new
 
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new2"‿(new_targets_and_values)
-	# # •Show 50/"-"
-
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new3"‿(new_targets_and_values)
-	# # •Show 50/"-"
-
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new4"‿(new_targets_and_values)
-	# # •Show 50/"-"
-
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new5"‿(new_targets_and_values)
-	# # •Show 50/"-"
-
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new6"‿(new_targets_and_values)
-	# # •Show 50/"-"
-
-	# new_targets_and_values ↩ Iter new_targets_and_values
-	# •Show "new7"‿(new_targets_and_values)
-	# # •Show 50/"-"
 
 }
 
