@@ -232,12 +232,29 @@ PartTwo ← {
 	# •Show 50/"-"
 
 
+
+	old_targets ← ⟨⟩
+	total_children ← 1
 	Iter ← {𝕊target :
-		(((/(target⊸≡)¨)·⊏⍉)(⥊1⊏·⍉⊏)⊢) parent_child_pairs
+		old_targets ↩ old_targets∾(<target)
+		matches ← (((/(target⊸≡)¨)·⊏⍉)(⥊1⊏·⍉⊏)⊢) parent_child_pairs
+		total_children ↩ total_children + (≠matches)
+		matches
+	}
+	SplitIter ← {
+		count‿bag← 𝕩
+		⥊ count/(⋈bag)
 	}
 
-	•Show matches ← Iter "shiny gold"
-	 •Show ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ matches
+	# •Show old_targets
+	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+	targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
+
+	•Show 1-˜ ≠old_targets
+	# •Show total_children
+	# •Show new_targets ↩ ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ · Iter¨ targets
+	# •Show new_targets ← ∾{count‿bag← >𝕩⋄< count/(⋈bag)}˘ · Iter new
 
 	# new_targets_and_values ↩ Iter new_targets_and_values
 	# •Show "new2"‿(new_targets_and_values)
