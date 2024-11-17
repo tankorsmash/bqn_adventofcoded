@@ -92,15 +92,12 @@ BreakIntoParentChildPairs ← {
 
 Sep ← {
 	num ← 10
-	# •Out  ∾´ ⥊ ∾´ ((num/"-")‿(𝕩)‿(num/"-"))
 	𝕩
 	•Out  ∾´ ⥊ ∾´ ((num/"-")‿(•Repr 𝕩)‿(num/"-"))
 }
 
 PartOne ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
-	# •Show parent_child_pairs
-
 
 	all_found_bags ← ⟨⟩
 
@@ -109,14 +106,10 @@ PartOne ← {
 	FindBags ← {
 
 		target ← 𝕩
-		# •Show 50/"-"
-		# •Show "target"‿target
 
 		bags_containing_target_mask ← (target⊸∊1⊸⊑)˘ parent_child_pairs
-		# •Show ≢ bags_containing_target_mask
 
 		containing_target ↩ ⊏˘ bags_containing_target_mask/parent_child_pairs
-		# •Show "containing_target"‿containing_target
 
 		found_new_containers ← (0≠≠ containing_target)
 		{ found_new_containers ?
@@ -126,24 +119,17 @@ PartOne ← {
 		containing_target
 	}
 	new_bags ← ⟨"shiny gold", "shiny gold"⟩
-	# new_bags ↩ FindBags˘ new_bags
-	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
-	# new_bags ↩ ⍷ ⥊ FindBags˘ new_bags
 
 	Massage ← {
 		found ←  FindBags 𝕩
-		# •Show "massaged"‿(≠found)‿found
 		found
 	}
 
 	Body ← {
-		# •Show "to finds"‿𝕩
 		raw_new_bags ← ((<∘Massage)˘) 𝕩
 
-		# •Show¨ raw_new_bags
 		new_bags ↩ ⍷∘({ "shape"‿(≢𝕩)}⊢⊢) (∾⥊) raw_new_bags
 
-		# •Show "new_bags"‿(≢new_bags)‿(new_bags)
 		new_bags
 	}
 
@@ -165,9 +151,7 @@ null ← @+0
 
 PartTwo ← {
 	parent_child_pairs ← BreakIntoParentChildPairs 𝕩
-	# •Show parent_child_pairs
 	parent_scores ← (null∾˜ 0⊸⊏)˘ parent_child_pairs
-	# •Show "scores"‿parent_scores
 
 	# normalize the no other bags to 0 value
 	NormalizeNoOther ← {
@@ -183,41 +167,10 @@ PartTwo ← {
 	total_contained ← 0
 
 
-	ScaleValue ← {
-		value ← 𝕨
-		# scale the number of bags by the value
-		(⊏∾(value⊸× 0⊑·> 1⊸⊏) )𝕩
-	}
-
-	ScaleTargetByValue ← {
-		value ← 𝕨
-		target ← 𝕩
-		# •Show "target:"‿target
-
-		mask ← (target≡·1⊸⊑1⊸⊑)˘ parent_child_pairs
-		found_targets ← (mask/parent_child_pairs)
-		res ← value ScaleValue ˘ found_targets
-		•Show ["target"‿target, "res"‿res]
-		# •Show ⟨"shape"‿(≢res), "depth"‿(≡res), "len"‿(≠res), "rank"‿(=res)⟩
-
-		res
-	}
-
-	# Iter ← {
-	# 	new_targets_and_values ← ∾ ((0≠≠¨)/⊢) <∘(1⊸⊑ ScaleTargetByValue ⊑)˘ 𝕩
-	# 	res ← > Gather new_targets_and_values
-  #
-	# 	•Show "res"‿res
-	# }
-
-
 	targets ← ⟨"shiny gold"⟩
 	# •Show (⊐⟜targets⊸⊏)˝ ⍉parent_child_pairs
 
 	•Show ∘‿1⥊(1⊏⍉parent_child_pairs) ⊏˜(⊢/↕∘≠)(⊏⍉parent_child_pairs)∊ targets
-	# •Show (⊢/↕∘≠)•Show (targets⊸∊ •Show )¨ ⟨"abc","def", 123⟩
-
-	# •Show 32 -˜ (<'t')
 	vowels ← "aeiou"
 
 	RemVow ← ((¬ vowels⊸(∊˜))/⊢)
@@ -225,12 +178,6 @@ PartTwo ← {
 		⍷((32⊸(-˜)⊏)∾((1⊸⊏∾¯1⊸⊏)∘RemVow))word
 	}
 	•Show ↑‿1⥊((Shorten(' '⊸≠)/⊢)¨ ((+` ' '⊸=)⊔⊢))¨⍷⊏˘ parent_child_pairs
-
-
-	# new_targets_and_values ←  Iter targets_and_values
-	# •Show "new1"‿(new_targets_and_values)
-	# •Show 50/"-"
-
 
 
 	old_targets ← ⟨⟩
@@ -246,7 +193,6 @@ PartTwo ← {
 		⥊ count/(⋈bag)
 	}
 
-	# •Show old_targets
 	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
 	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
 	# targets ↩ ∾ ⥊ SplitIter ¨ · > Iter¨ targets
@@ -258,7 +204,7 @@ PartTwo ← {
 
 	targets ↩ {∾ ⥊ SplitIter ¨ · > Iter¨ 𝕩}•_while_(0≠≠) targets
 
-	•Show 1-˜ ≠old_targets
+	•Show "solution:"‿(1-˜ ≠old_targets)
 
 
 }
