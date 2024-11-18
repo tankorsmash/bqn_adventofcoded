@@ -11,7 +11,7 @@ Log ← {
 
 SplitBy ← (+`∘=⊔⊢)
 
-limit ← 1_000_0
+limit ← 1_000
 
 PartOne ← {
 	ParseOne ← {
@@ -63,21 +63,32 @@ ParseTwo ← {
 }
 
 
+# SafeTake ← {count𝕊arr: (count⌊≠arr)↑arr}
+SafeTake ← (⌊⟜≠↑⊢)
+# •Show 20(⌊⟜≠↑)↕10
+
 PartTwo ← {
 
-	insts ← {•ParseFloat⌾(1⊸⊑) (('+'⊸≠/⊢)' '⊸≠/⊢)¨ ' 'SplitBy 𝕩}¨ 𝕩
+	raw_insts ← {•ParseFloat⌾(1⊸⊑) (('+'⊸≠/⊢)' '⊸≠/⊢)¨ ' 'SplitBy 𝕩}¨ 𝕩
 
+	# •Show (0 ⊸ParseTwo )¨10 SafeTake raw_insts 
 	Iter ← {𝕊to_swap_idx:
 		acc ← 0
 		idx ← 0
 		all_idxs ← ⟨⟩
-		∘‿1⥊ insts
+
+		insts ← {i‿pair:
+			(i=to_swap_idx)ParseTwo pair
+		}¨ (↕∘≠⋈¨⊢)raw_insts
+
+		# •Show ∘‿1⥊ insts
 
 		iterations ← 0
 
 		Loop ← {
 			𝕩
-			offset‿to_add ← (idx = to_swap_idx)ParseTwo idx⊑ insts
+			# offset‿to_add ← (idx = to_swap_idx)ParseTwo idx⊑ insts
+			idx⊑ insts
 		}
 		Cond ← {𝕊offset‿to_add:
 
@@ -87,23 +98,22 @@ PartTwo ← {
 
 			already_processed ← 1= ( +´ ⥊ new_idx∊all_idxs)
 			within_limit ← iterations > limit
-			{ (new_idx = ≠insts) ∨ within_limit ?
-
+			{ (new_idx = ≠insts) ∨ within_limit ∨ already_processed ?
+				•Show "done"‿idx
 				0 ;
 
+				# •Show "iter"‿idx‿acc‿offset‿to_add
 				idx ↩ new_idx
 				acc ↩ acc+to_add
 				all_idxs ↩ all_idxs∾ idx
 				1
 			}
 		}
-		Loop •_while_ Cond 0 ParseTwo ⊑ insts
+		Loop •_while_ Cond   ⊑ insts
 		acc
 	}
 
-	to_swap_idxs ←  /(<"acc")≢˘ >⊏¨ insts
-	# to_swap_idx ← ⊑ to_swap_idxs
-	# Iter⎊⊢ to_swap_idx
+	to_swap_idxs ←  /(<"acc")≢˘ >⊏¨ raw_insts
 	{
 		res←Iter 𝕩
 		•Show "res"‿res
