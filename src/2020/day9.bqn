@@ -31,11 +31,10 @@ PartOne ← {𝕊nums:
 
 PartTwo ← {part1𝕊nums:
 	# ((0⊸≠≠)¨/⊢) ↓𝕩
-	window_lens ← 1↓↕≠𝕩
+	window_lens ← •Show 2↓↕≠𝕩
 	# window_lens ← [4, 5]
-	•Show ({/ part1= +´¨ 𝕩}⊏⊢) ∾´ ⥊¨ {  ⋈˘ 𝕩↕nums}¨ window_lens
+	•Show (⌊´∾⌈´)¨ ({/ part1= +´¨ 𝕩}⊏⊢) ∾´ ⥊¨ {  ⋈˘ 𝕩↕nums}¨ window_lens
 
-	¯999
 }
 
 
