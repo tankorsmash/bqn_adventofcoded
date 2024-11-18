@@ -1,8 +1,8 @@
 data ← •file.Lines "../../samples/2020/day9.txt"
 pre_len ← 5
 # data ↩ •file.Lines "../../samples/2020/day9_alt.txt"
-# data ↩ •file.Lines "../../inputs/2020/day9.txt"
-# pre_len ↩ 25
+data ↩ •file.Lines "../../inputs/2020/day9.txt"
+pre_len ↩ 25
 
 data ↩ •ParseFloat¨ data
 
@@ -31,9 +31,9 @@ PartOne ← {𝕊nums:
 
 PartTwo ← {part1𝕊nums:
 	# ((0⊸≠≠)¨/⊢) ↓𝕩
-	window_lens ← •Show 2↓↕≠𝕩
+	window_lens ← 2↓↕≠𝕩
 	# window_lens ← [4, 5]
-	•Show (⌊´∾⌈´)¨ ({/ part1= +´¨ 𝕩}⊏⊢) ∾´ ⥊¨ {  ⋈˘ 𝕩↕nums}¨ window_lens
+	(+´ ⌊´∾⌈´)¨ ({/ part1= +´¨ 𝕩}⊏⊢) ∾´ ⥊¨ {  ⋈˘ 𝕩↕nums}¨ window_lens
 
 }
 
