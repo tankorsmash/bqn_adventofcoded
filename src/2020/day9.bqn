@@ -13,11 +13,20 @@ Log ← {
 }
 
 # •Show 0⊏((<2⊸↕)⋈¨⊢)⟨"a", "b", "c", "d", "e", "f"⟩
-•Show  (1↓«d)⋈˜˘2↕ d←⟨"a", "b", "c", "d", "e", "f"⟩
-PartOne ← {
-	𝕩
-	# pre_len↓ (pre_len↕𝕩)
-	# 𝕩 ⋈˘ (pre_len↕𝕩)
+# •Show  (1↓«d)⋈˜˘2↕ d←⟨"a", "b", "c", "d", "e", "f"⟩
+PartOne ← {𝕊nums:
+	windows ← ¯1↓((pre_len-1)↓«nums)⋈˜˘pre_len↕ nums
+	# •Show +⌜˜ ⊑ ⊏windows
+
+	# id matrix but inverted
+	keep_mask ← ¬ =⌜˜↕pre_len
+
+	#possible sumbs for the window
+	ValidNums ← ((⥊keep_mask) / (⥊+⌜˜))	
+	Iter ← {𝕊window‿next :
+	next∊(ValidNums window)
+	}
+	•Show 1⊑(⊏ /¬ Iter˘ windows)⊏windows
 }
 
 PartTwo ← {
@@ -25,4 +34,4 @@ PartTwo ← {
 }
 
 
-•Show "part 1: " PartOne data
+•Show "part 1: "‿(PartOne data)
