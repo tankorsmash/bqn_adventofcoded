@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2020/day8.txt"
 # data ↩ •file.Lines "../../samples/2020/day8_alt.txt"
-# data ↩ •file.Lines "../../inputs/2020/day8.txt"
+data ↩ •file.Lines "../../inputs/2020/day8.txt"
 
 Log ← {
 	msg‿val ← 𝕩
@@ -75,7 +75,7 @@ PartTwo ← {
 	Iter ← {𝕊to_swap_idx:
 		acc ← 0
 		idx ← 0
-		all_idxs ← ⟨⟩
+		seen_idxs ← ⟨⟩
 
 		insts ← {i‿pair:
 			(i=to_swap_idx)ParseTwo pair
@@ -87,42 +87,46 @@ PartTwo ← {
 
 		Loop ← {
 			𝕩
-			# offset‿to_add ← (idx = to_swap_idx)ParseTwo idx⊑ insts
 			idx⊑ insts
 		}
+
 		Cond ← {𝕊offset‿to_add:
 
 			iterations ↩ iterations+1
 
 			new_idx ← idx+offset
 
-			already_processed ← 1= ( +´ ⥊ new_idx∊all_idxs)
+			already_processed ← 1= ( +´ ⥊ new_idx∊seen_idxs)
 			within_limit ← iterations > limit
 			{ (new_idx = ≠insts) ∨ within_limit ∨ already_processed ?
-				•Show "done"‿idx
+				# •Show "done"‿idx
+				idx ↩ new_idx
+				acc ↩ acc+to_add
+				seen_idxs ↩ seen_idxs∾ idx
 				0 ;
 
 				# •Show "iter"‿idx‿acc‿offset‿to_add
 				idx ↩ new_idx
 				acc ↩ acc+to_add
-				all_idxs ↩ all_idxs∾ idx
+				seen_idxs ↩ seen_idxs∾ idx
 				1
 			}
 		}
 		Loop •_while_ Cond   ⊑ insts
-		acc
+		[⟨"idx","acc", "iterations"⟩
+		  ⟨idx,  acc,   iterations ⟩]
 	}
 
 	to_swap_idxs ←  /(<"acc")≢˘ >⊏¨ raw_insts
-	{
-		res←Iter 𝕩
-		•Show "res"‿res
+	{𝕊to_swap_idx:
+		res←Iter to_swap_idx
+		# •Show "res"‿res
 		res
 	}¨ to_swap_idxs
 }
 
 
 # •Show "part1"‿(PartOne data)
-•Show "part2"‿(PartTwo data)
+•Show ⊑ ({+´(≠data)=1⊏𝕩}¨/⊢) (PartTwo data)
 
 •Show "done"
