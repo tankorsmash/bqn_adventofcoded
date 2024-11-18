@@ -126,7 +126,7 @@ PartTwo ← {
 }
 
 
-# •Show "part1"‿(PartOne data)
+•Show "part1"‿(PartOne data)
 •Show ⊑ ({+´(≠data)=1⊏𝕩}¨/⊢) (PartTwo data)
 
 •Show "done"
