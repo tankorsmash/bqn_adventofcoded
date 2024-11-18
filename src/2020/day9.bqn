@@ -1,8 +1,8 @@
 data ← •file.Lines "../../samples/2020/day9.txt"
 pre_len ← 5
 # data ↩ •file.Lines "../../samples/2020/day9_alt.txt"
-# data ↩ •file.Lines "../../inputs/2020/day9.txt"
-# pre_len ↩ 25
+data ↩ •file.Lines "../../inputs/2020/day9.txt"
+pre_len ↩ 25
 
 data ↩ •ParseFloat¨ data
 
