@@ -1,5 +1,5 @@
-
 data ← •file.Lines "../../samples/2020/day1.txt"
+# data ← •file.Lines "../../samples/2020/day1.txt"
 # data ← •file.Lines "../../inputs/2020/day1.txt"
 
 numbers ← •ParseFloat¨ data
@@ -26,4 +26,5 @@ Part1 ← {
 }
 
 •Show "part1: " Part1 numbers
+
 
