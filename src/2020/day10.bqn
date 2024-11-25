@@ -2,7 +2,8 @@ data ← •file.Lines "../../samples/2020/day10.txt"
 # data ↩ •file.Lines "../../samples/2020/day10_alt.txt"
 # data ↩ •file.Lines "../../inputs/2020/day10.txt"
 
-data ↩ 0∾ •ParseFloat¨ data
+parsed ← •ParseFloat¨ data
+data ↩ (3+⌈´parsed)∾0∾ •ParseFloat¨ data
 
 Log ← {
 	msg‿val ← 𝕩
@@ -13,7 +14,7 @@ Log ← {
 PartOne ← {
 	•Show (∧𝕩)
 	•Show ones‿threes ← 1‿3⊏ ⊔ (»∧𝕩)-˜´∘∾¨(∧𝕩)
-	(Log "ones"‿(≠ones))×(Log "threes"‿ (1+≠threes))
+	(Log "ones"‿(≠ones))×(Log "threes"‿ (≠threes))
 }
 
 PartTwo ← {
@@ -27,6 +28,6 @@ PartTwo ← {
 	#TODO: go through all the possible combinations backwards
 }
 
-# •Show "part 1: "‿(PartOne data)
+•Show "part 1: "‿(PartOne data)
 •Show "part 2: "‿(PartTwo data)
 
