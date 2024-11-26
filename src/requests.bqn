@@ -50,7 +50,7 @@ Trim ← {(∨`∧∨`⌾⌽)' '≠𝕩}⊸/
 short ←  {
 	to_find ← ⟨"author", "title", "subreddit"⟩
 	raw_submission ← 𝕩
-	(Trim∘(75⊸↑))¨ > to_find { 𝕨FindColumn¨ <  1⊑ KindData 𝕩 }˘ raw_submission
+	(Trim∘(65⊸↑))¨ > to_find { 𝕨FindColumn¨ <  1⊑ KindData 𝕩 }˘ raw_submission
 }˘ submissions
 
 •Show˘   short
