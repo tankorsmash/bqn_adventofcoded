@@ -10,18 +10,15 @@ Log ← {
 }
 
 PartOne ← {
-	•Show 𝕩
 	raw_nums← ((•ParseFloat ⋈)⎊⟨⟩)¨¨ 𝕩
 	# nums ← (∾ •Show )⎊{(•CurrentError @) ∾" - ERR: "∾(•Fmt •Repr 𝕩)}¨raw_nums
 	nums ← (∾  )⎊⊢¨raw_nums
 	# •Show¨ nums
-	•Show pairs← {⊏∾¯1⊸⊏}¨nums
-	•Show +´(•ParseFloat∘∾´∘(•Fmt¨)¨)˘ pairs
+	pairs← {⊏∾¯1⊸⊏}¨nums
+	+´(•ParseFloat∘∾´∘(•Fmt¨)¨)˘ pairs
 	# last←⊏⌽⥊((•ParseFloat ⋈)⎊⟨⟩)¨¨ 𝕩
 	# •Show first‿last
 }
-
-# •Show ∾∾˝7‿4‿6
 
 PartTwo ← {
 	𝕩
