@@ -19,10 +19,11 @@ PartOne ← {
 PartTwo ← {
 	•Show "data id"‿(5↑𝕩)
 	# indices and (up to) the previous three indices
-	•Show ⊑˘ 1↕ (¯1⊸+(⍷∘(𝕩⊸(∊˜)/⊢)0⊸⌈∘⌽∘-)(↕3˙))⊸(⋈˜)¨∧𝕩
+	•Show table_prev ← ⊑˘ 1↕ (¯1⊸+(⍷∘(𝕩⊸(∊˜)/⊢)0⊸⌈∘⌽∘-)(↕3˙))⊸(⋈˜)¨∧𝕩
+	•Show table_next ← ⊑˘ 1↕ (1⊸+(⍷∘(𝕩⊸(∊˜)/⊢)0⊸⌈∘+)(↕3˙))⊸(⋈˜)¨∧𝕩
+	•Show "diffs"‿(1⊸≠⊸/≠¨1⊏˘table_prev)
 
 	•Show ∧𝕩
-	•Show 190∊𝕩
 
 	#TODO: go through all the possible combinations backwards
 }
