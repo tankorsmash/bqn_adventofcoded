@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2023/day2.txt"
 # data ↩ •file.Lines "../../samples/2023/day2_alt.txt"
-data ↩ •file.Lines "../../inputs/2023/day2.txt"
+# data ↩ •file.Lines "../../inputs/2023/day2.txt"
 
 
 
@@ -23,44 +23,25 @@ SplitBy ← {char𝕊str:
 	((+` char⊸=)⊔⊢) str
 	}
 
-PartOne ← {
+Remove ← {char𝕊str:
+	(char⊸≠/⊢)str
+	}
+
+
+PartOne ← {𝕊lines:
 
 	ParseRow ← {𝕊row:
-		mask←':'= row
-		grouped_mask ← +` mask
-		games ← 2↓¨ 1↓grouped_mask⊔row
+		games ← 2↓¨ 1↓  ':'SplitBy row
 
-		bags_of_games ← {
-			single_games ← (';'⊸≠/⊢)¨ ';'⊸SplitBy𝕩
-			bags ← (','⊸SplitBy)¨ single_games
-			((0≠≠¨)/⊢)¨¨ (( (','⊸≠/⊢)¨ (' '⊸SplitBy))¨)¨ bags
+		bags_of_games ← {𝕊game:
+			bags ← (','⊸SplitBy ';'⊸Remove)¨ ';'SplitBy game
+			((0≠≠¨)/⊢)¨ (','⊸Remove)¨ ∘ (' '⊸SplitBy)¨¨ bags
 		}¨  games
 
-		grabs ← {
-			bar ← ((0≠≠¨)/⊢)¨  𝕩
-			(•ParseFloat ⌾(0⊸⊑)  (' '⊸≠/⊢)¨)¨ bar
-			}¨  ⊑ bags_of_games
-		grabs
+		((•ParseFloat ⌾(0⊸⊑)  ' '⊸Remove¨)¨ ((0≠≠¨)/⊢)¨ )¨  ⊑ bags_of_games
 	}
 
-	parsed_games ← ParseRow¨ 𝕩
-
-
-	IsGrabValid ← {𝕊bags:
-
-		grab_valids ← {𝕊count‿color:
-			(count ≤ Lookup color)
-		}¨ bags
-
-		⌊´ grab_valids
-
-	}
-
-	wins ← ∾ (⌊´ IsGrabValid¨)¨ parsed_games
-	game_ids ← ((1+·↕≠)) wins
-	+´ wins/game_ids
-
-
+	+´ (⊢/(1+·↕≠))∾ ⌊´∘((⌊´ (⊑ ≤⟜Lookup 1⊸⊑)¨)¨)¨ ParseRow¨ lines
 }
 
 PartTwo ← {
