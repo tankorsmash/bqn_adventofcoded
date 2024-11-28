@@ -3,6 +3,17 @@ data ← •file.Lines "../../samples/2023/day2.txt"
 # data ↩ •file.Lines "../../inputs/2023/day2.txt"
 
 
+
+limits ← [
+	⟨"red", "green", "blue"⟩,
+	[12,13,14],
+]
+•Show limits
+Lookup ← {𝕊key:
+	((<key) ⍷ ⊏limits) / 1⊏limits
+}
+•Show Lookup "blue"
+
 Log ← {
 	msg‿val ← 𝕩
 	•Show msg‿val
@@ -29,17 +40,15 @@ PartOne ← {
 
 		# •Show bags_of_games
 
-		res ← {
+		grabs ← {
 			bar ← ((0≠≠¨)/⊢)¨  𝕩
 			(•ParseFloat ⌾(0⊸⊑)  (' '⊸≠/⊢)¨)¨ bar
 			}¨  ⊑ bags_of_games
-		•Show¨ res
-		•Out 50/"-"
+		grabs
 	}
 
-	•Show ⊑𝕩
 	# foo ← (⊑𝕩)
-	ParseRow¨ 1↑𝕩
+	parsed_games ← ParseRow¨ 𝕩
 
 }
 
