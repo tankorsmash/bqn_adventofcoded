@@ -13,8 +13,7 @@ Lookup ← {𝕊key:
 	((<key) ⍷ ⊏limits) / 1⊏limits
 }
 
-Log ← {
-	msg‿val ← 𝕩
+Log ← {msg𝕊val:
 	•Show msg‿val
 	val
 }
@@ -34,7 +33,7 @@ PartOne ← {𝕊lines:
 		games ← 2↓¨ 1↓  ':'SplitBy row
 
 		bags_of_games ← {𝕊game:
-			bags ← (','⊸SplitBy ';'⊸Remove)¨ ';'SplitBy game
+			bags ← (','⊸SplitBy ';'⊸Remove)¨ ';'SplitBy  game
 			((0≠≠¨)/⊢)¨ (','⊸Remove)¨ ∘ (' '⊸SplitBy)¨¨ bags
 		}¨  games
 
