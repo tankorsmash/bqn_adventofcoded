@@ -43,9 +43,22 @@ PartOne ← {𝕊lines:
 	+´ (⊢/(1+·↕≠))∾ ⌊´∘((⌊´ (⊑ ≤⟜Lookup 1⊸⊑)¨)¨)¨ ParseRow¨ lines
 }
 
-PartTwo ← {
-	𝕩
+PartTwo ← {𝕊lines:
+
+	ParseRow ← {𝕊row:
+		games ← 2↓¨ 1↓  ':'SplitBy row
+
+		bags_of_games ← {𝕊game:
+			bags ←  ∾ (','⊸SplitBy ';'⊸Remove)¨ ';'SplitBy  game
+			((0≠≠¨)/⊢)¨ (','⊸Remove )¨ ∘ (' '⊸SplitBy )¨ bags
+		}¨  games
+
+		Parse ← ((•ParseFloat⌾(0⊸⊑) ' '⊸Remove¨ ) ((0≠≠¨)/⊢)¨ )
+		res ← (((⊏limits)⊸⊐ 1⊸⊑¨)⊔⊑¨)¨ Parse¨¨   bags_of_games
+		(×´ ⌈´¨)¨ res
+	}
+	+´  ParseRow¨ lines
 }
 
-•Show "part 1: "‿(PartOne data)
-# •Show "part 2: "‿(PartTwo data)
+# •Show "part 1: "‿(PartOne data)
+•Show "part 2: "‿(PartTwo data)
