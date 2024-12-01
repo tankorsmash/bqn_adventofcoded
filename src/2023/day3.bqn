@@ -12,20 +12,30 @@ Log ← {msg𝕊val:
 }
 
 PartOne ← {𝕊lines:
+ # asdasd
  PerLine ← {𝕊line:
 		is_digit ← ∨´˘ (≠line)‿∘⥊∾( digits⊸=)¨ line
 		not_digits ← ¬ ∨´˘ (≠line)‿∘⥊∾( digits⊸=)¨ line
 		not_dot ← ¬ ∨´˘ (≠line)‿∘⥊∾( "."⊸=)¨ line
-		res ← is_digit ⌈ 9⊸×¨ not_digits ∧ not_dot
-		•Show line
-		"res" Log res
-		"«  " Log (9⊸=«res)⌈(9⊸=»res)
-		
-		res
+		mask ← is_digit ⌈ 9⊸×¨ not_digits ∧ not_dot
+		# •Show line
+		mask
+		shift ← (9⊸=«mask)⌈(9⊸=»mask)
+		ones ← /1=mask
+		valid ← (ones⊏shift)/ones
+		zero2 ← (valid⊸(∊˜))˘ ↕≠mask
+
 	}
 #  •Show∘PerLine¨ lines
+#  •Out 50 /"-"
+#  •Show∘PerLine˘ >lines
+#  •Out 50 /"-"
+ horz ← PerLine˘  >lines
+ vert ← ⍉⁼ PerLine˘ ⍉>lines
+ •Show horz ⌈ vert
 #  •Show∘PerLine 4⊑ lines
- •Show +`1 = PerLine  "617*....12"
+#  •Show +`1 = PerLine  "617*....12"
+#  •Show +`1 = PerLine  3⊑¨ lines
 }
 
 PartTwo ← {𝕊lines:
@@ -35,11 +45,8 @@ PartTwo ← {𝕊lines:
 
 "input"⊸Log¨ data
 •Out 50/"-"
-# # line ← ⟨1,1,1,9,0,1,1,1,0,0 ⟩
-# line ← 4⊑data
-# "line"Log line
-# •Show (9⊸=«line)
-# •Show (9⊸=»line)
-# •Show  ∨´˘ (≠line)‿∘⥊∾(digits⊸=)¨ line
-•Show "part 1: "‿(PartOne data)
+
+#alpha
+# •Show ⍉3‿3⥊"abcdefghi"
+"part 1: "‿(PartOne data)
 # •Show "part 2: "‿(PartTwo data)
