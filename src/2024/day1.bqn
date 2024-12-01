@@ -28,12 +28,23 @@ PartOne ← {𝕊lines:
 
 PartTwo ← {𝕊lines:
 
-	lines
+	line ←  ⊑lines
+	Pf ← •ParseFloat
+	nums ← ((Pf  num_len⊸↑)⋈(Pf (-num_len)⊸↑))¨ lines
+	•Show "nums: "‿nums
+
+	# "lines" Log lines
+	# "nums" Log nums
+	lefts ←>⊏¨ nums
+	rights ←>1⊏¨ nums
+
+	fl ← ⊑lefts
+	+´ {𝕩 × +´ 𝕩 = rights}¨ lefts
 }
 
 # •Show (-1)↑ 2⊑data
 
 •Out 50/"-"
 
-"part 1: "Log (PartOne data)
-# •Show "part 2: "‿(PartTwo data)
+# "part 1: "Log (PartOne data)
+"part 2: "Log (PartTwo data)
