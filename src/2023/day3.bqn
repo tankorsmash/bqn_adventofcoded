@@ -14,9 +14,9 @@ Log ← {msg𝕊val:
 PartOne ← {𝕊lines:
  # asdasd
  PerLine ← {𝕊line:
-		is_digit ← ∨´˘ (≠line)‿∘⥊∾( digits⊸=)¨ line
-		not_digits ← ¬ ∨´˘ (≠line)‿∘⥊∾( digits⊸=)¨ line
-		not_dot ← ¬ ∨´˘ (≠line)‿∘⥊∾( "."⊸=)¨ line
+		is_digit ← ∨´˘ (≠line)‿∘⥊∾ digits⊸=¨ line
+		not_digits ← ¬ ∨´˘ (≠line)‿∘⥊∾ digits⊸=¨ line
+		not_dot ← ¬ ∨´˘ (≠line)‿∘⥊∾ "."⊸=¨ line
 		mask ← is_digit ⌈ 9⊸×¨ not_digits ∧ not_dot
 		# •Show line
 		mask
@@ -46,7 +46,31 @@ PartTwo ← {𝕊lines:
 "input"⊸Log¨ data
 •Out 50/"-"
 
-#alpha
-# •Show ⍉3‿3⥊"abcdefghi"
-"part 1: "‿(PartOne data)
+# •Show (↕≠)⊸(⋈˜¨˘)↕∘≠˘ >⟨".+.", "2..", "3.."⟩
+offsets ← ⥊ 1-˜ (↕≠)⊸(⋈˜¨˘)↕∘≠˘ 3‿3⥊↕3
+# •Show offsets
+num ← ≠data
+coords ← ⋈¨ ⥊ (↕≠)⊸(⋈˜¨˘)↕∘≠˘ num‿num⥊↕num
+# •Show coords
+paired ← (∾ data)⋈¨ coords
+
+Foo ← {𝕊char‿coord:
+	 char‿coord
+	 adj← ((offsets˘⊸+) coord)⊑  >data
+	 symbols ← (¬ digits⊸(∊˜))⊸/ ('.'⊸≠)¨⊸/ ⍷∧ ⥊ >data
+	 ⌈´˘ (symbols⊸(∊˜))  adj
+}
+"res1" Log Foo 40⊑ paired
+
+max ← ≠data
+FindSymbol ← {𝕊char‿coord:
+	 adj←  ((((1-˜max)⊸⌊0⊸⌈¨)¨· (offsets˘⊸+) coord)⊸⊑)  >data
+	 symbols ←  (¬ digits⊸(∊˜))⊸/ ('.'⊸≠)¨⊸/ ⍷∧ ⥊ >data
+	 ⌈´˘ (symbols⊸(∊˜))  adj
+}
+
+# •Show ⟨⟨0‿4⟩,⟨1‿5⟩, ⟨19999‿9999⟩⟩˘⊸+⟨⟨2‿4⟩⟩⊸⊑⎊["."] >data
+"res" Log FindSymbol (3+(max×0))⊑ paired
+
+# "part 1: "‿(PartOne data)
 # •Show "part 2: "‿(PartTwo data)
