@@ -51,19 +51,21 @@ PartTwo ← {𝕊lines:
 
 		Run ← {func𝕊line:
 			# •Out 50/"-"
-			(⌈´ ·   (Func )˘ SparsePick)line
+			( (Func )˘ SparsePick)line
 			}
 
 		IsSorted ← ((∨≡⊢)⌈(∧≡⊢))
-		IsSamed ← ⌊´ ∘ (≠´¨) ∘ (¯1⊸↓) ∘ (¯1⊸⊑⊸« ⋈˜¨ ⊢)
+		# IsSamed ← ⌊´ ∘ (≠´¨) ∘ (¯1⊸↓) ∘ (¯1⊸⊑⊸« ⋈˜¨ ⊢)
 		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((3⊸(≤˜)⌊1⊸(≥˜))∘|-´)¨ (¯1⊸⊑⊸« ⋈˜¨ ⊢))
 
-		# line ← "line" Log ⟨6, 6, 6⟩
+		# line ← "line" Log ⟨8, 11, 14, 16, 15⟩
 		# # line ← "line" Log 5⊑ parsed
-		# "isSorted" Log isSorted Run line
-		# "isSamed" Log isSamed Run line
-		# "isValidDiff" Log isValidDiff Run line
+		# short_sorted ← "isSorted" Log isSorted Run line
+		# # "isSamed" Log isSamed Run line
+		# short_diff ← "isValidDiff" Log isValidDiff Run line
 		# # "is samed" Log IsSamed ⟨8,6,4,4,1⟩
+		# # "short dubs" Log (≠¨⊔)¨ ⊑ <⍉⟨short_sorted,short_diff⟩
+		# "short dubs" Log ⌈´¨ 2=(+)˝ ⊑ <⍉⟨short_sorted,short_diff⟩
 		# •Exit 0
 
 		# verbose ↩ 0
@@ -77,11 +79,12 @@ PartTwo ← {𝕊lines:
 		# is_same ← isSamed(Run¨) parsed
 		is_diff_valids ← isValidDiff(Run¨) parsed
 
-		num ← 2
+		num ← ≠parsed
 		"Parsed"Log num↑ parsed
 		•Show "sorted"‿"diffs"
-		"paired"⊸Log¨ paired← (num↑parsed)⊸(⋈¨) (⌊´¨⋈¨⊢) "dubs" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
-		total← +´ (⌊´)¨ "trips" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
+		# "paired"⊸Log¨ paired← (num↑parsed)⊸(⋈¨) (⌊´¨⋈¨⊢) "dubs"⊸Log˘ num↑ <˘⍉[is_sorteds,is_diff_valids]
+		# total← +´ ("sing"⊸Log ∘ 2⊸= (+˝))˘ "trips" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
+		total← +´ ("sing"⊸Log  {⌈´¨ 2=(+)˝𝕩} ⊑)˘ "trips" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
 
 		total
 }
