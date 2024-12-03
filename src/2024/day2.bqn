@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day2.txt"
 # data ↩ •file.Lines "../../samples/2024/day2_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day2.txt"
+data ↩ •file.Lines "../../inputs/2024/day2.txt"
 
 
 Log ← {msg𝕊val:
@@ -46,7 +46,7 @@ PartOne ← {𝕊lines:
 
 PartTwo ← {𝕊lines:
 		parsed ← Parse¨ lines
-		"Parsed"Log parsed
+		# "Parsed"Log parsed
 
 
 		Run ← {func𝕊line:
@@ -58,7 +58,7 @@ PartTwo ← {𝕊lines:
 		IsSamed ← ⌊´ ∘ (≠´¨) ∘ (¯1⊸↓) ∘ (¯1⊸⊑⊸« ⋈˜¨ ⊢)
 		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((3⊸(≤˜)⌊1⊸(≥˜))∘|-´)¨ (¯1⊸⊑⊸« ⋈˜¨ ⊢))
 
-		# line ← "line" Log ⟨8,6,4, 4,4⟩
+		# line ← "line" Log ⟨6, 6, 6⟩
 		# # line ← "line" Log 5⊑ parsed
 		# "isSorted" Log isSorted Run line
 		# "isSamed" Log isSamed Run line
@@ -72,13 +72,16 @@ PartTwo ← {𝕊lines:
 		# verbose ↩ 1
 		# "diffs? " Log is_diff_valids ← (isValidDiff⊸Run) line
 
-		"sortd?" Log is_sorteds ← isSorted(Run ¨) parsed
-		"same ?" Log is_same ← isSamed(Run¨) parsed
-		"diffs?" Log is_diff_valids ← isValidDiff(Run¨) parsed
+		verbose ↩ 0
+		is_sorteds ← isSorted(Run ¨) parsed
+		# is_same ← isSamed(Run¨) parsed
+		is_diff_valids ← isValidDiff(Run¨) parsed
 
-		IsValid ←	(⌊´)
-		•Show "sorted"‿"same ?"‿"diffs"
-		"total" Log total← +´ (IsValid)¨ "trips" Log <˘⍉[is_sorteds,is_same,is_diff_valids]
+		num ← 2
+		"Parsed"Log num↑ parsed
+		•Show "sorted"‿"diffs"
+		"paired"⊸Log¨ paired← (num↑parsed)⊸(⋈¨) (⌊´¨⋈¨⊢) "dubs" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
+		total← +´ (⌊´)¨ "trips" Log num↑ <˘⍉[is_sorteds,is_diff_valids]
 
 		total
 }
