@@ -1,28 +1,36 @@
 data ← •file.Lines "../../samples/2024/day2.txt"
 # data ↩ •file.Lines "../../samples/2024/day2_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day2.txt"
+# data ↩ •file.Lines "../../inputs/2024/day2.txt"
 
 Log ← {msg𝕊val:
 	•Show msg‿val
 	val
 }
 
+verbose ← 0
+CLog ← {msg𝕊val:
+	{verbose ? •Show msg‿val ; @}
+	val
+}
+
 # turns "1 2 3" into ⟨1 2 3⟩
 Parse ← (' '⊸≠(•ParseFloat∘/)⊢)¨ ((+`∘(' '⊸=))(⊔)⊢)
 
+SparsePick ← {𝕩⊸(/˜)˘ ≠⌜˜↕ ≠𝕩}
+
 PartOne ← {𝕊lines:
 		parsed ← Parse¨ lines
-		parsed
+		"Parsed"Log parsed
 
-		sorted ← ((∨≡⊢)⌈(∧≡⊢))¨ parsed
-		equals ← (¯1⊸↓)∘ ((≠´)¨)∘((¯1⊸⊑⊸« )⋈˜¨⊢)¨ parsed
-		diffs ← (¯1⊸↓)∘((((3⊸(≤˜))⌊(1⊸(≥˜)))∘|-´)¨((¯1⊸⊑⊸« )⋈˜¨⊢))¨ parsed
+		"sorted?" Log sorted ← ((∨≡⊢)⌈(∧≡⊢))¨ parsed
+		"equals?" Log equals ← (¯1⊸↓)∘ ((≠´)¨)∘((¯1⊸⊑⊸« )⋈˜¨⊢)¨ parsed
+		"diffs? " Log diffs ← (¯1⊸↓)∘((((3⊸(≤˜))⌊(1⊸(≥˜)))∘|-´)¨((¯1⊸⊑⊸« )⋈˜¨⊢))¨ parsed
 
 
 		IsValid ←	(⌊´ · ⌊´¨ ⥊¨)
-		# •Show "sorted"‿"equals"‿"diffs"
+		•Show "sorted"‿"equals"‿"diffs"
 		•Show total← +´ (IsValid∘∾)¨ (sorted⋈¨equals⋈¨diffs)
-		# •Show (1⊸⊑)¨ (sorted‿equals‿diffs)
+		•Show (1⊸⊑)¨ (sorted‿equals‿diffs)
 		# •Show IsValid (1⊑sorted)‿(1⊑equals)‿(1⊑diffs)
 
 		# •Show       ⊑parsed
@@ -33,9 +41,49 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	lines
+		parsed ← Parse¨ lines
+		"Parsed"Log parsed
+
+
+		Run ← {func𝕊line:
+			# •Out 50/"-"
+			(⌈´ ·   (Func )˘ SparsePick)line
+			}
+
+		IsSorted ← ((∨≡⊢)⌈(∧≡⊢))
+		IsSamed ← ⌊´ ∘ (≠´¨)∘ (¯1⊸↓)∘(¯1⊸⊑⊸« ⋈˜¨ ⊢)
+		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((3⊸(≤˜)⌊1⊸(≥˜))∘|-´)¨ ((¯1⊸⊑⊸« )⋈˜¨⊢))
+
+		# line ← "line" Log 5⊑ parsed
+		# "isSorted" Log isSorted Run line
+		# "isSamed" Log isSamed Run line
+		# "isValidDiff" Log isValidDiff Run line
+		# # "is samed" Log IsSamed ⟨8,6,4,4,1⟩
+		# •Exit 0
+
+		# verbose ↩ 0
+		# "sorted?" Log is_sorteds ← (isSorted⊸Run ) line
+		# "same ?" Log is_same ← (isSamed⊸Run) line
+		# verbose ↩ 1
+		# "diffs? " Log is_diff_valids ← (isValidDiff⊸Run) line
+
+		"sorted?" Log is_sorteds ← isSorted(Run ¨) parsed
+		"same ?" Log is_same ← isSamed(Run¨) parsed
+		"diffs? " Log is_diff_valids ← isValidDiff(Run¨) parsed
+
+		IsValid ←	(⌊´)
+		•Show "sorted"‿"same ?"‿"diffs"
+		•Show total← +´ (IsValid)¨ "trips" Log (is_sorteds∾¨is_same⋈¨is_diff_valids)
+		•Show (1⊸⊑)¨ (is_sorteds‿is_same‿is_diff_valids)
+		# •Show IsValid (1⊑sorted)‿(1⊑equals)‿(1⊑diffs)
+
+		total
 }
 
-•Out 50/"-"
-"part 1: " Log (PartOne data)
-# "part 2: " Log (PartTwo data)
+# RunProcessing ← +´
+# •Show line ← Parse ⊑data
+# # •Show  Parse ⊑data
+# •Show 13∊ RunProcessing˘ SparsePick line
+
+# "part 1: " Log (PartOne data)
+"part 2: " Log (PartTwo data)
