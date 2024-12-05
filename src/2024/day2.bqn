@@ -24,13 +24,12 @@ PartOne ← {𝕊lines:
 		parsed ← Parse¨ lines
 
 		sorted ← ((∨≡⊢)⌈(∧≡⊢))¨ parsed
-		equals ← (¯1⊸↓)∘ ((≠´)¨)∘((¯1⊸⊑⊸« )⋈˜¨⊢)¨ parsed
-		diffs ← (¯1⊸↓)∘((((3⊸(≤˜))⌊(1⊸(≥˜)))∘|-´)¨((¯1⊸⊑⊸« )⋈˜¨⊢))¨ parsed
-
+		equals ← ¯1⊸↓ ∘ (≠´¨)∘(¯1⊸⊑⊸« ⋈˜ ¨⊢)¨ parsed
+		diffs ← ¯1⊸↓ ∘ (((≤⟜3 ⌊ ≥⟜1)∘|-´)¨ ¯1⊸⊑⊸« ⋈˜¨ ⊢)¨ parsed
 
 		IsValid ←	(⌊´ · ⌊´¨ ⥊¨)
 		total← +´ (IsValid∘∾)¨ (sorted⋈¨equals⋈¨diffs)
-		(1⊸⊑)¨ (sorted‿equals‿diffs)
+		(1⊸⊑)¨ sorted‿equals‿diffs
 
 		total
 }
@@ -40,23 +39,23 @@ PartTwo ← {𝕊lines:
 
 
 		Run ← {func𝕊line:
-			( (Func )˘ SparsePick)line
-			}
+			Func˘ SparsePick line
+		}
 
 		IsSorted ← ((∨≡⊢)⌈(∧≡⊢))
-		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((3⊸(≤˜)⌊1⊸(≥˜))∘|-´)¨ (¯1⊸⊑⊸« ⋈˜¨ ⊢))
+		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((≤⟜3 ⌊ ≥⟜1)∘| -´)¨ (¯1⊸⊑⊸« ⋈˜¨ ⊢))
 
 		verbose ↩ 0
-		is_sorteds ← isSorted(Run ¨) parsed
-		is_diff_valids ← isValidDiff(Run¨) parsed
+		is_sorteds ← isSorted Run¨ parsed
+		is_diff_valids ← isValidDiff Run¨ parsed
 
 		num ← ≠parsed
 		num↑ parsed
-		total← +´ ( {⌈´¨ 2=(+)˝𝕩} ⊑)˘ num↑ <˘⍉[is_sorteds,is_diff_valids]
+		total← +´ ( ⌈´¨ · 2⊸=∘+˝ ⊑)˘ num↑ <˘⍉[is_sorteds, is_diff_valids]
 
 		total
 }
 
 
-"part 1: " Log (PartOne data)
-"part 2: " Log (PartTwo data)
+"Part 1 is wrong!"!472= "part 1: " Log PartOne data
+"Part 2 is wrong!"!520= "part 2: " Log PartTwo data
