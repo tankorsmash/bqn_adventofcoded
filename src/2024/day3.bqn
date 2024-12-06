@@ -34,18 +34,48 @@ PartOne ← {𝕊lines:
 		line ← ⊑lines
 		"line" Log line
 		paddings ← ( (+⟜(↕4))˘ / "mul(" Find line)
-		mulm ←   ⌈˝ {1˘⌾((𝕩)⊸⊏) ("mul(" Find line)}˘ paddings
+		mul ← "mul(" Find line
+		mulm ←   ⌈˝ {1˘⌾(𝕩⊸⊏) "mul(" Find line}˘ paddings
 		digm ← 2× digits∊˜ line
 		comm ← 3×"," Find line
 		endm ← 4×")" Find line
-		"comb" Log comb ← (mulm + digm + comm + endm)
+		comb ← (mulm + digm + comm + endm)
 
-		"com2" Log com2 ← 0≠ comb
-		First ← »⊸<
-		Last ← >⟜«
-		both ← ∘‿2⥊ / (First ⌈ Last ) com2
-		"bot2"⊸Log¨ bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (First ⌈ Last ) com2
-		"pick" Log pick ← (("line"Log line)⊸(⊏˜) •Show)¨ bot2
+		com2 ← 0≠ comb
+		both ← ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
+		bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
+
+		bpc2 ← comb⊸(⊏˜)¨ bot2
+		pick ← (line⊸(⊏˜))¨ bot2
+		# "bot2" Log bot2
+		# "b+c2" Log comb
+		# "pick" Log pick
+		# "bpc2"⊸Log¨ bpc2
+
+		# takes 1 2 3 2 4 and says 'valid'
+		# takes 2 3 4 and says 'invalid'
+		ValidateMask ← {𝕊mask:
+			"mask" Log mask
+			# starts with 1
+			begin ← 1= ⊏mask
+			# only has 4 1s (FRAGILE!)
+			ones ← 4= +´1=mask
+			# only has 1 4
+			four ← 1= +´4=mask
+			# 2-6 2s
+			sixes ← 6≥ +´2=mask
+			twos ← 2≤ +´2=mask
+			# ends with 4
+			end ← 4= ¯1⊏mask
+
+			"res" Log [
+				⟨"begin", "ones","four","twos", "sixes","end"⟩,
+				[begin, ones,four,twos, sixes,end]
+				]
+			𝕩
+		}
+
+		ValidateMask¨ bpc2
 		≠lines
 }
 
@@ -53,6 +83,8 @@ PartTwo ← {𝕊lines:
  ≠lines
 }
 
+
 "part 1: " Log PartOne data
+
 # "Part 1 is wrong!"!472= "part 1: " Log PartOne data
 # "Part 2 is wrong!"!520= "part 2: " Log PartTwo data
