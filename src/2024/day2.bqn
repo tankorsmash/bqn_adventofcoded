@@ -15,22 +15,20 @@ CLog ← {msg𝕊val:
 }
 
 # turns "1 2 3" into ⟨1 2 3⟩
-Parse ← (' '⊸≠(•ParseFloat∘/)⊢)¨ ((+`∘(' '⊸=))(⊔)⊢)
+
+Parse ← (' '⊸≠(•ParseFloat∘/)⊢)¨ ((+`∘(' '⊸=))⊔⊢)
 
 # turns ⟨1 2 3 4⟩ into ⟨ ⟨1 2 3⟩ ⟨1 2 4⟩ ⟨1 3 4⟩ ⟨2 3 4⟩ ⟩
-SparsePick ← {𝕩⊸(/˜)˘ ≠⌜˜↕ ≠𝕩}
+SparsePick ← {/⟜𝕩˘ ≠⌜˜ ↕ ≠𝕩}
+
 
 PartOne ← {𝕊lines:
 		parsed ← Parse¨ lines
-
 		sorted ← ((∨≡⊢)⌈(∧≡⊢))¨ parsed
-		equals ← ¯1⊸↓ ∘ (≠´¨)∘(¯1⊸⊑⊸« ⋈˜ ¨⊢)¨ parsed
-		diffs ← ¯1⊸↓ ∘ (((≤⟜3 ⌊ ≥⟜1)∘|-´)¨ ¯1⊸⊑⊸« ⋈˜¨ ⊢)¨ parsed
+		diffs ← ¯1⊸↓ ∘ (((≤⟜3 ⌊ ≥⟜1)∘|-´)¨ (« ⋈˜¨ ⊢))¨ parsed
 
-		IsValid ←	(⌊´ · ⌊´¨ ⥊¨)
-		total← +´ (IsValid∘∾)¨ (sorted⋈¨equals⋈¨diffs)
-		(1⊸⊑)¨ sorted‿equals‿diffs
-
+		IsValid ←	⌊´ · ⌊´¨ ⥊¨
+		total← +´ IsValid¨ sorted⋈¨diffs
 		total
 }
 
@@ -43,15 +41,14 @@ PartTwo ← {𝕊lines:
 		}
 
 		IsSorted ← ((∨≡⊢)⌈(∧≡⊢))
-		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((≤⟜3 ⌊ ≥⟜1)∘| -´)¨ (¯1⊸⊑⊸« ⋈˜¨ ⊢))
+		IsValidDiff ←	⌊´ ∘ (¯1⊸↓) ∘ (((≤⟜3 ⌊ ≥⟜1)∘| -´)¨ (« ⋈˜¨ ⊢))
+
 
 		verbose ↩ 0
 		is_sorteds ← isSorted Run¨ parsed
 		is_diff_valids ← isValidDiff Run¨ parsed
 
-		num ← ≠parsed
-		num↑ parsed
-		total← +´ ( ⌈´¨ · 2⊸=∘+˝ ⊑)˘ num↑ <˘⍉[is_sorteds, is_diff_valids]
+		total← +´ ( ⌈´¨ · 2⊸=∘+˝  •Show )˘  ⍉ is_sorteds≍is_diff_valids
 
 		total
 }
