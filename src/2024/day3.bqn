@@ -31,22 +31,27 @@ Find ← {chars𝕊input:
 
 bad ← "mul(3,4]   )"
 PartOne ← {𝕊lines:
-		line ← 41↑ ⊑lines
+		line ← ⊑lines
 		"line" Log line
-		paddings ← •Show ( (+⟜(↕4))˘ / "mul(" Find line)
-		"mul(" Log mulm ←   ⌈˝ {1˘⌾((𝕩)⊸⊏) ("mul(" Find line)}˘ paddings
-		"digs" Log digm ← 2× digits∊˜ line
-		" ,  " Log comm ← 3×"," Find line
-		"   )" Log endm ← 4×")" Find line
-		"comb" Log (mulm + digm + comm + endm)
+		paddings ← ( (+⟜(↕4))˘ / "mul(" Find line)
+		mulm ←   ⌈˝ {1˘⌾((𝕩)⊸⊏) ("mul(" Find line)}˘ paddings
+		digm ← 2× digits∊˜ line
+		comm ← 3×"," Find line
+		endm ← 4×")" Find line
+		"comb" Log comb ← (mulm + digm + comm + endm)
+
+		"com2" Log com2 ← 0≠ comb
+		First ← »⊸<
+		Last ← >⟜«
+		both ← ∘‿2⥊ / (First ⌈ Last ) com2
+		"bot2"⊸Log¨ bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (First ⌈ Last ) com2
+		"pick" Log pick ← (("line"Log line)⊸(⊏˜) •Show)¨ bot2
 		≠lines
 }
 
 PartTwo ← {𝕊lines:
  ≠lines
 }
-
-•Show digits ∊˜ "mul(3,4)"
 
 "part 1: " Log PartOne data
 # "Part 1 is wrong!"!472= "part 1: " Log PartOne data
