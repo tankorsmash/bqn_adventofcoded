@@ -20,6 +20,8 @@ digits ← @+48 + ↕10 #2
 com ← ',' #3
 end ← ')' #4
 
+allowed_chars ← mul∾",)"∾digits
+
 # •Show [1,2,3,2,4]
 # •Show [1,2,2, 2,3,2,2,2,4]
 
@@ -31,31 +33,23 @@ Find ← {chars𝕊input:
 
 bad ← "mul(3,4]   )"
 PartOne ← {𝕊lines:
-		line ← ⊑lines
+		PerLine ← {𝕊line: 
+		# line ← "xmul(2000,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,500))"
 		"line" Log line
 		paddings ← ( (+⟜(↕4))˘ / mul Find line)
 		mul_match ← mul Find line
 		mul_mask ←   ⌈˝ { "mul(" Find line}˘ paddings
-		("mul_mask"⊸Log¨) mul_part ← mul_mask+`⊸⊔line
-		# digm ← 2× digits∊˜ line
-		# comm ← 3×"," Find line
-		# endm ← 4×")" Find line
-		"end_mask" Log end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
-		"foo" Log foo ← 1+ (((0≠≠¨)⊑¨∘/⊢) end_mask)
-		"lengths" Log lengths ← (((0≠≠¨) end_mask )/ mul_part)
-		"grabbed" Log grabbed ← foo ↑¨ lengths
-		# comb ← (mulm + digm + comm + endm)
-    #
-		# com2 ← 0≠ comb
-		# both ← ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
-		# bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
-    #
-		# bpc2 ← comb⊸(⊏˜)¨ bot2
-		# pick ← (line⊸(⊏˜))¨ bot2
-		# # "bot2" Log bot2
-		# "b+c2" Log comb
-		# "pick" Log pick
-		# # "bpc2"⊸Log¨ bpc2
+		mul_part ← mul_mask+`⊸⊔line
+		end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
+		foo ← (((0≠≠¨)⊑¨∘/⊢) end_mask)
+		lengths ← (((0≠≠¨) end_mask )/ mul_part)
+		"grabbed" Log grabbed ← foo 4⊸↓∘↑¨ lengths
+		"splitcomma" Log splitcomma ← ','(•ParseFloat¨ ((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
+		Range ← (1⊸≤∧1000⊸>)
+		"Valids mask" Log valids_mask ← (⌊´ Range¨)¨ splitcomma
+		"Valid" Log valids ← valids_mask/ splitcomma
+		"mul res" Log mul_res ← ×´¨ valids_mask/ splitcomma
+		res ← +´ mul_res
 
 		# takes 1 2 3 2 4 and says 'valid'
 		# takes 2 3 4 and says 'invalid'
@@ -83,8 +77,10 @@ PartOne ← {𝕊lines:
 			𝕩
 		}
 
-		# ValidateMask¨ bpc2
-		≠lines
+		res
+		}
+
+		+´ PerLine¨ lines
 }
 
 PartTwo ← {𝕊lines:
