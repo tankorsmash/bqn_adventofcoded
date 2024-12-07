@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day3.txt"
 data ↩ •file.Lines "../../samples/2024/day3_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day3.txt"
+# data ↩ •file.Lines "../../inputs/2024/day3.txt"
 
 
 Log ← {msg𝕊val:
@@ -61,7 +61,7 @@ PartTwo ← {𝕊lines:
 
 	do ← "do()"
 	dont ← "don't"
-	•Show 90↑ line ← ⊑data
+	•Show line ← ⊑data
 
 
 	PerLine ← {𝕊line:
@@ -73,40 +73,22 @@ PartTwo ← {𝕊lines:
 		MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
 		mul_part ← MakeValid  mul_mask+`⊸⊔line
 
-		"""python
-		is_doing = 1
-		res = []
-		for i in range(len(line)):
-			if is_new_do(line[i]):
-				is_doing = 1
-			if is_new_dont(line[i]):
-				is_doing = 0
-			res.append(is_doing)
-		"""
-
-		# 0-10
-		# donts: [3]
-		# dos: [0, 6] # 0 is do by default
-		# mults: 2, 9
-		# do status: [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1]
-		"dos2" Log dos2 ←   ⟨ 5, 13, 18, 20 ⟩
-		"donts2" Log donts2 ← ⟨ 2,  9, 15, 22, 24 ⟩
-		EnableMask ← {doing𝕊idx:
+		# "dos2" Log dos2 ←   ⟨ 5, 13, 18, 20 ⟩
+		# "donts2" Log donts2 ← ⟨ 2,  9, 15, 22, 24 ⟩
+		BuildEnableMask ← {doing𝕊idx:
 			 # idk why ⊑ is needed, since idx is a unit
-			 in_dos ← ⊑ idx∊dos2,
-			 in_donts ← ⊑ idx∊donts2,
+			 in_dos ← ⊑ idx∊dos
+			 in_donts ← ⊑ idx∊donts
 
 			 { in_dos ? 1 ; in_donts ? 0 ; doing}
 		}
 
-		•Show [
-			↕ ⌈´ dos2∾donts2,
-			1(EnableMask)`↕ ⌈´ dos2∾donts2
-			]
+		# •Show ↕ ⌈´ dos2∾donts2,
+		"enable_mask_idx" Log enable_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
 
 
 
-		# "cmds" Log cmds ←  (/ ⍷⟜line)¨ mul_part
+		"cmds" Log cmds ←  ∾´ (/ ⍷⟜line)¨ mul_part
 
 
 
