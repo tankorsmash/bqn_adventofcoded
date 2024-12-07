@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day3.txt"
 # data ↩ •file.Lines "../../samples/2024/day3_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day3.txt"
+data ↩ •file.Lines "../../inputs/2024/day3.txt"
 
 
 Log ← {msg𝕊val:
@@ -34,52 +34,28 @@ Find ← {chars𝕊input:
 bad ← "mul(3,4]   )"
 PartOne ← {𝕊lines:
 		PerLine ← {𝕊line: 
-		# line ← "xmul(2000,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,500))"
-		"line" Log line
-		paddings ← ( (+⟜(↕4))˘ / mul Find line)
-		mul_match ← mul Find line
-		mul_mask ←   ⌈˝ { "mul(" Find line}˘ paddings
-		mul_part ← mul_mask+`⊸⊔line
-		end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
-		foo ← (((0≠≠¨)⊑¨∘/⊢) end_mask)
-		lengths ← (((0≠≠¨) end_mask )/ mul_part)
-		"grabbed" Log grabbed ← foo 4⊸↓∘↑¨ lengths
-		"splitcomma" Log splitcomma ← ','(•ParseFloat¨ ((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
-		Range ← (1⊸≤∧1000⊸>)
-		"Valids mask" Log valids_mask ← (⌊´ Range¨)¨ splitcomma
-		"Valid" Log valids ← valids_mask/ splitcomma
-		"mul res" Log mul_res ← ×´¨ valids_mask/ splitcomma
-		res ← +´ mul_res
+			# line ← "xmul(2000,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,500))"
+			"line" Log line 100⊸↑↩
+			paddings ← ( (+⟜(↕4))˘ / mul Find line)
+			mul_match ← mul Find line
+			mul_mask ←   ⌈˝ { "mul(" Find line}˘ paddings
+			mul_part ← mul_mask+`⊸⊔line
+			end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
+			idk ← (((0≠≠¨)⊑¨∘/⊢) end_mask)
+			lengths ← (((0≠≠¨) end_mask )/ mul_part)
+			"grabbed" Log grabbed ←  ((⌊´ allowed_chars⊸(∊˜))¨/⊢) (idk 4⊸↓∘↑¨ lengths)
+			splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
+			"parsed" Log parsed ← (•ParseFloat¨ )¨ splitcomma
+			Range ← (1⊸≤∧1000⊸>)
+			"Valids mask" Log valids_mask ← (⌊´ Range¨)¨ parsed
+			"Valid" Log valids ← valids_mask/ parsed
+			"mul res" Log mul_res ← ×´¨ valids
+			res ← +´ mul_res
 
-		# takes 1 2 3 2 4 and says 'valid'
-		# takes 2 3 4 and says 'invalid'
-		#
-		# TODO: break up adjacent mul() calls
-		# TODO: dont grab two right parens in a row
-		ValidateMask ← {𝕊mask:
-			"mask" Log mask
-			# starts with 1
-			begin ← 1= ⊏mask
-			# only has 4 1s (FRAGILE!)
-			ones ← 4= +´1=mask
-			# only has 1 4
-			four ← 1= +´4=mask
-			# 2-6 2s
-			sixes ← 6≥ +´2=mask
-			twos ← 2≤ +´2=mask
-			# ends with 4
-			end ← 4= ¯1⊏mask
-
-			"res" Log [
-				⟨"begin", "ones","four","twos", "sixes","end"⟩,
-				[begin, ones,four,twos, sixes,end]
-				]
-			𝕩
+			res
 		}
 
-		res
-		}
-
+		# +´ PerLine ⊑lines
 		+´ PerLine¨ lines
 }
 
