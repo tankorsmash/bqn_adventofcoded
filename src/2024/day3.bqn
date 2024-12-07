@@ -34,23 +34,28 @@ PartOne ← {𝕊lines:
 		line ← ⊑lines
 		"line" Log line
 		paddings ← ( (+⟜(↕4))˘ / mul Find line)
-		mul ← mul Find line
-		mulm ←   ⌈˝ {1˘⌾(𝕩⊸⊏) "mul(" Find line}˘ paddings
-		digm ← 2× digits∊˜ line
-		comm ← 3×"," Find line
-		endm ← 4×")" Find line
-		comb ← (mulm + digm + comm + endm)
-
-		com2 ← 0≠ comb
-		both ← ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
-		bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
-
-		bpc2 ← comb⊸(⊏˜)¨ bot2
-		pick ← (line⊸(⊏˜))¨ bot2
-		# "bot2" Log bot2
-		"b+c2" Log comb
-		"pick" Log pick
-		# "bpc2"⊸Log¨ bpc2
+		mul_match ← mul Find line
+		mul_mask ←   ⌈˝ { "mul(" Find line}˘ paddings
+		("mul_mask"⊸Log¨) mul_part ← mul_mask+`⊸⊔line
+		# digm ← 2× digits∊˜ line
+		# comm ← 3×"," Find line
+		# endm ← 4×")" Find line
+		"end_mask" Log end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
+		"foo" Log foo ← 1+ (((0≠≠¨)⊑¨∘/⊢) end_mask)
+		"lengths" Log lengths ← (((0≠≠¨) end_mask )/ mul_part)
+		"grabbed" Log grabbed ← foo ↑¨ lengths
+		# comb ← (mulm + digm + comm + endm)
+    #
+		# com2 ← 0≠ comb
+		# both ← ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
+		# bot2 ← {𝕩 +<·↕𝕨 ¬𝕩}˜´˘ ∘‿2⥊ / (»⊸< ⌈ >⟜« ) com2
+    #
+		# bpc2 ← comb⊸(⊏˜)¨ bot2
+		# pick ← (line⊸(⊏˜))¨ bot2
+		# # "bot2" Log bot2
+		# "b+c2" Log comb
+		# "pick" Log pick
+		# # "bpc2"⊸Log¨ bpc2
 
 		# takes 1 2 3 2 4 and says 'valid'
 		# takes 2 3 4 and says 'invalid'
@@ -78,7 +83,7 @@ PartOne ← {𝕊lines:
 			𝕩
 		}
 
-		ValidateMask¨ bpc2
+		# ValidateMask¨ bpc2
 		≠lines
 }
 
