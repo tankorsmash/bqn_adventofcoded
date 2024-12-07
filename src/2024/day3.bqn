@@ -72,9 +72,11 @@ PartTwo ← {𝕊lines:
 		mul_mask ← ⌈˝ { "mul(" Find line}˘ paddings
 		MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
 		mul_part ← MakeValid  mul_mask+`⊸⊔line
+		cmd_idx ← ∾´ line⊸(/∘⍷˜)¨ mul_part
+		# "mul_part"⊸Log¨ mul_part
+		# "cmd_idx" Log cmd_idx
+		"joined" Log joined ← mul_part ∾˘˜ cmd_idx
 
-		# "dos2" Log dos2 ←   ⟨ 5, 13, 18, 20 ⟩
-		# "donts2" Log donts2 ← ⟨ 2,  9, 15, 22, 24 ⟩
 		BuildEnableMask ← {doing𝕊idx:
 			 # idk why ⊑ is needed, since idx is a unit
 			 in_dos ← ⊑ idx∊dos
@@ -84,28 +86,34 @@ PartTwo ← {𝕊lines:
 		}
 
 		# •Show ↕ ⌈´ dos2∾donts2,
-		"enable_mask_idx" Log enabled_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
-
+		enabled_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
 
 
 		"cmds" Log cmds ←  ∾´ (/ ⍷⟜line)¨ mul_part
-		"allowed_cmds" Log allowed_cmds ←   (¬cmds∊enabled_mask_idx)/⊢ cmds
+		"enabled_cmds" Log enabled_cmds ← (cmds∊enabled_mask_idx)/⊢ cmds
+		# "enabled_mask" Log enabled_mask ← (∊⟜enabled_cmds) cmd_idx
 
-
-
+		end_mask ← (/ ")"⊸Find)¨ MakeValid mul_part
+		# "end_mask" Log end_mask
+		valid_ends_mul_parts ← (((0≠≠¨) end_mask )/ mul_part)
+		"valid_ends_mul_parts" Log valid_ends_mul_parts
+		"valid_joined" Log  valid_joined ← (/ ((⊏⌽⍉joined) ∊ valid_ends_mul_parts))⊏joined
+		# filter out the valid_joined
+		"rotated" Log rotated ← (/((⊏⍉valid_joined) ∊ enabled_cmds))⊏valid_joined
 
 		•Exit 1
 
-		end_mask ← (/ ")"⊸Find)¨ MakeValid mul_mask+`⊸⊔line
-		e_w_e ← (((0≠≠¨)⊑¨∘/⊢) end_mask) #ends without empties
-		lengths ← (((0≠≠¨) end_mask )/ mul_part)
-		grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) (e_w_e 4⊸↓∘↑¨ lengths)
+
+		lengths ← (((0≠≠¨)⊑¨∘/⊢) end_mask) #ends without empties
+		# "ewe" Log lengths
+		"grabbed" Log grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) (lengths (≠mul)⊸↓∘↑¨ valid_ends_mul_parts)
 		splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
 		parsed ← (•ParseFloat¨ )¨ splitcomma
 
 		Range ← (1⊸≤∧1000⊸>)
 		valids_mask ← (⌊´ Range¨)¨ parsed
 		valids ← valids_mask/ parsed
+		"valids" Log valids
 		mul_res ← ×´¨ valids
 		res ← +´ mul_res
 
