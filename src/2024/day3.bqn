@@ -84,11 +84,12 @@ PartTwo ← {𝕊lines:
 		}
 
 		# •Show ↕ ⌈´ dos2∾donts2,
-		"enable_mask_idx" Log enable_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
+		"enable_mask_idx" Log enabled_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
 
 
 
 		"cmds" Log cmds ←  ∾´ (/ ⍷⟜line)¨ mul_part
+		"allowed_cmds" Log allowed_cmds ←   (¬cmds∊enabled_mask_idx)/⊢ cmds
 
 
 
