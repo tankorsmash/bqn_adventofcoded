@@ -83,6 +83,11 @@ PartTwo ← {𝕊lines:
 		+´ ( PerLine)¨ lines
 }
 
+val ← "mul(2,4)%&mul[3,7]!@^do_not_"
+•Show line ← ⊑data
+
+"FIND" Log val ⍷ line
+
 "part 1: " Log PartOne data
 # "Part 1 is wrong!"!472= "part 1: " Log PartOne data
 # "Part 2 is wrong!"!520= "part 2: " Log PartTwo data
