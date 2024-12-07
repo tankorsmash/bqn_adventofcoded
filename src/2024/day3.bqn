@@ -35,16 +35,19 @@ PartOne ← {𝕊lines:
 		PerLine ← {𝕊line:
 			# line ← "xmul(2000,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,500))"
 			# •Show ≠line
-			"line" Log line (("))))"⊸∾)∘(104⊸↑)∘(100⊸↓))↩
+			# "line" Log line (("))))"⊸∾)∘(104⊸↑)∘(100⊸↓))↩
+			# "line" Log line (104⊸↑)↩
+			# "line" Log line
 			paddings ← ( (+⟜(↕4))˘ / mul Find line)
-			mul_match ← mul Find line
 			mul_mask ← ⌈˝ { "mul(" Find line}˘ paddings
-			"mul_part" Log mul_part ← ((⊑∘(mul⊸⍷)¨)/⊢) mul_mask+`⊸⊔line
+			•Out 50/"-"
+			MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((0≠≠¨)/⊢)
+			mul_part ← MakeValid  mul_mask+`⊸⊔line
 
-			end_mask ← (/ ")"⊸Find)¨ ((⊑∘(mul⊸⍷)¨)/⊢)mul_mask+`⊸⊔line
+			end_mask ← (/ ")"⊸Find)¨ MakeValid mul_mask+`⊸⊔line
 			e_w_e ← (((0≠≠¨)⊑¨∘/⊢) end_mask) #ends without empties
 			lengths ← (((0≠≠¨) end_mask )/ mul_part)
-			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) •Show (e_w_e 4⊸↓∘↑¨ lengths)
+			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) (e_w_e 4⊸↓∘↑¨ lengths)
 			splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
 			parsed ← (•ParseFloat¨ )¨ splitcomma
 
@@ -57,8 +60,8 @@ PartOne ← {𝕊lines:
 			res
 		}
 
-		# +´ PerLine ⊑lines
-		+´ (•Show PerLine)¨ lines
+		# •Show PerLine 2⊑lines
+		+´ ( PerLine)¨ lines
 }
 
 PartTwo ← {𝕊lines:
