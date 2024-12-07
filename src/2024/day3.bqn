@@ -31,32 +31,34 @@ Find ← {chars𝕊input:
 
 }
 
-bad ← "mul(3,4]   )"
 PartOne ← {𝕊lines:
-		PerLine ← {𝕊line: 
+		PerLine ← {𝕊line:
 			# line ← "xmul(2000,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,500))"
-			"line" Log line 100⊸↑↩
+			# •Show ≠line
+			"line" Log line (("))))"⊸∾)∘(104⊸↑)∘(100⊸↓))↩
 			paddings ← ( (+⟜(↕4))˘ / mul Find line)
 			mul_match ← mul Find line
-			mul_mask ←   ⌈˝ { "mul(" Find line}˘ paddings
-			mul_part ← mul_mask+`⊸⊔line
-			end_mask ← (/ ")"⊸Find)¨ mul_mask+`⊸⊔line
-			idk ← (((0≠≠¨)⊑¨∘/⊢) end_mask)
+			mul_mask ← ⌈˝ { "mul(" Find line}˘ paddings
+			"mul_part" Log mul_part ← ((⊑∘(mul⊸⍷)¨)/⊢) mul_mask+`⊸⊔line
+
+			end_mask ← (/ ")"⊸Find)¨ ((⊑∘(mul⊸⍷)¨)/⊢)mul_mask+`⊸⊔line
+			e_w_e ← (((0≠≠¨)⊑¨∘/⊢) end_mask) #ends without empties
 			lengths ← (((0≠≠¨) end_mask )/ mul_part)
-			"grabbed" Log grabbed ←  ((⌊´ allowed_chars⊸(∊˜))¨/⊢) (idk 4⊸↓∘↑¨ lengths)
+			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) •Show (e_w_e 4⊸↓∘↑¨ lengths)
 			splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
-			"parsed" Log parsed ← (•ParseFloat¨ )¨ splitcomma
+			parsed ← (•ParseFloat¨ )¨ splitcomma
+
 			Range ← (1⊸≤∧1000⊸>)
-			"Valids mask" Log valids_mask ← (⌊´ Range¨)¨ parsed
-			"Valid" Log valids ← valids_mask/ parsed
-			"mul res" Log mul_res ← ×´¨ valids
+			valids_mask ← (⌊´ Range¨)¨ parsed
+			valids ← valids_mask/ parsed
+			mul_res ← ×´¨ valids
 			res ← +´ mul_res
 
 			res
 		}
 
 		# +´ PerLine ⊑lines
-		+´ PerLine¨ lines
+		+´ (•Show PerLine)¨ lines
 }
 
 PartTwo ← {𝕊lines:
