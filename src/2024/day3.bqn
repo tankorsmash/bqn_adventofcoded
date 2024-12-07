@@ -22,20 +22,15 @@ end ← ')' #4
 
 allowed_chars ← mul∾",)"∾digits
 
-# •Show [1,2,3,2,4]
-# •Show [1,2,2, 2,3,2,2,2,4]
-
-
 Find ← {chars𝕊input:
 	chars⍷input ∾ (0˘ (↕ -⟜1∘≠)chars)
-
 }
 
 PartOne ← {𝕊lines:
 		PerLine ← {𝕊line:
 			paddings ← ( (+⟜(↕4))˘ / mul Find line)
-			mul_mask ← ⌈˝ { "mul(" Find line}˘ paddings
-			MakeValid ← ((⊑∘(mul⊸⍷)∘•Show¨)/⊢) ((4⊸≤∘≠¨)/⊢)
+			mul_mask ← ⌈˝ { mul Find line}˘ paddings
+			MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
 			mul_part ← MakeValid  mul_mask+`⊸⊔line
 
 			end_mask ← (/ ")"⊸Find)¨ MakeValid mul_mask+`⊸⊔line
@@ -64,16 +59,14 @@ PartTwo ← {𝕊lines:
 
 
 	PerLine ← {𝕊line:
-		"FIND DO  " Log dos← / do ⍷ line
-		"FIND DONT" Log donts← / dont ⍷ line
+		dos← / do ⍷ line
+		donts← / dont ⍷ line
 
 		paddings ← ( (+⟜(↕4))˘ / mul Find line)
-		mul_mask ← ⌈˝ { "mul(" Find line}˘ paddings
+		mul_mask ← ⌈˝ { mul Find line}˘ paddings
 		MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
 		mul_part ← MakeValid  mul_mask+`⊸⊔line
 		cmd_idx ← ∾´ line⊸(/∘⍷˜)¨ mul_part
-		# "mul_part"⊸Log¨ mul_part
-		# "cmd_idx" Log cmd_idx
 		joined ← mul_part ∾˘˜ cmd_idx
 
 		BuildEnableMask ← {doing𝕊idx:
@@ -84,35 +77,24 @@ PartTwo ← {𝕊lines:
 			 { in_dos ? 1 ; in_donts ? 0 ; doing}
 		}
 
-		# •Show ↕ ⌈´ dos2∾donts2,
 		enabled_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
 		↑‿13⥊ (↕∘≠⋈¨⊢)1(BuildEnableMask)` ↕ ≠line
 
 
 		cmds ←  ∾´ (/ ⍷⟜line)¨ mul_part
 		enabled_cmds ← (cmds∊enabled_mask_idx)/⊢ cmds
-		# "enabled_mask" Log enabled_mask ← (∊⟜enabled_cmds) cmd_idx
 
 		end_mask ← (/ ")"⊸Find)¨ MakeValid mul_part
-		# "end_mask" Log end_mask
 		valid_ends_mul_parts ← (((0≠≠¨) end_mask )/ mul_part)
 		valid_ends_mul_parts
 		 valid_joined ← (/ ((⊏⌽⍉joined) ∊ valid_ends_mul_parts))⊏joined
-		# filter out the valid_joined
 		enabled_valid_joined ← (/((⊏⍉valid_joined) ∊ enabled_cmds))⊏valid_joined
-		# "enabled_valid_joined" Log enabled_valid_joined
 		to_parse ← 1⊏˘ enabled_valid_joined
 
 		small_ranges ←  ⊑¨ (/ ")"⊸Find)¨  to_parse
 		grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) small_ranges((≠mul)⊸↓∘↑¨)to_parse
 
 
-		# ranges ← (((0≠≠¨)⊑¨∘/⊢) end_mask) # range til end of first mul op
-		# "ewe" Log ranges
-		# "grabbed" Log grabbed ←  {
-		# 	foo ← (ranges (≠mul)⊸↓∘↑¨ valid_ends_mul_parts)
-		# 	((⌊´ allowed_chars⊸(∊˜) )¨/⊢) foo
-		# }
 		splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
 		splitcomma
 		parsed ← (•ParseFloat¨ )¨ splitcomma
@@ -128,20 +110,10 @@ PartTwo ← {𝕊lines:
 		res
 	}
 
-	•Show line ← ⊑data
-	# line ← "xmul(410,683,mul(892,307)]&mul[3,7]!^don't()don't()do()don't()_mul(5,selec5)+mul(32,64](mul(11,8)undo()?don't()do()mul(8,5)))"
-	# ( PerLine) line
-
-	# +´ ( PerLine)¨ lines
-
 	PerLine ∾ lines
 }
 
 
-input ← "don't() mul(410, do(), 683)"
 
-# "part 1: " Log PartOne data
-"part 2: " Log PartTwo data
-
-# "Part 1 is wrong!"!472= "part 1: " Log PartOne data
-# "Part 2 is wrong!"!520= "part 2: " Log PartTwo data
+"Part 1 is wrong!"!165225049= "part 1: " Log PartOne data
+"Part 2 is wrong!"!108830766= "part 2: " Log PartTwo data
