@@ -78,32 +78,25 @@ PartTwo ← {𝕊lines:
 		}
 
 		enabled_mask_idx ←  / 1(BuildEnableMask)` ↕ ≠line
-		↑‿13⥊ (↕∘≠⋈¨⊢)1(BuildEnableMask)` ↕ ≠line
-
 
 		cmds ←  ∾´ (/ ⍷⟜line)¨ mul_part
 		enabled_cmds ← (cmds∊enabled_mask_idx)/⊢ cmds
 
 		end_mask ← (/ ")"⊸Find)¨ MakeValid mul_part
-		valid_ends_mul_parts ← (((0≠≠¨) end_mask )/ mul_part)
-		valid_ends_mul_parts
-		 valid_joined ← (/ ((⊏⌽⍉joined) ∊ valid_ends_mul_parts))⊏joined
-		enabled_valid_joined ← (/((⊏⍉valid_joined) ∊ enabled_cmds))⊏valid_joined
+		valid_ends_mul_parts ← ((0⊸≠∘≠¨ end_mask )/ mul_part)
+		valid_joined ←         (/((⊏⌽⍉joined) ∊       valid_ends_mul_parts)) ⊏joined
+		enabled_valid_joined ← (/((⊏⍉ valid_joined) ∊ enabled_cmds))         ⊏valid_joined
 		to_parse ← 1⊏˘ enabled_valid_joined
 
-		small_ranges ←  ⊑¨ (/ ")"⊸Find)¨  to_parse
-		grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) small_ranges((≠mul)⊸↓∘↑¨)to_parse
+		ranges ←  ⊑¨ (/ ")"⊸Find)¨  to_parse
+		grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) ranges((≠mul)⊸↓∘↑¨)to_parse
 
-
-		splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
-		splitcomma
-		parsed ← (•ParseFloat¨ )¨ splitcomma
+		splitcomma ← ','(((⊢-˜+`×¬)=)⊔⊢)¨ grabbed
+		parsed ← •ParseFloat¨¨ splitcomma
 
 		Range ← (1⊸≤∧1000⊸>)
-		valids_mask ← (⌊´ Range¨)¨ parsed
+		valids_mask ← ⌊´∘(Range¨)¨ parsed
 		valids ← valids_mask/ parsed
-		valids
-		(valids_mask/grabbed)⋈¨valids
 		mul_res ← ×´¨ valids
 		res ← +´ mul_res
 
