@@ -33,8 +33,8 @@ bad ← "mul(3,4]   )"
 PartOne ← {𝕊lines:
 		line ← ⊑lines
 		"line" Log line
-		paddings ← ( (+⟜(↕4))˘ / "mul(" Find line)
-		mul ← "mul(" Find line
+		paddings ← ( (+⟜(↕4))˘ / mul Find line)
+		mul ← mul Find line
 		mulm ←   ⌈˝ {1˘⌾(𝕩⊸⊏) "mul(" Find line}˘ paddings
 		digm ← 2× digits∊˜ line
 		comm ← 3×"," Find line
@@ -48,12 +48,15 @@ PartOne ← {𝕊lines:
 		bpc2 ← comb⊸(⊏˜)¨ bot2
 		pick ← (line⊸(⊏˜))¨ bot2
 		# "bot2" Log bot2
-		# "b+c2" Log comb
-		# "pick" Log pick
+		"b+c2" Log comb
+		"pick" Log pick
 		# "bpc2"⊸Log¨ bpc2
 
 		# takes 1 2 3 2 4 and says 'valid'
 		# takes 2 3 4 and says 'invalid'
+		#
+		# TODO: break up adjacent mul() calls
+		# TODO: dont grab two right parens in a row
 		ValidateMask ← {𝕊mask:
 			"mask" Log mask
 			# starts with 1
@@ -83,6 +86,16 @@ PartTwo ← {𝕊lines:
  ≠lines
 }
 
+# # input ← [1,1,1,1,2,4,1,1,1,1, 9, 100, 4]
+# # "input" Log input
+# "input" Log ⊑data
+#
+# input ← ( ⊑data)
+# mulres ← "mul(" Find input
+#
+# "mulres" Log mulres
+# "group " Log mulres+`⊸⊔input
+# # "input" Log ⌈˝ ⍷⟜(20↑ ⊑data)˘ "mul(,)"∾digits
 
 "part 1: " Log PartOne data
 
