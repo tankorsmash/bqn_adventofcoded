@@ -28,14 +28,12 @@ Find ← {chars𝕊input:
 
 PartOne ← {𝕊lines:
 		PerLine ← {𝕊line:
-			paddings ← (↕4)˘ line
-			mul_mask ← ⌈˝ { mul Find line}˘ paddings
 			MakeValid ← (⊑∘(mul⊸⍷)¨/⊢) (4⊸≤∘≠¨/⊢)
-			mul_part ← MakeValid  mul_mask+`⊸⊔line
+			mul_part ← MakeValid  (mul⊸Find +`⊸⊔⊢)line
 
-			end_mask ← (/ ")"⊸Find)¨ MakeValid mul_mask+`⊸⊔line
+			end_mask ← (/ ")"⊸Find)¨ mul_part
 			lengths ← ((0≠≠¨) end_mask )/ mul_part
-			e_wo_e ← (((0≠≠¨) ⊑¨∘/⊢) end_mask) # ends without empties
+			e_wo_e ← ((0≠≠¨) ⊑¨∘/⊢) end_mask # ends without empties
 			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) e_wo_e (4↓↑)¨ lengths
 			splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
 			parsed ← •ParseFloat¨¨ splitcomma
@@ -62,10 +60,8 @@ PartTwo ← {𝕊lines:
 		dos← / do ⍷ line
 		donts← / dont ⍷ line
 
-		paddings ← (+↕4)˘ line
-		mul_mask ← ⌈˝ { mul Find line}˘ paddings
 		MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
-		mul_part ← MakeValid  mul_mask+`⊸⊔line
+		mul_part ← MakeValid  (mul⊸Find +`⊸⊔⊢)line
 		cmd_idx ← ∾´ line⊸(/∘⍷˜)¨ mul_part
 		joined ← mul_part ∾˘˜ cmd_idx
 
