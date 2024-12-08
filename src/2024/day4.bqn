@@ -42,6 +42,9 @@ PartTwo ← {𝕊lines:
 # •Out 50/"-"
 # •Show ⌽>data
 
+input ← »˘["abc", "def", "hig"]
+•Show input
 
-"Part 1 is wrong!"!18= "part 1: " Log PartOne data
+
+# "Part 1 is wrong!"!18= "part 1: " Log PartOne data
 # "Part 2 is wrong!"!6= "part 2: " Log PartTwo data

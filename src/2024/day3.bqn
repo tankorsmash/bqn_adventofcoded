@@ -1,5 +1,5 @@
 data ← •file.Lines "../../samples/2024/day3.txt"
-data ↩ •file.Lines "../../samples/2024/day3_alt.txt"
+# data ↩ •file.Lines "../../samples/2024/day3_alt.txt"
 data ↩ •file.Lines "../../inputs/2024/day3.txt"
 
 
@@ -15,10 +15,10 @@ CLog ← {msg𝕊val:
 }
 
 
-mul ← "mul(" #1
-digits ← @+48 + ↕10 #2
-com ← ',' #3
-end ← ')' #4
+mul    ← "mul("     # 1
+digits ← @+48 + ↕10 # 2
+com    ← ','        # 3
+end    ← ')'        # 4
 
 allowed_chars ← mul∾",)"∾digits
 
@@ -28,21 +28,21 @@ Find ← {chars𝕊input:
 
 PartOne ← {𝕊lines:
 		PerLine ← {𝕊line:
-			paddings ← ( (+⟜(↕4))˘ / mul Find line)
+			paddings ← (↕4)˘ line
 			mul_mask ← ⌈˝ { mul Find line}˘ paddings
-			MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
+			MakeValid ← (⊑∘(mul⊸⍷)¨/⊢) (4⊸≤∘≠¨/⊢)
 			mul_part ← MakeValid  mul_mask+`⊸⊔line
 
 			end_mask ← (/ ")"⊸Find)¨ MakeValid mul_mask+`⊸⊔line
-			e_w_e ← (((0≠≠¨)⊑¨∘/⊢) end_mask) #ends without empties
-			lengths ← (((0≠≠¨) end_mask )/ mul_part)
-			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) (e_w_e 4⊸↓∘↑¨ lengths)
+			lengths ← ((0≠≠¨) end_mask )/ mul_part
+			e_wo_e ← (((0≠≠¨) ⊑¨∘/⊢) end_mask) # ends without empties
+			grabbed ←  ((⌊´ allowed_chars⊸(∊˜) )¨/⊢) e_wo_e (4↓↑)¨ lengths
 			splitcomma ← ','(((⊢-˜+`×¬)∘=)⊔⊢)¨ grabbed
-			parsed ← (•ParseFloat¨ )¨ splitcomma
+			parsed ← •ParseFloat¨¨ splitcomma
 
-			Range ← (1⊸≤∧1000⊸>)
+			Range ← 1⊸≤ ∧ 1000⊸>
 			valids_mask ← (⌊´ Range¨)¨ parsed
-			valids ← valids_mask/ parsed
+			valids ← valids_mask/parsed
 			mul_res ← ×´¨ valids
 			res ← +´ mul_res
 
@@ -62,7 +62,7 @@ PartTwo ← {𝕊lines:
 		dos← / do ⍷ line
 		donts← / dont ⍷ line
 
-		paddings ← ( (+⟜(↕4))˘ / mul Find line)
+		paddings ← (+↕4)˘ line
 		mul_mask ← ⌈˝ { mul Find line}˘ paddings
 		MakeValid ← ((⊑∘(mul⊸⍷)¨)/⊢) ((4⊸≤∘≠¨)/⊢)
 		mul_part ← MakeValid  mul_mask+`⊸⊔line
@@ -84,8 +84,8 @@ PartTwo ← {𝕊lines:
 
 		end_mask ← (/ ")"⊸Find)¨ MakeValid mul_part
 		valid_ends_mul_parts ← ((0⊸≠∘≠¨ end_mask )/ mul_part)
-		valid_joined ←         (/((⊏⌽⍉joined) ∊       valid_ends_mul_parts)) ⊏joined
-		enabled_valid_joined ← (/((⊏⍉ valid_joined) ∊ enabled_cmds))         ⊏valid_joined
+		valid_joined ←         (/⊏⌽⍉joined       ∊ valid_ends_mul_parts) ⊏joined
+		enabled_valid_joined ← (/⊏⍉ valid_joined ∊ enabled_cmds)         ⊏valid_joined
 		to_parse ← 1⊏˘ enabled_valid_joined
 
 		ranges ←  ⊑¨ (/ ")"⊸Find)¨  to_parse
