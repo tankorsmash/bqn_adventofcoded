@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day4.txt"
 # data ↩ •file.Lines "../../samples/2024/day4_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day4.txt"
+# data ↩ •file.Lines "../../inputs/2024/day4.txt"
 
 
 Log ← {msg𝕊val:
@@ -61,35 +61,39 @@ PartTwo ← {𝕊lines:
 
 	len ← ≠lines
 	r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
-	rres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ r_idxs
+	rres ← (1+ · / xmas⊸⍷)¨ ∾¨ {𝕩 {𝕨 <∘/(>𝕩)}˘lines}¨ r_idxs
 	l_idxs ← {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
-	lres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ l_idxs
+	lres ← (1+ · / xmas⊸⍷)¨∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ l_idxs
 
 	rr_idxs ← ⌽⍉⌽¨ {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
-	rrres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rr_idxs
+	rrres ← (1+ · / xmas⊸⍷)¨∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rr_idxs
 	rl_idxs ← ⌽⍉⌽¨ {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
-	rlres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
+	rlres ← (1+ · / xmas⊸⍷)¨∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
 
 	res ← [
-		"DI total" Log +´ CountXmas¨    lres∾rres
-		"ID total" Log +´ CountXmas¨ ⌽¨ lres∾rres
-		"DR total" Log +´ CountXmas¨    rlres∾rrres
-		"RD total" Log +´ CountXmas¨ ⌽¨ rlres∾rrres
+
+		"reg" Log  ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
+		"rev" Log  ≠⊑rlres ((/˜∊)⋈(/˜∊˜)) rrres
 	]
 	# "BT total"⊸Log˘ (((>xmas)⊸⍷)∘⍉)˘ ⌽>lines
 	# •Out 50/"-"
 	•Show +´ res
 }
 
-•Show input ← "zMASyMASa"
-•Show foo ← 1+ / "MAS"⍷input
-•Show rev_input ← "zMbSyMASc"
-•Show bar ← 1+ / "MAS"⍷rev_input
+•Show input ← "zMASyMASaMASMAS"
+•Show rres ← 1+ / "MAS"⍷input
+•Show rev_input ← "zMbSyMAScMASMAS"
+•Show lres ← 1+ / "MAS"⍷rev_input
 
-•Out "ASDSADD"
-•Show /˜ bar ∊ foo
-•Show /˜ bar ∊˜ foo
+•Out 50/"-"
+•Show /˜ lres ∊ rres
+•Show /˜ lres ∊˜ rres
+•Out 5/"-"
+•Show lres /∘∊  rres
+•Show lres /∘(∊˜) rres
+•Show ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
+•Out 50/"-"
 
 # "part 1: " Log PartOne data
 # {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
-# "Part 2 is wrong!"!6= "part 2: " Log PartTwo data
+"Part 2 is wrong!"!6= "part 2: " Log PartTwo data
