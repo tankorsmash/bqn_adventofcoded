@@ -15,12 +15,11 @@ CLog ← {msg𝕊val:
 }
 
 
-xmas ← "XMAS"
 
-•Show xmas⍷"abcXMASdef"
 •Out 50/"-"
 
 PartOne ← {𝕊lines:
+	xmas ← "XMAS"
 	•Out "orig"
 	# (•Show )¨ lines
 	•Out 50/"-"
@@ -54,12 +53,43 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	lines
+	xmas ← "MAS"
+	•Out "orig"
+	# (•Show )¨ lines
+	•Out 50/"-"
+	CountXmas ← (+´(>xmas)⊸⍷)
+
+	len ← ≠lines
+	r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
+	rres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ r_idxs
+	l_idxs ← {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
+	lres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ l_idxs
+
+	rr_idxs ← ⌽⍉⌽¨ {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
+	rrres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rr_idxs
+	rl_idxs ← ⌽⍉⌽¨ {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
+	rlres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
+
+	res ← [
+		"DI total" Log +´ CountXmas¨    lres∾rres
+		"ID total" Log +´ CountXmas¨ ⌽¨ lres∾rres
+		"DR total" Log +´ CountXmas¨    rlres∾rrres
+		"RD total" Log +´ CountXmas¨ ⌽¨ rlres∾rrres
+	]
+	# "BT total"⊸Log˘ (((>xmas)⊸⍷)∘⍉)˘ ⌽>lines
+	# •Out 50/"-"
+	•Show +´ res
 }
 
-# len ← 4
-# •Show l_idxs ← ⌽⍉⌽¨{(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
+•Show input ← "zMASyMASa"
+•Show foo ← 1+ / "MAS"⍷input
+•Show rev_input ← "zMbSyMASc"
+•Show bar ← 1+ / "MAS"⍷rev_input
+
+•Out "ASDSADD"
+•Show /˜ bar ∊ foo
+•Show /˜ bar ∊˜ foo
 
 # "part 1: " Log PartOne data
-{((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
+# {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
 # "Part 2 is wrong!"!6= "part 2: " Log PartTwo data
