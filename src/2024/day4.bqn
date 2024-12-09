@@ -41,10 +41,21 @@ PartTwo ← {𝕊lines:
 # •Show¨ ⊢ data
 # •Out 50/"-"
 # •Show ⌽>data
-
-input ← »˘["abc", "def", "hig"]
+∾˝
+input ← ⟨"XBC1", "DMF2", "HIA3", "KXMS"⟩
+# input ↩ data
 •Show input
-
+len ← ≠input
+# •Show (</)˘ »⍟1 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} 3⥊1
+r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘ "rlens" Log ↕len
+"rres" Log rres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘(input)}¨ r_idxs
+l_idxs ← {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘ "llens" Log 1↓↕len
+"lres" Log lres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘(input)}¨ l_idxs
+CountXmas ← (+´(>xmas)⊸⍷)
+"both" Log lres∾rres
+"count" Log CountXmas¨ lres∾rres
+"rev both" Log ⌽¨ lres∾rres
+"rev count" Log CountXmas¨ ⌽¨ lres∾rres
 
 # "Part 1 is wrong!"!18= "part 1: " Log PartOne data
 # "Part 2 is wrong!"!6= "part 2: " Log PartTwo data
