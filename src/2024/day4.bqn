@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day4.txt"
 # data ↩ •file.Lines "../../samples/2024/day4_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day4.txt"
+data ↩ •file.Lines "../../inputs/2024/day4.txt"
 
 
 Log ← {msg𝕊val:
@@ -23,39 +23,43 @@ xmas ← "XMAS"
 PartOne ← {𝕊lines:
 	•Out "orig"
 	(•Show ⍉)¨ lines
-	CountXmas ← (+´(>xmas)⊸⍷)
-	"LR total" Log +´ CountXmas¨     lines
-	"RL total" Log +´ CountXmas¨ ⌽¨  lines
-	"TB total" Log +´ CountXmas˘   ⍉>lines
-	"BT total"⊸Log +´ CountXmas˘ ⌽˘⍉>lines
 	•Out 50/"-"
+	CountXmas ← (+´(>xmas)⊸⍷)
+
+	len ← ≠lines
+	r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
+	rres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ r_idxs
+	l_idxs ← {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
+	lres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ l_idxs
+
+	rr_idxs ← ⌽⍉⌽¨ {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
+	rrres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rr_idxs
+	rl_idxs ← ⌽⍉⌽¨ {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
+	rlres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
+
+	res ← [
+		"LR total" Log +´ CountXmas¨     lines
+		"RL total" Log +´ CountXmas¨ ⌽¨  lines
+		"TB total" Log +´ CountXmas˘   ⍉>lines
+		"BT total" Log +´ CountXmas˘ ⌽˘⍉>lines
+
+		"DI total" Log +´ CountXmas¨    lres∾rres
+		"ID total" Log +´ CountXmas¨ ⌽¨ lres∾rres
+		"DR total" Log +´ CountXmas¨    rlres∾rrres
+		"RD total" Log +´ CountXmas¨ ⌽¨ rlres∾rrres
+	]
 	# "BT total"⊸Log˘ (((>xmas)⊸⍷)∘⍉)˘ ⌽>lines
 	# •Out 50/"-"
-	≠lines
+	•Show +´ res
 }
 
 PartTwo ← {𝕊lines:
 	lines
 }
 
-# •Show¨ ⊢ data
-# •Out 50/"-"
-# •Show ⌽>data
-∾˝
-input ← ⟨"XBC1", "DMF2", "HIA3", "KXMS"⟩
-# input ↩ data
-•Show input
-len ← ≠input
-# •Show (</)˘ »⍟1 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} 3⥊1
-r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘ "rlens" Log ↕len
-"rres" Log rres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘(input)}¨ r_idxs
-l_idxs ← {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘ "llens" Log 1↓↕len
-"lres" Log lres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘(input)}¨ l_idxs
-CountXmas ← (+´(>xmas)⊸⍷)
-"both" Log lres∾rres
-"count" Log CountXmas¨ lres∾rres
-"rev both" Log ⌽¨ lres∾rres
-"rev count" Log CountXmas¨ ⌽¨ lres∾rres
+# len ← 4
+# •Show l_idxs ← ⌽⍉⌽¨{(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
 
-# "Part 1 is wrong!"!18= "part 1: " Log PartOne data
+# "part 1: " Log PartOne data
+{((<"Part 1 is wrong! Got:")∾𝕩)!18= 𝕩}"part 1: " Log PartOne data
 # "Part 2 is wrong!"!6= "part 2: " Log PartTwo data
