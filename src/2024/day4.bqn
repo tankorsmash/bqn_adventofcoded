@@ -22,7 +22,7 @@ xmas ← "XMAS"
 
 PartOne ← {𝕊lines:
 	•Out "orig"
-	(•Show ⍉)¨ lines
+	# (•Show )¨ lines
 	•Out 50/"-"
 	CountXmas ← (+´(>xmas)⊸⍷)
 
@@ -61,5 +61,5 @@ PartTwo ← {𝕊lines:
 # •Show l_idxs ← ⌽⍉⌽¨{(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
 
 # "part 1: " Log PartOne data
-{((<"Part 1 is wrong! Got:")∾𝕩)!18= 𝕩}"part 1: " Log PartOne data
+{((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
 # "Part 2 is wrong!"!6= "part 2: " Log PartTwo data
