@@ -58,6 +58,8 @@ PartTwo ← {𝕊lines:
 	# (•Show )¨ lines
 	•Out 50/"-"
 	CountXmas ← (+´(>xmas)⊸⍷)
+	lines ↩ 5‿5⥊ >lines
+	•Show lines
 
 	len ← ≠lines
 	r_idxs ← {(»⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  ↕len
@@ -69,31 +71,36 @@ PartTwo ← {𝕊lines:
 	rrres ← (1+ · / xmas⊸⍷)¨∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rr_idxs
 	rl_idxs ← ⌽⍉⌽¨ {(«⍟𝕩 {𝕩⌾(0‿0⊸⍉)0⌜˜𝕩} len⥊1)}˘  1↓↕len
 	rlres ← (1+ · / xmas⊸⍷)¨∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
+	•Show r_idxs
+	•Show l_idxs
+
+	•Show (lres∾rres) 
+	•Show (rlres∾rrres) 
 
 	res ← [
 
-		"reg" Log  ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
-		"rev" Log  ≠⊑rlres ((/˜∊)⋈(/˜∊˜)) rrres
+		"reg" Log  ≠1⊑(lres∾rres) ((/˜∊)⋈(/˜∊˜)) (rlres∾rrres)
+		# "rev" Log  ≠⊑rlres ((/˜∊)⋈(/˜∊˜)) rrres
 	]
 	# "BT total"⊸Log˘ (((>xmas)⊸⍷)∘⍉)˘ ⌽>lines
 	# •Out 50/"-"
 	•Show +´ res
 }
 
-•Show input ← "zMASyMASaMASMAS"
-•Show rres ← 1+ / "MAS"⍷input
-•Show rev_input ← "zMbSyMAScMASMAS"
-•Show lres ← 1+ / "MAS"⍷rev_input
+# •Show input ← "zMASyMASaMASMAS"
+# •Show rres ← 1+ / "MAS"⍷input
+# •Show rev_input ← "zMbSyMAScMASMAS"
+# •Show lres ← 1+ / "MAS"⍷rev_input
 
-•Out 50/"-"
-•Show /˜ lres ∊ rres
-•Show /˜ lres ∊˜ rres
-•Out 5/"-"
-•Show lres /∘∊  rres
-•Show lres /∘(∊˜) rres
-•Show ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
+# •Out 50/"-"
+# •Show /˜ lres ∊ rres
+# •Show /˜ lres ∊˜ rres
+# •Out 5/"-"
+# •Show lres /∘∊  rres
+# •Show lres /∘(∊˜) rres
+# •Show ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
 •Out 50/"-"
 
 # "part 1: " Log PartOne data
 # {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
-"Part 2 is wrong!"!6= "part 2: " Log PartTwo data
+"Part 2 is wrong!"!9= "part 2: " Log PartTwo data
