@@ -19,27 +19,33 @@ inputs_filename ← •wdpath∾ "/inputs/" ∾ year ∾ "/day" ∾ day ∾ ".tx
 sample_filename ← •wdpath∾ "/samples/" ∾ year ∾ "/day" ∾ day ∾ ".txt"
 source_filename ← •wdpath∾ "/src/" ∾ year ∾ "/day" ∾ day ∾ ".bqn"
 
-text ← "i am green!"
 # wrap text with green ascii color:
 Green ← {𝕊text: "[32m" ∾ text ∾ "[0m"}
-# wrap with grey color:
+# wrap text with grey ascii color:
 Grey ← {𝕊text: "[90m" ∾ text ∾ "[0m"}
-# wrap with red color:
+# wrap text with red ascii color:
 Red ← {𝕊text: "[31m" ∾ text ∾ "[0m"}
 
 SafeCreateDir ← {𝕊dir:
 	fs ← ⟨
 		# •file.CreateDir⎊(•Out "Can't create dir, maybe already exists ? "∾ •Currenterror) dir,
-		{𝕤⋄ •file.CreateDir dir⋄ Green "dir created successfully"},
-		Grey "dir already exists!"
+		{𝕤
+			•file.CreateDir dir
+			Green "✅ dir created successfully"
+		},
+		Grey ". dir already exists!"
 	⟩
 	⊢◶ fs •file.Exists dir
 }
 
 SafeCreateFile ← {𝕊filepath:
+	err_msg ← Red "Can't create file, maybe already exists ? "
 	⊢◶ ⟨
-		filepath •file.Bytes⎊(•Out "Can't create file, maybe already exists ? "∾ •Currenterror)  "",
-		"file created success!"
+		{𝕤
+			filepath •file.Bytes ""
+			Green "✅ file created successfully"
+		},
+		Grey ". file already exists!"
 	⟩ •file.Exists filepath
 
 }
@@ -52,10 +58,10 @@ SafeCreateFile ← {𝕊filepath:
 •Out "Creating source directory: " ∾ source_dir
 •Show SafeCreateDir source_dir
 
-# •Out "Creating input file: " ∾ inputs_filename
-# •Show SafeCreateFile inputs_filename
-# •Out "Creating sample file: " ∾ sample_filename
-# •Show SafeCreateFile sample_filename
-# •Out "Creating source file: " ∾ source_filename
-# •Show SafeCreateFile source_filename
+•Out "Creating input file: " ∾ inputs_filename
+•Show SafeCreateFile inputs_filename
+•Out "Creating sample file: " ∾ sample_filename
+•Show SafeCreateFile sample_filename
+•Out "Creating source file: " ∾ source_filename
+•Show SafeCreateFile source_filename
 
