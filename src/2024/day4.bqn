@@ -59,7 +59,8 @@ PartTwo ← {𝕊lines:
 	# (•Show )¨ lines
 	•Out 50/"-"
 	CountXmas ← (+´(>mas)⊸⍷)
-	lines ↩ 5‿5⥊ >lines
+
+	# lines ↩ 5‿5⥊ >lines
 	# "lines"Log lines
 
 	FindA ← {
@@ -112,11 +113,13 @@ PartTwo ← {𝕊lines:
 
 #  •Show¨ 0⌜˜ 5↑100⥊1
 
+SolutionValidator ← {expected𝕊answer:
+	err_msg ← ("Part 2 is wrong! Got instead: "∾(•Fmt answer))
+	"part 2: " Log  answer
+	err_msg!expected= answer
+}
+
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
-{𝕊answer:
-	err_msg ← ("Part 2 is wrong! Got instead: "∾(•Fmt answer))
-	"part 2: " Log  answer
-	err_msg!9= answer
-} PartTwo data
+9 SolutionValidator PartTwo data
