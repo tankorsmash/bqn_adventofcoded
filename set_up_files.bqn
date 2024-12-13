@@ -1,4 +1,3 @@
-
 year‿day ← •args
 
 
@@ -26,14 +25,26 @@ Grey ← {𝕊text: "[90m" ∾ text ∾ "[0m"}
 # wrap text with red ascii color:
 Red ← {𝕊text: "[31m" ∾ text ∾ "[0m"}
 
+
+StripPrefix ← {prefix𝕊path:
+	Find ← (≢∘⊢↑⍷)
+	mask ← prefix Find path
+	{𝕊:
+		Ranges ← prefix⊸{(↕≠𝕨)⊸+˘ / 𝕨⊸Find 𝕩}
+		{∾´¬ ⌈˝˘ (Ranges 𝕩)=¨ < ↕≠𝕩}⊸/path
+	}⍟(⌈´ mask)path
+}
+
+StripRoot ← •wdpath⊸StripPrefix
+
 SafeCreateDir ← {𝕊dir:
 	fs ← ⟨
 		# •file.CreateDir⎊(•Out "Can't create dir, maybe already exists ? "∾ •Currenterror) dir,
-		{𝕤
+		{𝕊:
 			•file.CreateDir dir
 			Green "✅ dir created successfully"
 		},
-		Grey ". dir already exists!"
+		Grey "- dir already exists!"
 	⟩
 	⊢◶ fs •file.Exists dir
 }
@@ -41,27 +52,26 @@ SafeCreateDir ← {𝕊dir:
 SafeCreateFile ← {𝕊filepath:
 	err_msg ← Red "Can't create file, maybe already exists ? "
 	⊢◶ ⟨
-		{𝕤
+		{𝕊:
 			filepath •file.Bytes ""
 			Green "✅ file created successfully"
 		},
-		Grey ". file already exists!"
+		Grey "- file already exists!"
 	⟩ •file.Exists filepath
 
 }
 
 
-•Out "Creating input directory: " ∾ inputs_dir
-•Show SafeCreateDir inputs_dir
-•Out "Creating sample directory: " ∾ sample_dir
-•Show SafeCreateDir sample_dir
-•Out "Creating source directory: " ∾ source_dir
-•Show SafeCreateDir source_dir
+•Out "Creating input directory: " ∾ StripRoot inputs_dir
+•Out SafeCreateDir inputs_dir
+•Out "Creating sample directory: " ∾ StripRoot sample_dir
+•Out SafeCreateDir sample_dir
+•Out "Creating source directory: " ∾ StripRoot source_dir
+•Out SafeCreateDir source_dir
 
-•Out "Creating input file: " ∾ inputs_filename
-•Show SafeCreateFile inputs_filename
-•Out "Creating sample file: " ∾ sample_filename
-•Show SafeCreateFile sample_filename
+•Out "Creating input file: " ∾ StripRoot inputs_filename
+•Out SafeCreateFile inputs_filename
+•Out "Creating sample file: " ∾ StripRoot sample_filename
+•Out SafeCreateFile sample_filename
 •Out "Creating source file: " ∾ source_filename
-•Show SafeCreateFile source_filename
-
+•Out SafeCreateFile source_filename
