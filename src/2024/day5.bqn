@@ -9,7 +9,33 @@ Log ← {msg𝕊val:
 }
 
 PartOne ← {𝕊lines:
-	lines
+	# "lines"⊸Log¨ lines
+	raw_rules‿raw_updates ← ((0⊸≠)∘≠¨/⊢)¨ (+`∘(0⊸=)∘(≠¨)⊔⊢) lines
+
+	Parse ←  {char𝕊input:
+			(•ParseFloat¨ · (char⊸≠/⊢)¨ ((+`(char⊸=))⊔⊢) ) input
+	}
+
+	parsed_rules ← '|'⊸Parse¨ raw_rules
+	# "parsed_rules"⊸Log  parsed_rules
+	rules ← '|'⊸Parse¨ raw_rules
+	updates ← ','⊸Parse¨ raw_updates
+
+	ValidateUpdates ← {𝕊update:
+		# rule ← 14⊑rules
+		# # rule ↩ ⟨61, 53⟩
+		# "rule"⊸Log rule
+
+		# "rules"⊸Log¨ rules
+		present ← ({⌊´ (𝕩⊸∊)update}¨/⊢)rules
+		validated_rules ← {(∧≡⊢) ∾˝/˘ (update⊸(⍷˘))˘ 𝕩}¨present
+		⌊´ validated_rules
+	}
+
+	validated_updates ← (ValidateUpdates¨/⊢) updates
+	# "validated_updates"⊸Log¨  validated_updates
+	mids ← >((⌊·2⊸(÷˜)≠)⊏⊢)¨ validated_updates
+	+´ mids
 }
 
 PartTwo ← {𝕊lines:
