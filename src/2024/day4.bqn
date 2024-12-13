@@ -15,13 +15,8 @@ CLog ← {msg𝕊val:
 }
 
 
-
-•Out 50/"-"
-
 PartOne ← {𝕊lines:
 	xmas ← "XMAS"
-	•Out "orig"
-	# (•Show )¨ lines
 	•Out 50/"-"
 	CountXmas ← (+´(>xmas)⊸⍷)
 
@@ -37,35 +32,26 @@ PartOne ← {𝕊lines:
 	rlres ← ∾¨ {𝕩{𝕨<∘/(>𝕩)}˘lines}¨ rl_idxs
 
 	res ← [
-		"LR total" Log +´ CountXmas¨     lines
-		"RL total" Log +´ CountXmas¨ ⌽¨  lines
-		"TB total" Log +´ CountXmas˘   ⍉>lines
-		"BT total" Log +´ CountXmas˘ ⌽˘⍉>lines
+		lr ← +´ CountXmas¨     lines
+		rl ← +´ CountXmas¨ ⌽¨  lines
+		tb ← +´ CountXmas˘   ⍉>lines
+		bt ← +´ CountXmas˘ ⌽˘⍉>lines
 
-		"DI total" Log +´ CountXmas¨    lres∾rres
-		"ID total" Log +´ CountXmas¨ ⌽¨ lres∾rres
-		"DR total" Log +´ CountXmas¨    rlres∾rrres
-		"RD total" Log +´ CountXmas¨ ⌽¨ rlres∾rrres
+		di ← +´ CountXmas¨    lres∾rres
+		id ← +´ CountXmas¨ ⌽¨ lres∾rres
+		dr ← +´ CountXmas¨    rlres∾rrres
+		rd ← +´ CountXmas¨ ⌽¨ rlres∾rrres
 	]
-	# "BT total"⊸Log˘ (((>xmas)⊸⍷)∘⍉)˘ ⌽>lines
-	# •Out 50/"-"
-	•Show +´ res
+
+	+´ res
 }
 
 PartTwo ← {𝕊lines:
 	mas ← "MAS"
 	sam ← "SAM"
-	•Out "orig"
-	# (•Show )¨ lines
-	•Out 50/"-"
 	CountXmas ← (+´(>mas)⊸⍷)
 
-	# lines ↩ 5‿5⥊ >lines
-	# "lines"Log lines
-
 	PerWindow ← {𝕊idx‿window:
-		# "idx" Log ⊑idx
-		# "window" Log window
 
 		FindA ← {
 			mases ← (1+ · / mas⊸⍷)¨∾¨ (<∘/⟜>˘)⟜window¨ 𝕩
@@ -75,7 +61,6 @@ PartTwo ← {𝕊lines:
 		RightShift ← {»⍟𝕩 (len⥊1)⌾(0‿0⊸⍉)  0⌜˜ len⥊1}
 		LeftShift ← {«⍟𝕩 (len⥊1)⌾(0‿0⊸⍉)  0⌜˜ len⥊1}
 
-
 		len ← ≠window
 		r_idxs ← (⌽ RightShift˘  ↕len)∾(LeftShift˘  1↓↕len)
 		rres  ← FindA r_idxs
@@ -83,36 +68,18 @@ PartTwo ← {𝕊lines:
 		rr_idxs ←  ⌽( ⌽⍉⌽¨ RightShift˘  ↕len)∾(⌽⍉⌽¨ LeftShift˘  1↓↕len)
 		rrres ← FindA rr_idxs
 
-		# •Show r_idxs
-		# •Show rr_idxs
-
-		# "rres" Log rres
-		# "rrres" Log rrres
-
 		 valid ←  ⊑ ⌊´ ≠¨ a_pos ← 2⊏ (rres∾˘rrres)
-		# "valid cross" Log valid
-
 	}
 
 
-	# # grid ← 5‿5⥊ @+97 + ↕26
-	# •Show ≢data
 	grid ← >˘ lines
-	# "grid" Log grid
 	windows ← ∾˝ 3‿3↕grid
-	# "windows" Log windows
 
 	+´ PerWindow˘ ((↕∘≠)⋈˘⊢)windows
 	# •Show PerWindow 123‿(56⊏windows)
-	# •Show PerWindow 10⊏windows
-
-	# window ← lines
-
 }
 
 •Out 50/"-"
-
-#  •Show¨ 0⌜˜ 5↑100⥊1
 
 SolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← ("Part "∾part∾" is wrong! Got instead: "∾(•Fmt answer))
@@ -123,5 +90,5 @@ SolutionValidator ← {part‿expected𝕊answer:
 
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-# {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
+1‿2530 SolutionValidator PartOne data
 2‿1921 SolutionValidator PartTwo data
