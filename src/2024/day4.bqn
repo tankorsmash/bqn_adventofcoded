@@ -110,30 +110,18 @@ PartTwo ← {𝕊lines:
 
 }
 
-# •Show input ← "zMASyMASaMASMAS"
-# •Show rres ← 1+ / "MAS"⍷input
-# •Show rev_input ← "zMbSyMAScMASMAS"
-# •Show lres ← 1+ / "MAS"⍷rev_input
-
-# •Out 50/"-"
-# •Show /˜ lres ∊ rres
-# •Show /˜ lres ∊˜ rres
-# •Out 5/"-"
-# •Show lres /∘∊  rres
-# •Show lres /∘(∊˜) rres
-# •Show ≠⊑lres ((/˜∊)⋈(/˜∊˜)) rres
 •Out 50/"-"
 
 #  •Show¨ 0⌜˜ 5↑100⥊1
 
-SolutionValidator ← {expected𝕊answer:
-	err_msg ← ("Part 2 is wrong! Got instead: "∾(•Fmt answer))
+SolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾part∾" is wrong! Got instead: "∾(•Fmt answer))
 	err_msg!expected= answer
-	•Show "Part 2: "∾(•Fmt answer)
+	•Show "Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
 
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # {((<"Part 1 is wrong! Got:")∾𝕩)!2530= 𝕩}"part 1: " Log PartOne data
-1921 SolutionValidator PartTwo data
+2‿1921 SolutionValidator PartTwo data
