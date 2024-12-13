@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day4.txt"
 # data ↩ •file.Lines "../../samples/2024/day4_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day4.txt"
+# data ↩ •file.Lines "../../inputs/2024/day4.txt"
 
 
 Log ← {msg𝕊val:
@@ -14,10 +14,8 @@ CLog ← {msg𝕊val:
 	val
 }
 
-
 PartOne ← {𝕊lines:
 	xmas ← "XMAS"
-	•Out 50/"-"
 	CountXmas ← (+´(>xmas)⊸⍷)
 
 	len ← ≠lines
@@ -49,46 +47,47 @@ PartOne ← {𝕊lines:
 PartTwo ← {𝕊lines:
 	mas ← "MAS"
 	sam ← "SAM"
-	CountXmas ← (+´(>mas)⊸⍷)
+
+	len ← 3
+
+	 # grids of Id Matrixes on an angle
+	rightShift ← {»⍟𝕩 (len⥊1)⌾(0‿0⊸⍉) 0⌜˜ len⥊1}˘   ↕ len
+	leftShift ←  {«⍟𝕩 (len⥊1)⌾(0‿0⊸⍉) 0⌜˜ len⥊1}˘ 1↓↕ len
+
+	diag_idxs ←      (  ⌽  rightShift)∾(     leftShift)
+	rev_diag_idxs ←  (⌽⍉⌽¨ rightShift)∾(⌽⍉⌽¨ leftShift)
 
 	PerWindow ← {𝕊idx‿window:
 
 		FindA ← {
-			mases ← (1+ · / mas⊸⍷)¨∾¨ (<∘/⟜>˘)⟜window¨ 𝕩
-			samses ← (1+ · / sam⊸⍷)¨∾¨ (<∘/⟜>˘)⟜window¨ 𝕩
-			mases∧∘∾¨samses
+			(1+ · / mas⊸⍷⌈sam⊸⍷)¨ ∾¨ (<∘/⟜>˘)⟜window¨ 𝕩
 		}
-		RightShift ← {»⍟𝕩 (len⥊1)⌾(0‿0⊸⍉)  0⌜˜ len⥊1}
-		LeftShift ← {«⍟𝕩 (len⥊1)⌾(0‿0⊸⍉)  0⌜˜ len⥊1}
+		found_matches  ← FindA  diag_idxs
+		found_rev_matches ← FindA rev_diag_idxs
 
-		len ← ≠window
-		r_idxs ← (⌽ RightShift˘  ↕len)∾(LeftShift˘  1↓↕len)
-		rres  ← FindA r_idxs
-
-		rr_idxs ←  ⌽( ⌽⍉⌽¨ RightShift˘  ↕len)∾(⌽⍉⌽¨ LeftShift˘  1↓↕len)
-		rrres ← FindA rr_idxs
-
-		 valid ←  ⊑ ⌊´ ≠¨ a_pos ← 2⊏ (rres∾˘rrres)
+		valid ←  ⊑ ⌊´ ≠¨ a_pos ← 2⊏ •Show (found_matches∾˘found_rev_matches)
 	}
 
-
 	grid ← >˘ lines
-	windows ← ∾˝ 3‿3↕grid
+	windows ← ∾˝ len‿len↕grid
 
+	# for i, val in enumerate(windows): print(val)
 	+´ PerWindow˘ ((↕∘≠)⋈˘⊢)windows
-	# •Show PerWindow 123‿(56⊏windows)
+	 # •Show PerWindow 123‿(56⊏windows)
 }
 
-•Out 50/"-"
-
 SolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← ("Part "∾part∾" is wrong! Got instead: "∾(•Fmt answer))
-	err_msg!expected= answer
+	err_msg ← ("Part "∾(•Fmt part)∾" is wrong! Got instead: "∾(•Fmt answer))
+	err_msg!(expected= answer)
 	•Show "Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
+# •Show ⌽⍉⌽˘ 5‿5⥊  •Show @+97 + ↕26
+
+•Show (5⥊'z')⌾(0‿0⊸⍉) 5‿5⥊ @+97 + ↕26
 
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-1‿2530 SolutionValidator PartOne data
-2‿1921 SolutionValidator PartTwo data
+# 1‿2530 SolutionValidator PartOne data
+# 2‿1921 SolutionValidator PartTwo data
+
