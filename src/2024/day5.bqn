@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day5.txt"
 # data ↩ •file.Lines "../../samples/2024/day5_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day5.txt"
+# data ↩ •file.Lines "../../inputs/2024/day5.txt"
 
 
 Log ← {msg𝕊val:
@@ -39,7 +39,6 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	# "lines"⊸Log¨ lines
 	raw_rules‿raw_updates ← ((0⊸≠)∘≠¨/⊢)¨ (+`∘(0⊸=)∘(≠¨)⊔⊢) lines
 
 	Parse ←  {char𝕊input:
@@ -47,11 +46,9 @@ PartTwo ← {𝕊lines:
 	}
 
 	parsed_rules ← '|'⊸Parse¨ raw_rules
-	# "parsed_rules"⊸Log  parsed_rules
 	rules ← '|'⊸Parse¨ raw_rules
 	updates ← ','⊸Parse¨ raw_updates
 
-	# "rules"⊸Log rules
 	sorted_rules ← ∧ rules
 
 	ValidateUpdates ← {𝕊update:
@@ -66,11 +63,6 @@ PartTwo ← {𝕊lines:
 		res← ⊑¨((⍋≠¨)⊏⊢)(⊐⊔⊢)(1⊸⊑¨) sorted_present
 		first←update (¬∘∊⊑∘/⊣) res
 		actual ← first∾res
-		# "expected" Log  "97,75,47,61,53"
-		# "expected" Log  "61,29,13"
-		# "expected" Log  "97,75,47,29,13"
-		# validated_rules ← {(∧≡⊢) ∾˝/˘ (update⊸(⍷˘))˘ 𝕩}¨present
-		# ⌊´ validated_rules
 
 		actual
 	}
