@@ -11,7 +11,7 @@ Log ← {msg𝕊val:
 
 chars ← "^>v<"
 RotateGuard ← {𝕊char:
-	new_char ← ((≠chars)|1+/char⍷chars)⊏chars
+	new_char ← ((≠chars)|1+˜/char⍷chars)⊏chars
 	⊑new_char
 }
 
@@ -25,10 +25,10 @@ PartOne ← {𝕊lines:
 	input ← 5‿5⥊ @+97 + ↕26
 	input ↩ >˘ lines
 	•Show input
-	•Show chars
+	input ↩ ⌽˘1⍉input
 	row ← ⊑/ ≠¨ raw_cols ← <∘/˘ {⌈´ ∾˘ chars⊸∊  ⋈ 𝕩}¨ input
 	col ← ⊑(≠¨∾∘/⊢) raw_cols
-	•Show RotateGuard ⌾ (row‿col⊸⊑)input
+	•Show RotateGuard ⌾ (row‿col⊸⊑) input
 	# •Show (chars⊸⍷)˘
 	# •Show 1⍉input
 	lines
