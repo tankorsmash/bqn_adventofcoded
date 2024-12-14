@@ -25,12 +25,11 @@ PartOne ← {𝕊lines:
 	input ← 5‿5⥊ @+97 + ↕26
 	input ↩ >˘ lines
 	•Show input
-	input ↩ ⌽˘1⍉input
-	row ← ⊑/ ≠¨ raw_cols ← <∘/˘ {⌈´ ∾˘ chars⊸∊  ⋈ 𝕩}¨ input
-	col ← ⊑(≠¨∾∘/⊢) raw_cols
+	Turn90 ← ⌽˘1⊸⍉
+	input ↩ Turn90 input
+
+	row‿col ← ((⊑·/ ≠¨)⋈(⊑∘(≠¨∾∘/⊢))) raw_cols ← <∘/˘ {⌈´∾˘chars⊸∊⋈𝕩}¨ input
 	•Show RotateGuard ⌾ (row‿col⊸⊑) input
-	# •Show (chars⊸⍷)˘
-	# •Show 1⍉input
 	lines
 }
 
