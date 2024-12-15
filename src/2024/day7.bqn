@@ -3,6 +3,9 @@ data ← •file.Lines "../../samples/2024/day7.txt"
 # data ↩ •file.Lines "../../inputs/2024/day7.txt"
 
 
+# dyadic show but returns paired args
+DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
+
 Log ← {msg𝕊val:
 	•Show (<msg)∾val
 	val
@@ -12,6 +15,7 @@ RLog ← {msg𝕊val:
 	val
 }
 
+Id ← ⊢
 
 PartOne ← {𝕊lines:
 	Parse ← {𝕊line:
@@ -22,7 +26,50 @@ PartOne ← {𝕊lines:
 		target‿parts
 	}
 
-	•Show Parse¨ lines
+	parsed ← Parse¨ lines
+	IsCalibrated ← {𝕊target‿parts:
+		all_ops ← ⥊ (+‿×)∾⌜⍟(2-˜≠parts) (+‿×)
+		"parsed"⊸Log¨ target‿parts
+		# ops_grid ← ⥊⋈⌜˜ops
+		# "ops_grid"⊸Log ops_grid
+		"all_ops"⊸Log all_ops
+
+		ApplyAllFuncs ← {𝕊funcs:
+			•Out "--- Foo "∾50/"-"
+			# "type funcs" Log •Type funcs
+			# "dims/rank funcs " RLog =funcs
+			# "funcs" Log funcs
+			# "type funcs" RLog =funcs
+
+			Apply ← {li‿lv𝕊ri‿rv:
+				op ← ri⊑ ⥊>funcs
+				"op" RLog op
+				res ← lv Op rv
+				"res"⊸RLog res
+				li‿res
+			}
+
+			final_idx‿total ← Apply´ ⌽ ↕∘≠⊸(⋈¨)parts
+			"total"⊸Log total
+
+			# "res" Log •Bqn •Fmt ⌽ ∾ funcs≍˜¨ parts
+
+		}
+
+		totals ← ApplyAllFuncs˘ all_ops
+		•Show totals
+		is_valid ← ⌈´ target=totals
+	}
+	# IsCalibrated entry ← 1⊑ parsed
+	+´⊑¨∘((IsCalibrated¨)⊸/) parsed
+	# Run¨ parsed
+
+
+
+	# •Show ({𝕊l‿r:
+	# 	# "l, r" Log l‿r
+	# 	{l 𝕏 r}¨ ops
+	# })˘ windowed ← 2↕parts
 }
 
 PartTwo ← {𝕊lines:
