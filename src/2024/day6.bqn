@@ -131,10 +131,11 @@ PartTwo ← {𝕊lines:
 	# •Exit 0
 
 	# in: (board, prev input) out: (rotated board, next input)
-	Iter ← {𝕊(obj_row‿obj_col)‿prev_board:
-		degrees ← 90×4|turns
+	Iter ← {𝕊(obj_row‿obj_col)‿boards:
+		turn ← 4|turns
+		degrees ← 90×turn
 		# •Out (25/"-") ∾ "Iter degrees: " ∾ (•Fmt degrees) ∾ (25/"-")
-		input ↩ Turn90 prev_board
+		input ↩ (4|(1+turn)) ⊑ boards
 
 		obj ← obj_row‿obj_col
 		# "obj"⊸Log obj
@@ -185,7 +186,8 @@ PartTwo ← {𝕊lines:
 				# •Show Turn90⁼ Turn90 1⊸⊑¨input
 				steps ↩ steps∾new_steps
 
-				next_obj‿(Turn90⍟2 input)
+				turns 2⊸+↩
+				next_obj‿(boards)
 			}
 		}
 
@@ -202,7 +204,12 @@ PartTwo ← {𝕊lines:
 
 	steps ← ⟨⟩
 	turns ← 0
-	Iter•_while_(@⊸≢) first_obj‿input_with_obj
+	Iter•_while_(@⊸≢) first_obj‿⟨
+		Turn90⍟0 input_with_obj
+		Turn90⍟1 input_with_obj
+		Turn90⍟2 input_with_obj
+		Turn90⍟3 input_with_obj
+	⟩
 
 	"orig_steps"⊸Log orig_steps ← steps
 	"num orig_steps" Log ≠orig_steps
@@ -215,7 +222,7 @@ PartTwo ← {𝕊lines:
 
 	TryWithObstacle ← {𝕊to_remove:
 		tries 1⊸+↩
-		"tries" Log tries
+		(0⊸= 25⊸|)◶⊢‿("tries"⊸Log) tries
 		# add obstacle to input for this iteration
 		input ← (to_remove⊸≡∘⊑)◶⊢‿('#'⌾(1⊸⊑))¨ ⌾⥊  input_with_obj
 		# "input" RLog 1⊸⊑¨input
@@ -227,18 +234,19 @@ PartTwo ← {𝕊lines:
 			is_done ← (@⊸≡)𝕩
 			is_looping ← ("loop"⊸≡)𝕩
 
-			# "is_done" Log is_done
-			is_looping
-			 continue ← (0=is_done) ⌊ (0=is_looping)
+		 continue ← (0=is_done) ⌊ (0=is_looping)
 
-			 continue
-			 continue
-
-			} first_obj‿input
+			} first_obj‿⟨
+				Turn90⍟0 input
+				Turn90⍟1 input
+				Turn90⍟2 input
+				Turn90⍟3 input
+			⟩
 
 	}
-		to_remove ← ⊑all_to_remove
-		# TryWithObstacle to_remove
+
+	to_remove ← ⊑all_to_remove
+	# TryWithObstacle to_remove
 
 	results ← TryWithObstacle¨ all_to_remove
 	loops ← ("loop"⊸≡)¨ results
@@ -254,7 +262,7 @@ SolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-PartialSolutionValidator ← {part‿expected𝕊answer:
+AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← ("Part "∾(•Fmt part)∾" is too low! Got instead: "∾(•Fmt answer))
 	•Show expected‿answer
 	"expected is < answer" Log expected<answer
@@ -262,14 +270,28 @@ PartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-foo ← ⟨@, @, "loop", @⟩
-"foo" Log foo
+AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾(•Fmt part)∾" is too hight! Got instead: "∾(•Fmt answer))
+	•Show expected‿answer
+	"expected is > answer" Log expected>answer
+	err_msg!(expected< answer)
+	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
+}
 
-•Show +´ ("loop"⊸≡ •Show)¨foo
+# foo ← ⟨@, @, "loop", @⟩
+# "foo" Log foo
+# •Show +´ ("loop"⊸≡ •Show)¨foo
+
+# input ← 5‿5⥊ @+97 + ↕26
+# •Show input
+# •Show Turn90 Turn90 input
+# •Show Turn90 Turn90 Turn90 Turn90 input
+# •Exit 0
+
 
 
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # 1‿4752 SolutionValidator PartOne data
-# 2‿6 SolutionValidator PartTwo data
-2‿1720 PartialSolutionValidator PartTwo data
+2‿6 SolutionValidator PartTwo data
+# 2‿1720 AtMostPartialSolutionValidator PartTwo data
