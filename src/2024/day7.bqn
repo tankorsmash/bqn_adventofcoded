@@ -1,0 +1,48 @@
+data ← •file.Lines "../../samples/2024/day7.txt"
+# data ↩ •file.Lines "../../samples/2024/day7_alt.txt"
+# data ↩ •file.Lines "../../inputs/2024/day7.txt"
+
+
+Log ← {msg𝕊val:
+	•Show (<msg)∾val
+	val
+}
+RLog ← {msg𝕊val:
+	•Show (msg)⋈val
+	val
+}
+
+
+PartOne ← {𝕊lines:
+}
+
+PartTwo ← {𝕊lines:
+	∞
+}
+
+SolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾(•Fmt part)∾" is wrong! Got instead: "∾(•Fmt answer))
+	err_msg!(expected= answer)
+	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
+}
+
+AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾(•Fmt part)∾" is too low! Got instead: "∾(•Fmt answer))
+	•Show expected‿answer
+	"expected is < answer" Log expected<answer
+	err_msg!(expected< answer)
+	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
+}
+
+AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾(•Fmt part)∾" is too hight! Got instead: "∾(•Fmt answer))
+	•Show expected‿answer
+	"expected is > answer" Log expected>answer
+	err_msg!(expected< answer)
+	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
+}
+
+"part 1: " Log PartOne data
+# "part 2: " Log PartTwo data
+# 1‿??? SolutionValidator PartOne data
+# 2‿??? SolutionValidator PartTwo data
