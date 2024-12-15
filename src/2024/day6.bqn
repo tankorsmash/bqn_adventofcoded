@@ -154,7 +154,6 @@ PartTwo ← {𝕊lines:
 
 		next_hashes ← ((char_idx⊸<)¨/⊢) hash_idxs
 		no_more_next ← 0=≠next_hashes
-
 		res ← { no_more_next ?
 			# •Out "donezo"
 			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
@@ -215,7 +214,8 @@ PartTwo ← {𝕊lines:
 	"num orig_steps" Log ≠orig_steps
 	# "turns" Log turns
 
-	all_to_remove ← •Show ⍷ 1⊸⊑¨ orig_steps
+	# comment with a char for irregular high underscore, instead of the normal low one
+	all_to_remove ← ((first_obj⊸≢)¨/⊢)⍷ 1⊸⊑¨ orig_steps
 	•Out term_width/"!"
 
 	tries ← 0
@@ -293,5 +293,5 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # 1‿4752 SolutionValidator PartOne data
-2‿6 SolutionValidator PartTwo data
+2‿1719 SolutionValidator PartTwo data
 # 2‿1720 AtMostPartialSolutionValidator PartTwo data
