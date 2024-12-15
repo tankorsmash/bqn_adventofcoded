@@ -15,9 +15,8 @@ RLog ← {msg𝕊val:
 	val
 }
 
-Id ← ⊢
-
 PartOne ← {𝕊lines:
+
 	Parse ← {𝕊line:
 		raw_target‿raw_parts ← (+`':'⊸=¨)⊸⊔line
 		target ← •ParseFloat raw_target
@@ -26,52 +25,26 @@ PartOne ← {𝕊lines:
 		target‿parts
 	}
 
-	parsed ← Parse¨ lines
 	IsCalibrated ← {𝕊target‿parts:
-		all_ops ← ⥊ (+‿×)∾⌜⍟(2-˜≠parts) (+‿×)
-		# "parsed"⊸Log¨ target‿parts
-		# ops_grid ← ⥊⋈⌜˜ops
-		# "ops_grid"⊸Log ops_grid
-		# "all_ops"⊸Log all_ops
-
-		ApplyAllFuncs ← {𝕊funcs:
-			# •Out "--- Foo "∾50/"-"
-			# "type funcs" Log •Type funcs
-			# "dims/rank funcs " RLog =funcs
-			# "funcs" Log funcs
-			# "type funcs" RLog =funcs
-
-			Apply ← {li‿lv𝕊ri‿rv:
-				op ← ri⊑ ⥊>funcs
-				# "op" RLog op
-				res ← lv Op rv
-				# "res"⊸RLog res
-				li‿res
-			}
-
-			final_idx‿total ← Apply´ ⌽ ↕∘≠⊸(⋈¨)parts
-			# "total"⊸Log total
-
-			# "res" Log •Bqn •Fmt ⌽ ∾ funcs≍˜¨ parts
-
-			total
-
+		Apply ← {left_op‿lv𝕊right_op‿rv:
+			res ← lv RightOp rv
+			left_op‿res
 		}
 
+		ApplyAllFuncs ← {𝕊funcs:
+
+			final_idx‿total ← Apply´ ⌽ (funcs ∾ {⊢})⊸(⋈¨)parts
+			total
+		}
+
+		root_ops ← +‿×
+		all_ops ← >˘ ⥊ root_ops∾⌜⍟(2-˜≠parts) root_ops
 		totals ← ApplyAllFuncs˘ all_ops
-		# •Show totals
 		is_valid ← ⌈´ target=totals
 	}
-	# IsCalibrated entry ← 1⊑ parsed
-	+´⊑¨∘((IsCalibrated¨)⊸/) parsed
-	# Run¨ parsed
 
-
-
-	# •Show ({𝕊l‿r:
-	# 	# "l, r" Log l‿r
-	# 	{l 𝕏 r}¨ ops
-	# })˘ windowed ← 2↕parts
+	parsed ← Parse¨ lines
+	+´⊑¨ IsCalibrated¨⊸/ parsed
 }
 
 PartTwo ← {𝕊lines:
