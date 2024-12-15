@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day6.txt"
 # data ↩ •file.Lines "../../samples/2024/day6_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day6.txt"
+# data ↩ •file.Lines "../../inputs/2024/day6.txt"
 
 
 Log ← {msg𝕊val:
@@ -131,24 +131,16 @@ PartTwo ← {𝕊lines:
 	# •Exit 0
 
 	# in: (board, prev input) out: (rotated board, next input)
-	Iter ← {𝕊(obj_row‿obj_col)‿boards:
+	Iter ← {𝕊obj‿boards:
 		turn ← 4|turns
 		degrees ← 90×turn
-		# •Out (25/"-") ∾ "Iter degrees: " ∾ (•Fmt degrees) ∾ (25/"-")
 		input ↩ (4|(1+turn)) ⊑ boards
-
-		obj ← obj_row‿obj_col
-		# "obj"⊸Log obj
-
-		# "rotated (unchanged guard)"⊸Log 1⊑¨ input
 
 		elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
 		row‿col ← input IdxToRowCol elm_idx
-		grabbed ← ∾ row‿col⊑input
 		row_pairs ← row⊏input
-		row_chars←1⊑¨ row_pairs
+		row_chars← 1⊑¨ row_pairs
 
-		!'>'=char #sanity check
 		char_idx ← col
 		hash_idxs ←  >/'#'=row_chars
 
@@ -177,12 +169,10 @@ PartTwo ← {𝕊lines:
 			any_overlap ← ⌈´ overlapping_steps
 
 			{ any_overlap ?
-				# •Out "looping in first"
 				"loop"
 			;
 
 				next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
-				# •Show Turn90⁼ Turn90 1⊸⊑¨input
 				steps ↩ steps∾new_steps
 
 				turns 2⊸+↩
@@ -193,8 +183,6 @@ PartTwo ← {𝕊lines:
 		turns 1⊸+↩
 		res
 	}
-
-
 
 
 	RiskyParse ← •Bqn
@@ -225,11 +213,11 @@ PartTwo ← {𝕊lines:
 		(0⊸= 25⊸|)◶⊢‿("tries"⊸Log) tries
 		# add obstacle to input for this iteration
 		input ← (to_remove⊸≡∘⊑)◶⊢‿('#'⌾(1⊸⊑))¨ ⌾⥊  input_with_obj
-		# "input" RLog 1⊸⊑¨input
+
 
 		steps ↩ ⟨⟩
 		turns ↩ 0
-		# "first_obj" Log  first_obj
+
 		Iter•_while_{
 			is_done ← (@⊸≡)𝕩
 			is_looping ← ("loop"⊸≡)𝕩
@@ -247,12 +235,11 @@ PartTwo ← {𝕊lines:
 
 	to_remove ← ⊑all_to_remove
 	# TryWithObstacle to_remove
+	•Show "trying"
 
 	results ← TryWithObstacle¨ all_to_remove
 	loops ← ("loop"⊸≡)¨ results
 	"len loops" Log +´ loops
-
-
 
 }
 
@@ -278,20 +265,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-# foo ← ⟨@, @, "loop", @⟩
-# "foo" Log foo
-# •Show +´ ("loop"⊸≡ •Show)¨foo
-
-# input ← 5‿5⥊ @+97 + ↕26
-# •Show input
-# •Show Turn90 Turn90 input
-# •Show Turn90 Turn90 Turn90 Turn90 input
-# •Exit 0
-
-
-
 # "part 1: " Log PartOne data
-# "part 2: " Log PartTwo data
+"part 2: " Log PartTwo data
 # 1‿4752 SolutionValidator PartOne data
-2‿1719 SolutionValidator PartTwo data
-# 2‿1720 AtMostPartialSolutionValidator PartTwo data
+# 2‿1719 SolutionValidator PartTwo data
