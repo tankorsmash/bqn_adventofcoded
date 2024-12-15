@@ -48,7 +48,39 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	∞
+	Parse ← {𝕊line:
+		raw_target‿raw_parts ← (+`':'⊸=¨)⊸⊔line
+		target ← •ParseFloat raw_target
+		parts ← •ParseFloat∘(1⊸↓)¨ 1↓ (+`' '⊸=¨)⊸⊔  1↓raw_parts
+
+		target‿parts
+	}
+
+	IsCalibrated ← {𝕊target‿parts:
+		Apply ← {left_op‿lv𝕊right_op‿rv:
+			res ← lv RightOp rv
+			left_op‿res
+		}
+
+		ApplyAllFuncs ← {𝕊funcs:
+
+			final_idx‿total ← Apply´ ⌽ (funcs ∾ {⊢})⊸(⋈¨)parts
+			total
+		}
+
+		Concat ← {
+			left_str ← •Repr 𝕨
+			right_str ← •Repr 𝕩
+			•ParseFloat left_str∾˜right_str
+		}
+		root_ops ← +‿×‿concat
+		all_ops ← >˘ ⥊ root_ops∾⌜⍟(2-˜≠parts) root_ops
+		totals ← ApplyAllFuncs˘ all_ops
+		is_valid ← ⌈´ target=totals
+	}
+
+	parsed ← Parse¨ lines
+	+´⊑¨ IsCalibrated¨⊸/ parsed
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -76,5 +108,6 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # 1‿3749 SolutionValidator PartOne data
-1‿4998764814652 SolutionValidator PartOne data
-# 2‿??? SolutionValidator PartTwo data
+# 1‿4998764814652 SolutionValidator PartOne data
+# 2‿11387 SolutionValidator PartTwo data
+2‿37598910447546 SolutionValidator PartTwo data
