@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day7.txt"
 # data ↩ •file.Lines "../../samples/2024/day7_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day7.txt"
+data ↩ •file.Lines "../../inputs/2024/day7.txt"
 
 
 # dyadic show but returns paired args
@@ -29,13 +29,13 @@ PartOne ← {𝕊lines:
 	parsed ← Parse¨ lines
 	IsCalibrated ← {𝕊target‿parts:
 		all_ops ← ⥊ (+‿×)∾⌜⍟(2-˜≠parts) (+‿×)
-		"parsed"⊸Log¨ target‿parts
+		# "parsed"⊸Log¨ target‿parts
 		# ops_grid ← ⥊⋈⌜˜ops
 		# "ops_grid"⊸Log ops_grid
-		"all_ops"⊸Log all_ops
+		# "all_ops"⊸Log all_ops
 
 		ApplyAllFuncs ← {𝕊funcs:
-			•Out "--- Foo "∾50/"-"
+			# •Out "--- Foo "∾50/"-"
 			# "type funcs" Log •Type funcs
 			# "dims/rank funcs " RLog =funcs
 			# "funcs" Log funcs
@@ -43,21 +43,23 @@ PartOne ← {𝕊lines:
 
 			Apply ← {li‿lv𝕊ri‿rv:
 				op ← ri⊑ ⥊>funcs
-				"op" RLog op
+				# "op" RLog op
 				res ← lv Op rv
-				"res"⊸RLog res
+				# "res"⊸RLog res
 				li‿res
 			}
 
 			final_idx‿total ← Apply´ ⌽ ↕∘≠⊸(⋈¨)parts
-			"total"⊸Log total
+			# "total"⊸Log total
 
 			# "res" Log •Bqn •Fmt ⌽ ∾ funcs≍˜¨ parts
+
+			total
 
 		}
 
 		totals ← ApplyAllFuncs˘ all_ops
-		•Show totals
+		# •Show totals
 		is_valid ← ⌈´ target=totals
 	}
 	# IsCalibrated entry ← 1⊑ parsed
@@ -100,5 +102,6 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-1‿3749 SolutionValidator PartOne data
+# 1‿3749 SolutionValidator PartOne data
+1‿4998764814652 SolutionValidator PartOne data
 # 2‿??? SolutionValidator PartTwo data
