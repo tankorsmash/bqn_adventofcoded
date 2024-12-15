@@ -18,10 +18,11 @@ Turn90 ← ⌽˘1⊸⍉
 
 IdxToRowCol ← {board𝕊idx:
 	rows‿cols ← ≢ board
-	row ← 1+cols|idx
-	col ← idx - row × rows
+	row ← ⌊ idx÷rows
+	col ← rows|idx
 	row‿col
 }
+# •Show "IdxToRowCol"⊸Log (>˘ data) IdxToRowCol 24
 
 PartOne ← {𝕊lines:
 
@@ -31,17 +32,22 @@ PartOne ← {𝕊lines:
 	# "lines"⊸Log¨ lines
 
 	input ← 5‿5⥊ @+97 + ↕26
+	•Show Turn90⁼ Turn90⍟1 input
+	# •Exit 0
 	input ↩ >˘ lines
+	input ↩ (('.'⊸=◶⊢‿'○')¨)⌾⥊ input
 	"orig input" Log input
 	joined← ((↕≠){y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line }˘⊢)input
 	# "joined coords"⊸Log 0⊑¨ Turn90 joined
-	# "joined char"⊸Log 1⊑¨ Turn90 joined
+	# "joined char"⊸Log 1⊑¨ joined
 	first_row‿first_col ← ((⊑·/ ≠¨)⋈(⊑∘(≠¨∾∘/⊢)))  <∘/˘ {⌈´∾˘chars⊸∊⋈ 1⊑𝕩}¨ joined
+	first_obj ← first_row‿first_col
 	"first row,col" Log first_row‿first_col
 	# •Exit 0
 
 	# in: (board, prev input) out: (rotated board, next input)
 	Iter ← {obj_row‿obj_col𝕊prev_board:
+		•Out (25/"-") ∾ "Iter" ∾ (25/"-")
 		input ↩ Turn90 prev_board
 
 		obj ← obj_row‿obj_col
@@ -51,28 +57,32 @@ PartOne ← {𝕊lines:
 		"rotated (unchanged guard)"⊸Log 1⊑¨ input
 
 		"elm_idx" Log elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
-		"row,col" Log row‿col ← input IdxToRowCol elm_idx
-		"rotated row,col" Log row‿col
-		"grabbed" Log grabbed ← row‿col⊑input
-		rotated ← RotateGuard⌾(1⊸⊑∘(row‿col⊸⊑)) input
-		"rotated" Log 1⊑¨ rotated
-		row_pairs ← row⊏rotated
+		row‿col ← input IdxToRowCol elm_idx
+		# "rotated row,col" Log row‿col
+		"grabbed elm from rotated input" Log grabbed ← ∾ row‿col⊑input
+		# rotated_guard ←  RotateGuard⌾(1⊸⊑∘(row‿col⊸⊑)) input
+		# •Show 1⊸⊑¨rotated_guard
+		# "input chars" Log 1⊑¨ input
+		row_pairs ← row⊏input
 		"row_chars" Log row_chars←1⊑¨ row_pairs
 
 		!'>'=char #sanity check
-		char_idx ← ⊑ /char=row_chars
+		char_idx ← col
 		hash_idxs ←  >/'#'=row_chars
 
 		next_hash_idx ← ⊑((char_idx⊸<)¨/⊢) hash_idxs
 		range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
 
 		"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
+		# •Show Turn90⁼ Turn90 1⊸⊑¨input
 
-		next_obj‿input
+		next_obj‿(input)
 	}
 
-	(first_row‿first_col)Iter joined
-
+	next_obj‿next_board ← first_obj Iter joined
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
 	∞
 }
 
