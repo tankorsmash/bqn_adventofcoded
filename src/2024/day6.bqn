@@ -1,10 +1,14 @@
 data ← •file.Lines "../../samples/2024/day6.txt"
 # data ↩ •file.Lines "../../samples/2024/day6_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day6.txt"
+data ↩ •file.Lines "../../inputs/2024/day6.txt"
 
 
 Log ← {msg𝕊val:
 	•Show (<msg)∾val
+	val
+}
+RLog ← {msg𝕊val:
+	•Show (msg)⋈val
 	val
 }
 
@@ -73,7 +77,7 @@ PartOne ← {𝕊lines:
 		no_more_next ← 0=≠next_hashes
 
 		{ no_more_next ?
-			•Out "donezo"
+			# •Out "donezo"
 			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
 			new_state ← <∘⊑˘>range
 			state ↩ state∾new_state
@@ -126,13 +130,10 @@ PartTwo ← {𝕊lines:
 	"first row,col" Log first_row‿first_col
 	# •Exit 0
 
-	steps ← ⟨⟩
-	turns ← 0
-
 	# in: (board, prev input) out: (rotated board, next input)
 	Iter ← {𝕊(obj_row‿obj_col)‿prev_board:
 		degrees ← 90×4|turns
-		•Out (25/"-") ∾ "Iter degrees: " ∾ (•Fmt degrees) ∾ (25/"-")
+		# •Out (25/"-") ∾ "Iter degrees: " ∾ (•Fmt degrees) ∾ (25/"-")
 		input ↩ Turn90 prev_board
 
 		obj ← obj_row‿obj_col
@@ -154,15 +155,15 @@ PartTwo ← {𝕊lines:
 		no_more_next ← 0=≠next_hashes
 
 		res ← { no_more_next ?
-			•Out "donezo"
+			# •Out "donezo"
 			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
 			new_steps ← <∘(degrees⊸⋈)∘⊑˘>range
 			overlapping_steps ← new_steps∊steps
-			"any overlap?" Log any_overlap ← ⌈´ overlapping_steps
+			any_overlap ← ⌈´ overlapping_steps
 
 			{ any_overlap ?
-				•Out "looping on last"
-				∞
+				# •Out "looping on last"
+				"loop"
 			;
 				steps ↩ steps∾new_steps
 				@
@@ -173,11 +174,11 @@ PartTwo ← {𝕊lines:
 			new_steps ← <∘(degrees⊸⋈)∘⊑˘>range
 
 			overlapping_steps ← new_steps∊steps
-			"any overlap?" Log any_overlap ← ⌈´ overlapping_steps
+			any_overlap ← ⌈´ overlapping_steps
 
 			{ any_overlap ?
-				•Out "looping in first"
-				∞
+				# •Out "looping in first"
+				"loop"
 			;
 
 				next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
@@ -194,17 +195,56 @@ PartTwo ← {𝕊lines:
 
 
 
+
 	RiskyParse ← •Bqn
 	term_width ← RiskyParse 1⊑ •SH ⟨"tput", "cols"⟩
 	•Out term_width/"-"
 
+	steps ← ⟨⟩
+	turns ← 0
 	Iter•_while_(@⊸≢) first_obj‿input_with_obj
 
 	"orig_steps"⊸Log orig_steps ← steps
 	"num orig_steps" Log ≠orig_steps
 	# "turns" Log turns
 
-	≠orig_steps
+	all_to_remove ← •Show ⍷ 1⊸⊑¨ orig_steps
+	•Out term_width/"!"
+
+	tries ← 0
+
+	TryWithObstacle ← {𝕊to_remove:
+		tries 1⊸+↩
+		"tries" Log tries
+		# add obstacle to input for this iteration
+		input ← (to_remove⊸≡∘⊑)◶⊢‿('#'⌾(1⊸⊑))¨ ⌾⥊  input_with_obj
+		# "input" RLog 1⊸⊑¨input
+
+		steps ↩ ⟨⟩
+		turns ↩ 0
+		# "first_obj" Log  first_obj
+		Iter•_while_{
+			is_done ← (@⊸≡)𝕩
+			is_looping ← ("loop"⊸≡)𝕩
+
+			# "is_done" Log is_done
+			is_looping
+			 continue ← (0=is_done) ⌊ (0=is_looping)
+
+			 continue
+			 continue
+
+			} first_obj‿input
+
+	}
+		to_remove ← ⊑all_to_remove
+		# TryWithObstacle to_remove
+
+	results ← TryWithObstacle¨ all_to_remove
+	loops ← ("loop"⊸≡)¨ results
+	"len loops" Log +´ loops
+
+
 
 }
 
@@ -222,8 +262,14 @@ PartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
+foo ← ⟨@, @, "loop", @⟩
+"foo" Log foo
+
+•Show +´ ("loop"⊸≡ •Show)¨foo
+
+
 # "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 # 1‿4752 SolutionValidator PartOne data
-2‿6 SolutionValidator PartTwo data
-
+# 2‿6 SolutionValidator PartTwo data
+2‿1720 PartialSolutionValidator PartTwo data
