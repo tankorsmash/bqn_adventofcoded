@@ -46,24 +46,21 @@ PartOne ← {𝕊lines:
 	"first row,col" Log first_row‿first_col
 	# •Exit 0
 
+	state ← ⟨⟩
+
 	# in: (board, prev input) out: (rotated board, next input)
-	Iter ← {obj_row‿obj_col𝕊prev_board:
+	Iter ← {𝕊(obj_row‿obj_col)‿prev_board:
 		•Out (25/"-") ∾ "Iter" ∾ (25/"-")
 		input ↩ Turn90 prev_board
 
 		obj ← obj_row‿obj_col
 		"obj"⊸Log obj
 
-		# "input coords"⊸Log 0⊑¨ input
 		"rotated (unchanged guard)"⊸Log 1⊑¨ input
 
 		"elm_idx" Log elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
 		row‿col ← input IdxToRowCol elm_idx
-		# "rotated row,col" Log row‿col
 		"grabbed elm from rotated input" Log grabbed ← ∾ row‿col⊑input
-		# rotated_guard ←  RotateGuard⌾(1⊸⊑∘(row‿col⊸⊑)) input
-		# •Show 1⊸⊑¨rotated_guard
-		# "input chars" Log 1⊑¨ input
 		row_pairs ← row⊏input
 		"row_chars" Log row_chars←1⊑¨ row_pairs
 
@@ -74,31 +71,40 @@ PartOne ← {𝕊lines:
 		next_hashes ← ((char_idx⊸<)¨/⊢) hash_idxs
 		"no more next? idx" Log no_more_next ← 0=≠next_hashes
 
-		{ no_more_next ? 
+		{ no_more_next ?
 			•Out "donezo"
-		@ ;
+			@
+		;
 			•Out "THERE IS MORE"
 			next_hash_idx ← ⊑next_hashes
 			range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
 
 			"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
 			# •Show Turn90⁼ Turn90 1⊸⊑¨input
+			state ↩ state∾<next_obj
 
 			next_obj‿(Turn90⍟2 input)
 		}
 	}
 
-	next_obj‿next_board ← first_obj Iter joined
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
-	next_obj‿next_board ↩ next_obj Iter next_board
+	# Iter •_while_ (CheckIfNull)
+
+
+	Iter•_while_(@⊸≢) first_obj‿joined
+	"state" Log state
+
+	# next_obj‿next_board ← Iter first_obj‿joined
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+	# next_obj‿next_board ↩ Iter next_obj‿next_board
+
 	∞
 }
 
