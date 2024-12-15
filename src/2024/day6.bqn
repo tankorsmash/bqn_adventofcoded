@@ -32,12 +32,13 @@ PartOne ← {𝕊lines:
 	# "lines"⊸Log¨ lines
 
 	input ← 5‿5⥊ @+97 + ↕26
-	•Show Turn90⁼ Turn90⍟1 input
+	# •Show Turn90⁼ Turn90⍟1 input
 	# •Exit 0
 	input ↩ >˘ lines
 	input ↩ (('.'⊸=◶⊢‿'○')¨)⌾⥊ input
 	"orig input" Log input
-	joined← ((↕≠){y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line }˘⊢)input
+	Joiner ← {y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line}
+	joined← ((↕≠) Joiner˘ ⊢)input
 	# "joined coords"⊸Log 0⊑¨ Turn90 joined
 	# "joined char"⊸Log 1⊑¨ joined
 	first_row‿first_col ← ((⊑·/ ≠¨)⋈(⊑∘(≠¨∾∘/⊢)))  <∘/˘ {⌈´∾˘chars⊸∊⋈ 1⊑𝕩}¨ joined
@@ -70,16 +71,31 @@ PartOne ← {𝕊lines:
 		char_idx ← col
 		hash_idxs ←  >/'#'=row_chars
 
-		next_hash_idx ← ⊑((char_idx⊸<)¨/⊢) hash_idxs
-		range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
+		next_hashes ← ((char_idx⊸<)¨/⊢) hash_idxs
+		"no more next? idx" Log no_more_next ← 0=≠next_hashes
 
-		"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
-		# •Show Turn90⁼ Turn90 1⊸⊑¨input
+		{ no_more_next ? 
+			•Out "donezo"
+		@ ;
+			•Out "THERE IS MORE"
+			next_hash_idx ← ⊑next_hashes
+			range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
 
-		next_obj‿(input)
+			"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
+			# •Show Turn90⁼ Turn90 1⊸⊑¨input
+
+			next_obj‿(Turn90⍟2 input)
+		}
 	}
 
 	next_obj‿next_board ← first_obj Iter joined
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
+	next_obj‿next_board ↩ next_obj Iter next_board
 	next_obj‿next_board ↩ next_obj Iter next_board
 	next_obj‿next_board ↩ next_obj Iter next_board
 	next_obj‿next_board ↩ next_obj Iter next_board
