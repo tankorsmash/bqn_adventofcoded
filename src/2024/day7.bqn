@@ -14,6 +14,15 @@ RLog ← {msg𝕊val:
 
 
 PartOne ← {𝕊lines:
+	Parse ← {𝕊line:
+		raw_target‿raw_parts ← (+`':'⊸=¨)⊸⊔line
+		target ← •ParseFloat raw_target
+		parts ← •ParseFloat∘(1⊸↓)¨ 1↓ (+`' '⊸=¨)⊸⊔  1↓raw_parts
+
+		target‿parts
+	}
+
+	•Show Parse¨ lines
 }
 
 PartTwo ← {𝕊lines:
@@ -42,7 +51,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-"part 1: " Log PartOne data
+# "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-# 1‿??? SolutionValidator PartOne data
+1‿3749 SolutionValidator PartOne data
 # 2‿??? SolutionValidator PartTwo data
