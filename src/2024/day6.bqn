@@ -1,10 +1,10 @@
 data ← •file.Lines "../../samples/2024/day6.txt"
 # data ↩ •file.Lines "../../samples/2024/day6_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day6.txt"
+# data ↩ •file.Lines "../../inputs/2024/day6.txt"
 
 
 Log ← {msg𝕊val:
-	•Show msg‿val
+	•Show (<msg)∾val
 	val
 }
 
@@ -104,7 +104,108 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	lines
+
+	char ← '>'
+	# •Show RotateGuard char
+
+	# "lines"⊸Log¨ lines
+
+	input ← 5‿5⥊ @+97 + ↕26
+	# •Show Turn90⁼ Turn90⍟1 input
+	# •Exit 0
+	input ↩ >˘ lines
+	input ↩ (('.'⊸=◶⊢‿'○')¨)⌾⥊ input
+	# "orig input" Log input
+	Joiner ← {y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line}
+	input_with_obj← ((↕≠) Joiner˘ ⊢)input
+	rows‿cols ← ≢input_with_obj
+	# "joined coords"⊸Log 0⊑¨ Turn90 joined
+	# "joined char"⊸Log 1⊑¨ joined
+	first_row‿first_col ← ((⊑·/ ≠¨)⋈(⊑∘(≠¨∾∘/⊢)))  <∘/˘ {⌈´∾˘chars⊸∊⋈ 1⊑𝕩}¨ input_with_obj
+	first_obj ← first_row‿first_col
+	"first row,col" Log first_row‿first_col
+	# •Exit 0
+
+	steps ← ⟨⟩
+	turns ← 0
+
+	# in: (board, prev input) out: (rotated board, next input)
+	Iter ← {𝕊(obj_row‿obj_col)‿prev_board:
+		degrees ← 90×4|turns
+		•Out (25/"-") ∾ "Iter degrees: " ∾ (•Fmt degrees) ∾ (25/"-")
+		input ↩ Turn90 prev_board
+
+		obj ← obj_row‿obj_col
+		# "obj"⊸Log obj
+
+		# "rotated (unchanged guard)"⊸Log 1⊑¨ input
+
+		elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
+		row‿col ← input IdxToRowCol elm_idx
+		grabbed ← ∾ row‿col⊑input
+		row_pairs ← row⊏input
+		row_chars←1⊑¨ row_pairs
+
+		!'>'=char #sanity check
+		char_idx ← col
+		hash_idxs ←  >/'#'=row_chars
+
+		next_hashes ← ((char_idx⊸<)¨/⊢) hash_idxs
+		no_more_next ← 0=≠next_hashes
+
+		res ← { no_more_next ?
+			•Out "donezo"
+			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
+			new_steps ← <∘(degrees⊸⋈)∘⊑˘>range
+			overlapping_steps ← new_steps∊steps
+			"any overlap?" Log any_overlap ← ⌈´ overlapping_steps
+
+			{ any_overlap ?
+				•Out "looping on last"
+				∞
+			;
+				steps ↩ steps∾new_steps
+				@
+			}
+		;
+			next_hash_idx ← ⊑next_hashes
+			range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
+			new_steps ← <∘(degrees⊸⋈)∘⊑˘>range
+
+			overlapping_steps ← new_steps∊steps
+			"any overlap?" Log any_overlap ← ⌈´ overlapping_steps
+
+			{ any_overlap ?
+				•Out "looping in first"
+				∞
+			;
+
+				next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
+				# •Show Turn90⁼ Turn90 1⊸⊑¨input
+				steps ↩ steps∾new_steps
+
+				next_obj‿(Turn90⍟2 input)
+			}
+		}
+
+		turns 1⊸+↩
+		res
+	}
+
+
+
+	RiskyParse ← •Bqn
+	term_width ← RiskyParse 1⊑ •SH ⟨"tput", "cols"⟩
+	•Out term_width/"-"
+
+	Iter•_while_(@⊸≢) first_obj‿input_with_obj
+
+	"orig_steps"⊸Log orig_steps ← steps
+	"num orig_steps" Log ≠orig_steps
+	# "turns" Log turns
+
+	≠orig_steps
+
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -121,8 +222,8 @@ PartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-"part 1: " Log PartOne data
+# "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-1‿4752 SolutionValidator PartOne data
-# 2‿5833 SolutionValidator PartTwo data
+# 1‿4752 SolutionValidator PartOne data
+2‿6 SolutionValidator PartTwo data
 
