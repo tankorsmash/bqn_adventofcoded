@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day6.txt"
 # data ↩ •file.Lines "../../samples/2024/day6_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day6.txt"
+data ↩ •file.Lines "../../inputs/2024/day6.txt"
 
 
 Log ← {msg𝕊val:
@@ -36,7 +36,7 @@ PartOne ← {𝕊lines:
 	# •Exit 0
 	input ↩ >˘ lines
 	input ↩ (('.'⊸=◶⊢‿'○')¨)⌾⥊ input
-	"orig input" Log input
+	# "orig input" Log input
 	Joiner ← {y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line}
 	joined← ((↕≠) Joiner˘ ⊢)input
 	rows‿cols ← ≢joined
@@ -51,40 +51,40 @@ PartOne ← {𝕊lines:
 
 	# in: (board, prev input) out: (rotated board, next input)
 	Iter ← {𝕊(obj_row‿obj_col)‿prev_board:
-		•Out (25/"-") ∾ "Iter" ∾ (25/"-")
+		# •Out (25/"-") ∾ "Iter" ∾ (25/"-")
 		input ↩ Turn90 prev_board
 
 		obj ← obj_row‿obj_col
-		"obj"⊸Log obj
+		# "obj"⊸Log obj
 
-		"rotated (unchanged guard)"⊸Log 1⊑¨ input
+		# "rotated (unchanged guard)"⊸Log 1⊑¨ input
 
-		"elm_idx" Log elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
+		elm_idx ← ⊑(/(obj⊸≡)∘⊑¨) ⥊ input
 		row‿col ← input IdxToRowCol elm_idx
-		"grabbed elm from rotated input" Log grabbed ← ∾ row‿col⊑input
+		grabbed ← ∾ row‿col⊑input
 		row_pairs ← row⊏input
-		"row_chars" Log row_chars←1⊑¨ row_pairs
+		row_chars←1⊑¨ row_pairs
 
 		!'>'=char #sanity check
 		char_idx ← col
 		hash_idxs ←  >/'#'=row_chars
 
 		next_hashes ← ((char_idx⊸<)¨/⊢) hash_idxs
-		"no more next? idx" Log no_more_next ← 0=≠next_hashes
+		no_more_next ← 0=≠next_hashes
 
 		{ no_more_next ?
 			•Out "donezo"
 			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
-			•Show new_state ← <∘⊑˘>range
+			new_state ← <∘⊑˘>range
 			state ↩ state∾new_state
 			@
 		;
-			•Out "THERE IS MORE"
+			# •Out "THERE IS MORE"
 			next_hash_idx ← ⊑next_hashes
 			range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
-			•Show new_state ← <∘⊑˘>range
+			new_state ← <∘⊑˘>range
 
-			"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
+			next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
 			# •Show Turn90⁼ Turn90 1⊸⊑¨input
 			state ↩ state∾new_state
 
@@ -92,28 +92,15 @@ PartOne ← {𝕊lines:
 		}
 	}
 
-	# Iter •_while_ (CheckIfNull)
-
 
 	Iter•_while_(@⊸≢) first_obj‿joined
+
 	RiskyParse ← •Bqn
 	term_width ← RiskyParse 1⊑ •SH ⟨"tput", "cols"⟩
 	•Out term_width/"-"
+
 	"state" Log ≠ ⍷ ∧ state
 
-	# next_obj‿next_board ← Iter first_obj‿joined
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-	# next_obj‿next_board ↩ Iter next_obj‿next_board
-
-	∞
 }
 
 PartTwo ← {𝕊lines:
@@ -126,8 +113,16 @@ SolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
+PartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← ("Part "∾(•Fmt part)∾" is too low! Got instead: "∾(•Fmt answer))
+	•Show expected‿answer
+	"expected is < answer" Log expected<answer
+	err_msg!(expected< answer)
+	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
+}
+
 "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
-# 1‿5329 SolutionValidator PartOne data
+1‿4752 SolutionValidator PartOne data
 # 2‿5833 SolutionValidator PartTwo data
 
