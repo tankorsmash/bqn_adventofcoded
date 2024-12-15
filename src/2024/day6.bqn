@@ -39,6 +39,7 @@ PartOne ← {𝕊lines:
 	"orig input" Log input
 	Joiner ← {y𝕊line: ((↕≠line)⋈¨˜y)⋈¨line}
 	joined← ((↕≠) Joiner˘ ⊢)input
+	rows‿cols ← ≢joined
 	# "joined coords"⊸Log 0⊑¨ Turn90 joined
 	# "joined char"⊸Log 1⊑¨ joined
 	first_row‿first_col ← ((⊑·/ ≠¨)⋈(⊑∘(≠¨∾∘/⊢)))  <∘/˘ {⌈´∾˘chars⊸∊⋈ 1⊑𝕩}¨ joined
@@ -73,15 +74,19 @@ PartOne ← {𝕊lines:
 
 		{ no_more_next ?
 			•Out "donezo"
+			range ← (char_idx+↕ cols-char_idx)⊏row_pairs
+			•Show new_state ← <∘⊑˘>range
+			state ↩ state∾new_state
 			@
 		;
 			•Out "THERE IS MORE"
 			next_hash_idx ← ⊑next_hashes
 			range ← (char_idx+↕ next_hash_idx-char_idx)⊏row_pairs
+			•Show new_state ← <∘⊑˘>range
 
 			"next_obj" Log next_obj ← ⊑ (row‿(1-˜next_hash_idx))⊑input
 			# •Show Turn90⁼ Turn90 1⊸⊑¨input
-			state ↩ state∾<next_obj
+			state ↩ state∾new_state
 
 			next_obj‿(Turn90⍟2 input)
 		}
@@ -91,7 +96,10 @@ PartOne ← {𝕊lines:
 
 
 	Iter•_while_(@⊸≢) first_obj‿joined
-	"state" Log state
+	RiskyParse ← •Bqn
+	term_width ← RiskyParse 1⊑ •SH ⟨"tput", "cols"⟩
+	•Out term_width/"-"
+	"state" Log ≠ ⍷ ∧ state
 
 	# next_obj‿next_board ← Iter first_obj‿joined
 	# next_obj‿next_board ↩ Iter next_obj‿next_board
