@@ -56,9 +56,6 @@ PartOne ← {𝕊lines:
 PartTwo ← {𝕊lines:
 	freqs ← '.'⊸≠⊸/⍷∾lines
 
-	antennae ← / '.'⊸≠∾lines
-	ant_coords ← (>lines)⊸IdxToRowCol¨ antennae
-
 	FindAnts ← {𝕊char:
 		char_idxs ← /∘(char⊸=) ∾lines
 		coords ← (>lines)⊸IdxToRowCol¨ char_idxs
@@ -68,17 +65,21 @@ PartTwo ← {𝕊lines:
 
 		# nonempty pairs of coords
 		pairs ← (0⊸≠≠¨)⊸/˘ (≢˝¨)⊸(/¨) raw_pairs
+		# hacky solve for 50 repeats in a row, instead of doing it smartly
 		all_antinodes ←  ⥊ ∾˘ {((-˝)+⍟𝕩⊏)¨ pairs} ↕50
-		# •Show ↑‿8⥊ all_antinodes
-		WithinBounds ← {𝕊antinode:
-			maxes ← ≤˝ >shape⋈   antinode
-			mins ← >˝ >(0‿0)⋈   antinode
 
-			¬ ⌈´ (maxes)∾(mins)
+		WithinBounds ← {𝕊antinode:
+			maxes ← ≤˝ >shape⋈ antinode
+			mins  ← >˝ >(0‿0)⋈ antinode
+
+			¬ ⌈´ maxes∾mins
 		}
 		bounded ← (WithinBounds¨)⊸/ all_antinodes
 		bounded
 	}
+
+	antennae ← / '.'⊸≠∾lines
+	ant_coords ← >∘lines⊸IdxToRowCol¨ antennae
 
 	≠ ⍷ ant_coords∾ ∾FindAnts¨ freqs
 }
@@ -107,7 +108,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # sample
 # 1‿14 SolutionValidator PartOne data
 # input
-# 1‿367 SolutionValidator PartOne data
+1‿367 SolutionValidator PartOne data
 
 # sample
 # 2‿34 SolutionValidator PartTwo data
