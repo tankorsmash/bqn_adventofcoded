@@ -48,7 +48,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # sample
-# 1‿??? SolutionValidator PartOne data
+1‿14 SolutionValidator PartOne data
 # input
 # 1‿??? SolutionValidator PartOne data
 
