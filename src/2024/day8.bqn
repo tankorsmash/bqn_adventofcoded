@@ -54,7 +54,33 @@ PartOne ← {𝕊lines:
 }
 
 PartTwo ← {𝕊lines:
-	∞
+	freqs ← '.'⊸≠⊸/⍷∾lines
+
+	antennae ← / '.'⊸≠∾lines
+	ant_coords ← (>lines)⊸IdxToRowCol¨ antennae
+
+	FindAnts ← {𝕊char:
+		char_idxs ← /∘(char⊸=) ∾lines
+		coords ← (>lines)⊸IdxToRowCol¨ char_idxs
+		rows‿cols ← shape ←≢>˘lines
+
+		raw_pairs ←  ≍⌜˜ coords
+
+		# nonempty pairs of coords
+		pairs ← (0⊸≠≠¨)⊸/˘ (≢˝¨)⊸(/¨) raw_pairs
+		all_antinodes ←  ⥊ ∾˘ {((-˝)+⍟𝕩⊏)¨ pairs} ↕50
+		# •Show ↑‿8⥊ all_antinodes
+		WithinBounds ← {𝕊antinode:
+			maxes ← ≤˝ >shape⋈   antinode
+			mins ← >˝ >(0‿0)⋈   antinode
+
+			¬ ⌈´ (maxes)∾(mins)
+		}
+		bounded ← (WithinBounds¨)⊸/ all_antinodes
+		bounded
+	}
+
+	≠ ⍷ ant_coords∾ ∾FindAnts¨ freqs
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -80,11 +106,10 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 
 # sample
 # 1‿14 SolutionValidator PartOne data
-1‿367 SolutionValidator PartOne data
 # input
-# 1‿??? SolutionValidator PartOne data
+# 1‿367 SolutionValidator PartOne data
 
 # sample
-# 2‿??? SolutionValidator PartTwo data
+# 2‿34 SolutionValidator PartTwo data
 # input
-# 2‿??? SolutionValidator PartTwo data
+2‿1285 SolutionValidator PartTwo data
