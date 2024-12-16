@@ -108,7 +108,8 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # 1‿3749 SolutionValidator PartOne data
-# 1‿4998764814652 SolutionValidator PartOne data
+1‿4998764814652 SolutionValidator PartOne data
 
 # 2‿11387 SolutionValidator PartTwo data
-2‿37598910447546 SolutionValidator PartTwo data
+# 2‿37598910447546 SolutionValidator PartTwo data
+

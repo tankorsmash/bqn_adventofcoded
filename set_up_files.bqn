@@ -1,3 +1,5 @@
+⟨ReplaceAll⟩ ← •Import •wdpath∾"/external/bqn-libs/strings.bqn"
+
 year‿day ← •args
 
 
@@ -75,3 +77,81 @@ SafeCreateFile ← {𝕊filepath:
 •Out SafeCreateFile sample_filename
 •Out "Creating source file: " ∾ source_filename
 •Out SafeCreateFile source_filename
+
+
+replacements ← [
+	⟨"$YEAR", "2024"⟩
+	⟨"$DAY_NUM", "8"⟩
+	⟨"$NAME", "Jules"⟩
+]
+
+template ← "data ← •file.Lines ""../../samples/$YEAR/day$DAY_NUM.txt""
+# data ↩ •file.Lines ""../../samples/$YEAR/day$DAY_NUM_alt.txt""
+# data ↩ •file.Lines ""../../inputs/$YEAR/day$DAY_NUM.txt""
+
+# dyadic show but returns paired args
+DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
+
+Log ← {msg𝕊val:
+	•Show (<msg)∾val
+	val
+}
+RLog ← {msg𝕊val:
+	•Show (msg)⋈val
+	val
+}
+
+PartOne ← {𝕊lines:
+	∞
+}
+
+PartTwo ← {𝕊lines:
+	∞
+}
+
+SolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← (""Part ""∾(•Fmt part)∾"" is wrong! Got instead: ""∾(•Fmt answer))
+	err_msg!(expected= answer)
+	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
+}
+
+AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← (""Part ""∾(•Fmt part)∾"" is too low! Got instead: ""∾(•Fmt answer))
+	•Show expected‿answer
+	""expected is < answer"" Log expected<answer
+	err_msg!(expected< answer)
+	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
+}
+
+AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
+	err_msg ← (""Part ""∾(•Fmt part)∾"" is too hight! Got instead: ""∾(•Fmt answer))
+	•Show expected‿answer
+	""expected is > answer"" Log expected>answer
+	err_msg!(expected< answer)
+	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
+}
+
+# ""part 1: "" Log PartOne data
+# ""part 2: "" Log PartTwo data
+
+# sample
+# 1‿??? SolutionValidator PartOne data
+# input
+# 1‿??? SolutionValidator PartOne data
+
+# sample
+# 2‿??? SolutionValidator PartTwo data
+# input
+# 2‿??? SolutionValidator PartTwo data
+"
+
+ToRepl ← {𝕊key‿repl:
+	[⋈key,⋈repl]
+}
+
+rendered ← template ReplaceAll´ <˘ ToRepl˘ replacements
+
+•Out "Rendering source file: " ∾ StripRoot source_filename
+source_filename •file.Chars rendered
+•Out "Done!"
+
