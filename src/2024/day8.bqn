@@ -14,8 +14,42 @@ RLog ← {msg𝕊val:
 	val
 }
 
+IdxToRowCol ← {board𝕊idx:
+	rows‿cols ← ≢ board
+	row ← ⌊ idx÷rows
+	col ← rows|idx
+	row‿col
+}
+
 PartOne ← {𝕊lines:
-	∞
+	freqs ← '.'⊸≠⊸/⍷∾lines
+
+	antennae ← / '.'⊸≠∾lines
+	"ant_coords" Log ant_coords ← (>lines)⊸IdxToRowCol¨ antennae
+	•Out 50/"-"
+
+	FindAnts ← {𝕊char:
+		char_idxs ← /∘(char⊸=) ∾lines
+		"coords" Log coords ← (>lines)⊸IdxToRowCol¨ char_idxs
+		"rows,cols" RLog rows‿cols ← shape ←≢>˘lines
+
+		raw_pairs ←  ≍⌜˜ coords
+		•Out 50/"-"
+		# nonempty pairs of coords
+		•Show pairs ← (0⊸≠≠¨)⊸/˘ (≢˝¨)⊸(/¨) raw_pairs
+		((-˝)+⊏) pair ← ⊑ pairs
+		all_antinodes ← ((-˝)+⊏)¨ pairs
+		WithinBounds ← {𝕊antinode:
+			maxes ← <˝ >shape⋈   antinode
+			mins ← >˝ >(0‿0)⋈   antinode
+
+			¬ ⌈´ (maxes)∾(mins)
+		}
+		•Show  ≠ (ant_coords⊸(¬∘∊˜))⊸/ (WithinBounds¨)⊸/ ⥊all_antinodes
+	}
+	char ← 0⊑freqs
+	# FindAnts char
+	+´ FindAnts¨ freqs
 }
 
 PartTwo ← {𝕊lines:
@@ -23,7 +57,7 @@ PartTwo ← {𝕊lines:
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← ("Part "∾(•Fmt part)∾" is wrong! Got instead: "∾(•Fmt answer))
+	err_msg ← ("Part "∾(•Fmt part)∾" is wrong! Expected: " ∾ (•Fmt expected )∾ ", got: "∾(•Fmt answer))
 	err_msg!(expected= answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
