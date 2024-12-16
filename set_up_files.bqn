@@ -117,19 +117,16 @@ SolutionValidator ← {part‿expected𝕊answer:
 
 AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← (""Part ""∾(•Fmt part)∾"" is too low! Got instead: ""∾(•Fmt answer))
-	•Show expected‿answer
-	""expected is < answer"" Log expected<answer
 	err_msg!(expected< answer)
 	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
 }
 
 AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← (""Part ""∾(•Fmt part)∾"" is too hight! Got instead: ""∾(•Fmt answer))
-	•Show expected‿answer
-	""expected is > answer"" Log expected>answer
+	err_msg ← (""Part ""∾(•Fmt part)∾"" is too high! Got instead: ""∾(•Fmt answer))
 	err_msg!(expected< answer)
 	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
 }
+
 
 # ""part 1: "" Log PartOne data
 # ""part 2: "" Log PartTwo data

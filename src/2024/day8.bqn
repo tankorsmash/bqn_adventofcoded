@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day8.txt"
 # data ↩ •file.Lines "../../samples/2024/day8_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day8.txt"
+data ↩ •file.Lines "../../inputs/2024/day8.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -25,31 +25,32 @@ PartOne ← {𝕊lines:
 	freqs ← '.'⊸≠⊸/⍷∾lines
 
 	antennae ← / '.'⊸≠∾lines
-	"ant_coords" Log ant_coords ← (>lines)⊸IdxToRowCol¨ antennae
-	•Out 50/"-"
+	ant_coords ← (>lines)⊸IdxToRowCol¨ antennae
 
 	FindAnts ← {𝕊char:
 		char_idxs ← /∘(char⊸=) ∾lines
-		"coords" Log coords ← (>lines)⊸IdxToRowCol¨ char_idxs
-		"rows,cols" RLog rows‿cols ← shape ←≢>˘lines
+		coords ← (>lines)⊸IdxToRowCol¨ char_idxs
+		rows‿cols ← shape ←≢>˘lines
 
 		raw_pairs ←  ≍⌜˜ coords
-		•Out 50/"-"
+		# •Out 50/"-"
+
 		# nonempty pairs of coords
-		•Show pairs ← (0⊸≠≠¨)⊸/˘ (≢˝¨)⊸(/¨) raw_pairs
+		pairs ← (0⊸≠≠¨)⊸/˘ (≢˝¨)⊸(/¨) raw_pairs
 		((-˝)+⊏) pair ← ⊑ pairs
 		all_antinodes ← ((-˝)+⊏)¨ pairs
 		WithinBounds ← {𝕊antinode:
-			maxes ← <˝ >shape⋈   antinode
+			maxes ← ≤˝ >shape⋈   antinode
 			mins ← >˝ >(0‿0)⋈   antinode
 
 			¬ ⌈´ (maxes)∾(mins)
 		}
-		•Show  ≠ (ant_coords⊸(¬∘∊˜))⊸/ (WithinBounds¨)⊸/ ⥊all_antinodes
+		bounded ← (WithinBounds¨)⊸/ ⥊all_antinodes
+		# no_collision ← (ant_coords⊸(¬∘∊˜))⊸/ bounded
+		bounded
 	}
-	char ← 0⊑freqs
-	# FindAnts char
-	+´ FindAnts¨ freqs
+
+	≠ ⍷∾ FindAnts¨ freqs
 }
 
 PartTwo ← {𝕊lines:
@@ -64,16 +65,12 @@ SolutionValidator ← {part‿expected𝕊answer:
 
 AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← ("Part "∾(•Fmt part)∾" is too low! Got instead: "∾(•Fmt answer))
-	•Show expected‿answer
-	"expected is < answer" Log expected<answer
 	err_msg!(expected< answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
 AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← ("Part "∾(•Fmt part)∾" is too hight! Got instead: "∾(•Fmt answer))
-	•Show expected‿answer
-	"expected is > answer" Log expected>answer
+	err_msg ← ("Part "∾(•Fmt part)∾" is too high! Got instead: "∾(•Fmt answer))
 	err_msg!(expected< answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
@@ -82,7 +79,8 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # sample
-1‿14 SolutionValidator PartOne data
+# 1‿14 SolutionValidator PartOne data
+1‿367 SolutionValidator PartOne data
 # input
 # 1‿??? SolutionValidator PartOne data
 
