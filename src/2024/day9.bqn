@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day9.txt"
 # data ↩ •file.Lines "../../samples/2024/day9_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day9.txt"
+# data ↩ •file.Lines "../../inputs/2024/day9.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -12,6 +12,11 @@ Log ← {msg𝕊val:
 RLog ← {msg𝕊val:
 	•Show (msg)⋈val
 	val
+}
+
+# returns 1 if the arg is a simple number/char
+IsSimple ← {𝕊val:
+	⟨⟨⟩,0⟩≡(≢⋈≡)val
 }
 
 PartOne ← {𝕊lines:
@@ -52,11 +57,52 @@ PartOne ← {𝕊lines:
 	# parsed ← (•ParseFloat⎊•Show)∘⋈¨ ('.'⊸≠)⊸/final_rendered
 	parsed ← (-⟜(@+48)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
 	+´ ×´˘ (↕≠)⊸(≍˘) parsed
-	# TODO: if last_dig > first_space then we are done moving around
 }
 
 PartTwo ← {𝕊lines:
-	∞
+	raw_data_config ← ↑‿2⥊(•ParseFloat ⋈)¨ ⊑ lines
+	data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+	# "data_config" RLog data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+
+	SwapBoth ←{str𝕊last_dig_idx‿first_space_idx:
+		swapped_str ← (last_dig_idx⊑str)⌾(first_space_idx⊸⊑) str
+		 '.'⌾(last_dig_idx⊸⊑) swapped_str
+	}
+
+	Render ← {⟨idx⟩‿(size‿space):
+		chr ← @+(48 + idx)
+		datum ← size⥊chr
+		padding ← space⥊('.')
+		datum∾padding
+	}
+  first_rendered ← ∾ <∘Render˘ data_config
+	"unique chars" RLog unique_chars ← '.'⊸≠⊸/⍷first_rendered
+
+
+	# rendered ↩ "123..."
+	GetIndices ← ((¯1⊸⊑·/¬)⋈ ⊑∘/)∘('.'⊸=)
+
+	Iter ← {dig𝕊rendered:
+		•Show rendered‿dig
+		!IsSimple dig
+		# last_dig_idx‿first_space_idx ← GetIndices rendered
+		# next_rendered ← rendered SwapBoth last_dig_idx‿first_space_idx
+
+		# find all digs in rendered
+
+		# count its length
+		# find first biggest space to fit in
+		# swap the dots to the digs' original position
+
+		rendered
+	}
+	# final_rendered ← Iter •_while_ Cond first_rendered
+
+	# final_rendered ← (first_rendered Iter 0⊑ unique_chars) Iter 1⊑ unique_chars
+	final_rendered ← (first_rendered Iter´ unique_chars)
+
+	parsed ← (-⟜(@+48)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
+	+´ ×´˘ (↕≠)⊸(≍˘) parsed
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -82,11 +128,11 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # sample
-1‿1928 SolutionValidator PartOne data
+# 1‿1928 SolutionValidator PartOne data
 # input
-1‿6398252054886 SolutionValidator PartOne data
+# 1‿6398252054886 SolutionValidator PartOne data
 
 # sample
-# 2‿??? SolutionValidator PartTwo data
+2‿2858 SolutionValidator PartTwo data
 # input
 # 2‿??? SolutionValidator PartTwo data
