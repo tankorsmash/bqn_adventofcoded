@@ -80,8 +80,8 @@ SafeCreateFile ← {𝕊filepath:
 
 
 replacements ← [
-	⟨"$YEAR", "2024"⟩
-	⟨"$DAY_NUM", "8"⟩
+	⟨"$YEAR", year⟩
+	⟨"$DAY_NUM", day⟩
 	⟨"$NAME", "Jules"⟩
 ]
 
@@ -117,7 +117,7 @@ SolutionValidator ← {part‿expected𝕊answer:
 
 AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← (""Part ""∾(•Fmt part)∾"" is too low! Got instead: ""∾(•Fmt answer))
-	err_msg!(expected< answer)
+	err_msg!(expected≥ answer)
 	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
 }
 
@@ -128,7 +128,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 }
 
 
-# ""part 1: "" Log PartOne data
+""part 1: "" Log PartOne data
 # ""part 2: "" Log PartTwo data
 
 # sample
