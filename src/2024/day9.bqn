@@ -15,7 +15,16 @@ RLog ← {msg𝕊val:
 }
 
 PartOne ← {𝕊lines:
-	∞
+	raw_data_config ← ↑‿2⥊(•ParseFloat ⋈)¨ ⊑ lines
+	"data_config" RLog data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+
+	Render ← {⟨idx⟩‿(size‿space):
+		chr ← @+(48 + idx)
+		datum ← size⥊chr
+		padding ← space⥊('.')
+		datum∾padding
+	}
+	≠ •Show ∾ <∘Render˘ data_config
 }
 
 PartTwo ← {𝕊lines:
@@ -41,11 +50,11 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 }
 
 
-"part 1: " Log PartOne data
+# "part 1: " Log PartOne data
 # "part 2: " Log PartTwo data
 
 # sample
-# 1‿??? SolutionValidator PartOne data
+1‿1928 SolutionValidator PartOne data
 # input
 # 1‿??? SolutionValidator PartOne data
 
