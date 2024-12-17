@@ -50,7 +50,7 @@ PartOne ← {𝕊lines:
 	final_rendered ← Iter •_while_ Cond first_rendered
 	# "final_rendered" RLog final_rendered
 	# parsed ← (•ParseFloat⎊•Show)∘⋈¨ ('.'⊸≠)⊸/final_rendered
-	parsed ← ((|48-@⊸+⁼)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
+	parsed ← (-⟜(@+48)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
 	+´ ×´˘ (↕≠)⊸(≍˘) parsed
 	# TODO: if last_dig > first_space then we are done moving around
 }
@@ -82,9 +82,8 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # sample
-# 1‿1928 SolutionValidator PartOne data
+1‿1928 SolutionValidator PartOne data
 # input
-# 1‿6458440602774 AtMostPartialSolutionValidator PartOne data
 1‿6398252054886 SolutionValidator PartOne data
 
 # sample
