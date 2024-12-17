@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day9.txt"
 # data ↩ •file.Lines "../../samples/2024/day9_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day9.txt"
+data ↩ •file.Lines "../../inputs/2024/day9.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -16,7 +16,8 @@ RLog ← {msg𝕊val:
 
 PartOne ← {𝕊lines:
 	raw_data_config ← ↑‿2⥊(•ParseFloat ⋈)¨ ⊑ lines
-	"data_config" RLog data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+	data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+	# "data_config" RLog data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
 
 	SwapBoth ←{str𝕊last_dig_idx‿first_space_idx:
 		swapped_str ← (last_dig_idx⊑str)⌾(first_space_idx⊸⊑) str
@@ -48,8 +49,9 @@ PartOne ← {𝕊lines:
 	}
 	final_rendered ← Iter •_while_ Cond first_rendered
 	# "final_rendered" RLog final_rendered
-
-	+´ ×´˘ (↕≠)⊸(≍˘) •ParseFloat∘⋈¨ ('.'⊸≠)⊸/final_rendered
+	# parsed ← (•ParseFloat⎊•Show)∘⋈¨ ('.'⊸≠)⊸/final_rendered
+	parsed ← ((|48-@⊸+⁼)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
+	+´ ×´˘ (↕≠)⊸(≍˘) parsed
 	# TODO: if last_dig > first_space then we are done moving around
 }
 
@@ -80,9 +82,10 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # "part 2: " Log PartTwo data
 
 # sample
-1‿1928 SolutionValidator PartOne data
+# 1‿1928 SolutionValidator PartOne data
 # input
-# 1‿??? SolutionValidator PartOne data
+# 1‿6458440602774 AtMostPartialSolutionValidator PartOne data
+1‿6398252054886 SolutionValidator PartOne data
 
 # sample
 # 2‿??? SolutionValidator PartTwo data
