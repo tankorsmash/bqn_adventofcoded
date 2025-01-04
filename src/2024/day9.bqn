@@ -129,8 +129,11 @@ PartTwo ← {𝕊lines:
 	# final_rendered ← (first_rendered Iter 0⊑ unique_chars) Iter 1⊑ unique_chars
 	final_rendered ← (first_rendered Iter´ unique_chars)
 
-	parsed ← (-⟜(@+48)∘⊑)∘⋈¨ ('.'⊸≠)⊸/final_rendered
-	+´ ×´˘ (↕≠)⊸(≍˘) parsed
+	# parsed ← •Show (-⟜(@+48))¨ •Show ('.'⊸≠)⊸/final_rendered
+	# parsed ← •Show ((-⟜(@+48)•Show)⌾1⊸⊑)¨ •Show ('.'⊸≠1⊸⊑¨)⊸(/) (↕≠)⊸(⋈¨)final_rendered
+	foo ← ('.'⊸≠1⊸⊑¨)⊸(/) (↕≠)⊸(⋈¨)final_rendered
+	parsed ← ((-⟜(@+48))⌾(1⊸⊑) )¨ foo
+	+´ ×´¨ parsed
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
