@@ -1,6 +1,7 @@
 ⟨Get, Post⟩ ← •Import "../external/bqn-curl/curl.bqn"
 ⟨FromBytes⟩ ← •Import "../external/bqn-libs/strings.bqn"
 ⟨Parse, Export⟩ ← •Import "../external/bqn-libs/json.bqn"
+⟨ToTimestamp, FromTimestamp ⟩ ← •Import "../external/bqn-libs/datetime.bqn"
 
 Pp ← {•Show 100↑•Fmt𝕩⋄𝕩}
 Rr ← { •Show (100⊸↑ •Repr 𝕩)⋄𝕩}
@@ -28,99 +29,38 @@ SplitRepl ← {
 		(𝕨⊸≠/⊢)¨ raw
 }
 
-base_checkboxes ← 0¨ ↕1_000_000
-# •Show ≠base_checkboxes
-
-filename2 ← "/mnt/d/Downloads/one-million-checkboxes-data/pre-crash/logs.2024-06-27.txt"
-•Show "reading updates"
-# log_bytes ← 1_000_000↑ •file.MapBytes filename2
-log_bytes ← 1_0↑ •file.MapBytes filename2
-lf ← @+10
-updates ← > (1‿2⊸⊏)¨ {
-	raw_time‿raw_idx‿raw_bool ← 𝕩
-	⟨raw_time, •ParseFloat raw_idx, •ParseFloat raw_bool⟩
-}¨ ((3=≠¨)/⊢) '|'⊸SplitRepl¨ lf⊸SplitRepl log_bytes
-•Show "done"
-
-Gather ← {
-	idx‿val ← 𝕨
-	𝕨
-	val⌾(idx⊸⊑)𝕩
+PMon ← { 1: "Jan"; 2: "Feb"; 3: "Mar"; 4: "Apr"; 5: "May"; 6: "Jun"; 7: "Jul"; 8: "Aug"; 9: "Sep"; 10: "Oct"; 11: "Nov"; 12: "Dec"}
+PMonth ← { 1: "January"; 2: "February"; 3: "March"; 4: "April"; 5: "May"; 6: "June"; 7: "July"; 8: "August"; 9: "September"; 10: "October"; 11: "November"; 12: "December"}
+TimeToString ← {𝕊 year‿month‿day‿hour‿minute‿second:
+	Pad ← 2⊸(-⊸↑)
+	< ∾(•Repr year)∾" "∾(<PMon month)∾" "∾(•Repr day)∾", "∾(•Repr hour)∾"h"∾(Pad •Repr minute)∾"m"∾(Pad •Repr second)∾"s"
 }
 
-rendered ← base_checkboxes Gather˝ updates
-•Show "done rendering"
-# •Show ((⋈˜·⌊·√≠)⥊⊢)rendered
-# •Show 10↑updates
+Reorder ← { first_keys𝕊arr:
+	remaining_keys ← / ¬ first_keys⊸(∊˜) ↕≠arr
+	(first_keys∾remaining_keys)⊏arr
+}
 
-# width ← 200
-# height ← 200
-width ← √≠rendered
-height ← √≠rendered
+sec_json ← Parse •file.Bytes "../data/securities/2023_aapl.json"
+results ← ((/(<"results")⍷⊏)⊏1⊸⊏)sec_json
+Time ← ToTimestamp ÷⟜1000
+entries ←  20↑ ⊑results
+entries ↩ (6‿2‿3‿4)⊸Reorder˘¨ entries
+# •Show¨ entries
+entry ← ⊑entries
+GetIdx ← {name𝕊row: ⊑/((<name)⍷⊏) row}
+time_idx ←  "t" GetIdx entry
+open_idx ←  "o" GetIdx entry
+close_idx ← "c" GetIdx entry
+vol_idx ←   "v" GetIdx entry
+entries_times ← (TimeToString∘∾)˘⍉> Time (⋈∘time_idx⊸⊏ 1⊸⊏)¨ entries
 
-file_header← ∾ ⟨
-	'P', '6', @+10,
-	•Fmt width,' ', •Fmt height,@+10,
-	255,@+10
-    ⟩
-•Show file_header
+•Show "headers"‿(headers ← ⊏⊑entries)
+•Show headers ∾ data← > 1⊸⊏¨ entries
 
+•Show {𝕊time‿open: TimeToString>Time time}˘ time_idx‿open_idx⊸⊏˘data
 
+# •Show 5⌽"01234567"
 
-times ← (width×height)
-•Show "generating image"‿times
-# img_data ← [1,0,1]∾⍟times  ⟨⟩
-# img_data ← (times×3)⥊[255,0,0]
+•Show "done"
 
-
-# final_image ← file_header∾img_data
-•Show ≠rendered
-final_image ← file_header∾(3⊸×∘≠⥊⊢)rendered
-# •Show ≠final_image
-•Show "writing"
-
-filename ← "./src/temp.ppm"
-
-"./temp.ppm" •file.Bytes final_image
-
-# •Show '.'¨ 10‿20⥊↕ 200
-# •Show '1'⌾(0⊸⊑) '0'¨  ⥊ ((⋈˜·⌊√)⥊↕)100
-# •Show '1'⌾(¯1⊸⊑) '0'¨  ⥊ ((⋈˜·⌊√)⥊↕)1_000_000
-
-
-•Show "done writing"
-
-
-•Show data ← [⟨"data", "test"⟩,  ⟨"meta", "1234"⟩]
-fields ← ⟨"test", "data"⟩
-•Show result ← ⊐⟜fields⊸⊏˝ data
-
-# •Show ⟨"foo"⟩⊐["foo", "bar", "baz"]
-
-# •Show •SH ⟨"feh", filename⟩
-
-# filename ← "../data/securities/2023_aapl.json"
-#
-# # ⟨content⟩ ←Get "https://reddit.com/r/programming.json"
-# # filename •file.Chars (Export Parse content)
-#
-# content ←  Parse •file.Bytes filename
-#
-# resultsIdx ← 4
-# dayIdx ← 1
-# closeLookup ← 1‿3
-# •Show  ⊏ content
-# •Show  dayIdx⊑ 1‿resultsIdx ⊑ content
-# closes ← closeLookup⊸⊑¨ 1‿resultsIdx ⊑ content
-# sma7 ← (+´÷≠)˘ (0¨↕7)∾7↕ closes
-# # •Show¨ (↕14)⋈¨(14↑sma7)
-#
-# # •Show 14⊏ ⍉[closes, 250↑sma7]
-#
-# # •Show (⊏∾⊢)⍟4 3↕ ↕10
-#
-# •Show  {
-# 		orig_row ← 𝕩
-# 		num_repeats ← 5
-# 		¯1⌽ {("$"⊸∾˘¨orig_row)∾𝕩}⍟num_repeats ≍ orig_row
-# 	} [1,2,3,4]

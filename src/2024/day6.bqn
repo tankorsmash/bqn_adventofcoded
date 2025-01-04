@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day6.txt"
 # data ↩ •file.Lines "../../samples/2024/day6_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day6.txt"
+data ↩ •file.Lines "../../inputs/2024/day6.txt"
 
 
 Log ← {msg𝕊val:
