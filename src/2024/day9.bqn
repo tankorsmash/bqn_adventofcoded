@@ -99,9 +99,15 @@ PartTwo ← {𝕊lines:
 		# "digits_idx" RLog digits_idx
 		# •Show digits ← dig⊸=¨⊸/rendered
 		# "info " RLog info ←  (<≢all_spaces)‿(<≠all_spaces)‿ (<≡all_spaces)
-		pot_addrs ← (/((≠digits_idx)⊸≤1⊸⊑)˘)⊸⊏ all_spaces
+		CheckCount ← (≠digits_idx)⊸≤1⊸⊑
+		CheckStart ← {𝕊chr‿num‿idx: idx < ⊑digits_idx}
+		# pot_addrs ← (/(CheckCount)˘)⊸⊏ all_spaces
+		pot_addrs ← (/(CheckCount∧CheckStart)˘)⊸⊏ all_spaces
 		# "pot_pos" RLog  pot_pos
 		pot_idxs ← (↕⊸+´1⊸↓)˘pot_addrs
+
+		# •Exit 0
+
 		# •Show pot_idxs
 		{ 0≠≠pot_idxs
 		?
@@ -111,11 +117,11 @@ PartTwo ← {𝕊lines:
 			# "pairs" RLog pairs
 
 			next_rendered ← rendered SwapBoth˜´ pairs
-			"new_rendered" RLog next_rendered
+			(dig∾": new_rendered") RLog next_rendered
 
 			next_rendered
 		;
-			"    rendered" RLog rendered
+			(dig∾":     rendered") RLog rendered
 		}
 	}
 	# final_rendered ← Iter •_while_ Cond first_rendered
@@ -153,14 +159,6 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # 1‿1928 SolutionValidator PartOne data
 # input
 # 1‿6398252054886 SolutionValidator PartOne data
-
-# str ← "aaaflllllpppp"
-# •Show str
-# •Show i ← /1»≠⟜«str
-# •Show c ← (≠⟜str)(«-⊢) / 1» ≠⟜«str
-# •Show i⊏str
-
-
 
 # sample
 2‿2858 SolutionValidator PartTwo data
