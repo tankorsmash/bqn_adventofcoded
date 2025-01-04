@@ -87,33 +87,52 @@ PartTwo ← {𝕊lines:
 	# rendered ↩ "123..."
 	GetIndices ← ((¯1⊸⊑·/¬)⋈ ⊑∘/)∘('.'⊸=)
 	GroupedCounts ← {char𝕊y:
-		indices ← /1»≠⟜«y
-		counts ← (≠y)(«-⊢) / 1» ≠⟜«y
+		foo ← ≠⟜«y
+		indices ← /1»foo
+		counts ← (≠y)(«-⊢) indices
 		chars ← indices⊏y
 		(char⊸=∘⊑¨⊸/) ∾¨´ chars‿counts‿indices
 	}
+
+	FormatTime ← ⥊ 6↑ •Fmt
+
+	all_times ← ⟨⟩
+
 	Iter ← {dig𝕊rendered:
+		start ←	•MonoTime @
+		times ← ⟨⟩
+		TD ← {msg𝕊𝕩:
+			time ← 1000×(•MonoTime @) - start
+			prev ← (1⊸⊑ ¯1⊸⊑)⎊time times
+			delta ← time - prev
+			# msg RLog (FormatTime  time)‿(FormatTime delta)
+			times ∾⟜(<msg‿time‿delta)↩
+		}
 		!IsSimple dig
+		"1st" TD @
 		# "dig" Log dig
 		# "rendered" RLog rendered
 		all_spaces ←  > '.'GroupedCounts rendered
+		"grp" TD @
 		# "all_spaces (chr, num, idx)" RLog all_spaces
 		# "target" Log target ← dig GroupedCounts rendered
 		digits_idx ← / dig⊸=¨rendered
 		# "digits_idx" RLog digits_idx
 		# •Show digits ← dig⊸=¨⊸/rendered
 		# "info " RLog info ←  (<≢all_spaces)‿(<≠all_spaces)‿ (<≡all_spaces)
+		"dig" TD @
 		CheckCount ← (≠digits_idx)⊸≤1⊸⊑
 		CheckStart ← {𝕊chr‿num‿idx: idx < ⊑digits_idx}
 		# pot_addrs ← (/(CheckCount)˘)⊸⊏ all_spaces
-		pot_addrs ← (/(CheckCount∧CheckStart)˘)⊸⊏ all_spaces
+		pot_addrs ← (/ (CheckCount ∧ CheckStart)˘)⊸⊏ all_spaces
 		# "pot_pos" RLog  pot_pos
 		pot_idxs ← (< · ↕⊸+´1⊸↓)˘pot_addrs
+		"2nd" TD @
 
 		# •Exit 0
 
 		# •Show pot_idxs
-		{ 0≠≠pot_idxs
+		new_rendered ← { 0≠≠pot_idxs
 		?
 			range ← (≠digits_idx)↑⊑ pot_idxs
 			# "range" RLog range
@@ -124,16 +143,26 @@ PartTwo ← {𝕊lines:
 			# (dig∾": new_rendered") TRLog next_rendered
 			next_rendered
 
+			"3 a" TD @
 			next_rendered
 		;
 			# (dig∾":     rendered") TRLog rendered
+			"3 b" TD @
 			rendered
 		}
+
+
+		all_times ∾⟜(<times)↩
+
+
+		new_rendered
 	}
 	# final_rendered ← Iter •_while_ Cond first_rendered
 
 	# final_rendered ← (first_rendered Iter 0⊑ unique_chars) Iter 1⊑ unique_chars
 	final_rendered ← (first_rendered Iter´ unique_chars)
+
+	# •Show {𝕊msg‿time‿diff: msg‿(FormatTime diff)}¨ ∾⥊all_times
 
 	# parsed ← •Show (-⟜(@+48))¨ •Show ('.'⊸≠)⊸/final_rendered
 	# parsed ← •Show ((-⟜(@+48)•Show)⌾1⊸⊑)¨ •Show ('.'⊸≠1⊸⊑¨)⊸(/) (↕≠)⊸(⋈¨)final_rendered
@@ -169,7 +198,11 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # input
 # 1‿6398252054886 SolutionValidator PartOne data
 
+all_start ←	•MonoTime @
 # sample
-2‿2858 SolutionValidator PartTwo data
+# 2‿2858 SolutionValidator PartTwo data
 # input
-# 2‿??? SolutionValidator PartTwo data
+2‿6415666220005 SolutionValidator PartTwo data
+all_end ←	•MonoTime @
+
+"total time" RLog all_end-all_start
