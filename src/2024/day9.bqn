@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day9.txt"
 # data ↩ •file.Lines "../../samples/2024/day9_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day9.txt"
+data ↩ •file.Lines "../../inputs/2024/day9.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -11,6 +11,10 @@ Log ← {msg𝕊val:
 }
 RLog ← {msg𝕊val:
 	•Show (msg)⋈val
+	val
+}
+TRLog ← {msg𝕊val:
+	•Show (msg)⋈(30⊸↑val)
 	val
 }
 
@@ -61,7 +65,7 @@ PartOne ← {𝕊lines:
 
 PartTwo ← {𝕊lines:
 	raw_data_config ← ↑‿2⥊ •ParseFloat∘⋈¨ ⊑ lines
-	data_config ← •Show (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
+	data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
 	# "data_config" RLog data_config ← (↕≠)⊸(⥊⊸⋈˘)  raw_data_config
 
 	SwapBoth ←{str𝕊orig_idx‿dest_idx:
@@ -104,24 +108,26 @@ PartTwo ← {𝕊lines:
 		# pot_addrs ← (/(CheckCount)˘)⊸⊏ all_spaces
 		pot_addrs ← (/(CheckCount∧CheckStart)˘)⊸⊏ all_spaces
 		# "pot_pos" RLog  pot_pos
-		pot_idxs ← (↕⊸+´1⊸↓)˘pot_addrs
+		pot_idxs ← (< · ↕⊸+´1⊸↓)˘pot_addrs
 
 		# •Exit 0
 
 		# •Show pot_idxs
 		{ 0≠≠pot_idxs
 		?
-			range ← (≠digits_idx)↑⊏ pot_idxs
+			range ← (≠digits_idx)↑⊑ pot_idxs
 			# "range" RLog range
 			pairs ← digits_idx ⋈¨ range
 			# "pairs" RLog pairs
 
 			next_rendered ← rendered SwapBoth˜´ pairs
-			(dig∾": new_rendered") RLog next_rendered
+			# (dig∾": new_rendered") TRLog next_rendered
+			next_rendered
 
 			next_rendered
 		;
-			(dig∾":     rendered") RLog rendered
+			# (dig∾":     rendered") TRLog rendered
+			rendered
 		}
 	}
 	# final_rendered ← Iter •_while_ Cond first_rendered
