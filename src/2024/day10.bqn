@@ -15,7 +15,33 @@ RLog ← {msg𝕊val:
 }
 
 PartOne ← {𝕊lines:
-	∞
+	height ← ⊑≢lines
+	width ← ≠⊑lines
+	width‿height
+	grid ← > •ParseFloat∘≍ ¨¨ lines
+
+	LookupIdx ← {𝕊row‿col:
+		row+height×col
+	}
+
+	LookupCoords ← {𝕊idx:
+		row ← ⌊ idx÷height
+		col ← height|idx
+		col‿row
+	}
+
+	nbors ← {⌊⊸≠÷⟜2↕≠𝕩}⊸/⥊ ⋈⌜˜ ¯1‿0‿1
+	"nbors" RLog nbors
+	MaxBounds ← (<⟜width)⊸⌊⟜(<⟜height)
+	MinBounds ← (≥⟜0)⊸⌈⟜(≥⟜0)
+	"added" RLog added ← (MinBounds⌊MaxBounds)´¨⊸/ (3‿3⊸≢¨)⊸/ ⥊ 3‿3⊸+¨˘nbors
+
+	coords ← ⋈⌜˜ ↕width
+	"coords" RLog coords
+
+	heads ← (/0=⥊)grid
+	"heads" RLog heads
+	•Show heads⊏⥊coords
 }
 
 PartTwo ← {𝕊lines:
@@ -40,8 +66,9 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
+•Show <⟜4 4
 
-"part 1: " Log PartOne data
+"part 1: " RLog PartOne data
 # "part 2: " Log PartTwo data
 
 # sample
