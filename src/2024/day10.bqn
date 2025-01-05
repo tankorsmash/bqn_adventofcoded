@@ -64,7 +64,7 @@ PartOne ← {𝕊lines:
 		next_step ← step+1
 
 		res ← ((next_step⊸⋈))¨˘ next_coords
-		# "res" RLog res
+		"res" RLog res
 		res
 		# next_coords
 	}
@@ -80,16 +80,17 @@ PartOne ← {𝕊lines:
 	n1 ← nexts
 	# n ← ⊑nexts
 	# "n" RLog n
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	≠⍷nexts
+	"Iter res" RLog nexts↩ (∾´∘(Iter¨)⍟9)nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	nexts
 }
 
 PartTwo ← {𝕊lines:
