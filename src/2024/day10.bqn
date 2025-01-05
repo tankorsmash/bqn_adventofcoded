@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day10.txt"
-data ↩ •file.Lines "../../samples/2024/day10_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day10.txt"
+# data ↩ •file.Lines "../../samples/2024/day10_alt.txt"
+data ↩ •file.Lines "../../inputs/2024/day10.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -43,14 +43,9 @@ PartOne ← {𝕊lines:
 	MinB ← (≥⟜0)⊸⌊⟜(≥⟜0)
 	FindN ← {(MinB⌊MaxB)´¨⊸/ (𝕩⊸≢¨)⊸/ ⥊ 𝕩⊸+¨˘ nbors}
 	"findn" RLog  FindN 0‿0
-	coords ← ⋈⌜˜ ↕width
+	coords ← ⋈˜⌜˜ ↕width
 	# "coords" RLog coords
 
-	heads_idx ← (/0=⥊)grid
-	# "heads_idx" RLog heads_idx
-	head_coords ← heads_idx⊏⥊coords
-	# "head coords" RLog head_coords
-	"grid" RLog grid
   Iter ← {𝕊step‿coord:
 		# "step" RLog step
 		# "coord" RLog coord
@@ -64,33 +59,28 @@ PartOne ← {𝕊lines:
 		next_step ← step+1
 
 		res ← ((next_step⊸⋈))¨˘ next_coords
-		"res" RLog res
+		# "res" RLog res
 		res
 		# next_coords
 	}
 
-	s1 ← 0
-	# c1 ← LCoords 0
-	c1 ← 3‿0
+	heads_idx ← (/0=⥊)grid
+	# "heads_idx" RLog heads_idx
+	head_coords ← heads_idx⊏⥊coords
+	"head coords" RLog head_coords
+	"grid" RLog grid
+	"heads" RLog  heads ← 0⋈¨head_coords
 
-	# s2 ← 5
-	# c2 ← LCoords 5
-	nexts ← ⟨s1‿c1⟩
-	"initial nexts" RLog nexts
-	n1 ← nexts
-	# n ← ⊑nexts
-	# "n" RLog n
-	"Iter res" RLog nexts↩ (∾´∘(Iter¨)⍟9)nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	# "Iter res" RLog nexts ↩ ∾´Iter¨ nexts
-	nexts
+	# s1‿c1 ← ⊑ heads
+	# •Show s1‿c1
+  #
+	# nexts ← ⋈s1‿c1
+	# "initial nexts" RLog nexts
+	Loop ← {𝕊head:
+		"Iter res" RLog nexts← (⍷ ∘ ∾´∘(Iter¨)⍟9) head
+		≠⍷nexts
+	}
+	+´ Loop∘⋈¨ heads
 }
 
 PartTwo ← {𝕊lines:
@@ -115,13 +105,13 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
-"part 1: " RLog PartOne data
+# "part 1: " RLog PartOne data
 # "part 2: " Log PartTwo data
 
 # sample
-# 1‿??? SolutionValidator PartOne data
+# 1‿36 SolutionValidator PartOne data
 # input
-# 1‿??? SolutionValidator PartOne data
+1‿674 SolutionValidator PartOne data
 
 # sample
 # 2‿??? SolutionValidator PartTwo data
