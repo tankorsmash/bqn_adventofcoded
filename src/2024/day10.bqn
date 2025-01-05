@@ -14,6 +14,11 @@ RLog ← {msg𝕊val:
 	val
 }
 
+# returns 1 if the arg is a simple number/char
+IsSimple ← {𝕊val:
+	⟨⟨⟩,0⟩≡(≢⋈≡)val
+}
+
 PartOne ← {𝕊lines:
 	height ← ⊑≢lines
 	width ← ≠⊑lines
@@ -29,6 +34,8 @@ PartOne ← {𝕊lines:
 		col ← height|idx
 		col‿row
 	}
+	# •Show LCoords 4
+	# •Exit 0
 
 	nbors ← {⌊⊸≠÷⟜2↕≠𝕩}⊸/⥊ ⋈⌜˜ ¯1‿0‿1
 	"nbors" RLog nbors
@@ -40,29 +47,49 @@ PartOne ← {𝕊lines:
 	# "coords" RLog coords
 
 	heads_idx ← (/0=⥊)grid
-	"heads_idx" RLog heads_idx
+	# "heads_idx" RLog heads_idx
 	head_coords ← heads_idx⊏⥊coords
-	"head coords" RLog head_coords
+	# "head coords" RLog head_coords
 	"grid" RLog grid
-  Iter ← {step𝕊coord:
+  Iter ← {𝕊step‿coord:
+		# "step" RLog step
+		# "coord" RLog coord
+		!IsSimple step
 
-		•Out 50/"-"
-		"coord" RLog coord
-		next_ids ← LIdx¨ FindN coord
-		(step+1)‿({((step+1)⊸=) 𝕩⊏⥊grid}⊸/ next_ids)
+		# •Out 50/"-"
+		pot_next_ids ← LIdx¨ FindN coord
+		next_idxs ← ({((step+1)⊸=) 𝕩⊏⥊grid}⊸/ pot_next_ids)
+		# "next_idxs" RLog next_idxs
+		next_coords ← LCoords¨ next_idxs
+		next_step ← step+1
+
+		res ← ((next_step⊸⋈))¨˘ next_coords
+		# "res" RLog res
+		res
+		# next_coords
 	}
 
-	n_step‿n_idxs ← 0‿(0)
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
-	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	s1 ← 0
+	# c1 ← LCoords 0
+	c1 ← 3‿0
 
+	# s2 ← 5
+	# c2 ← LCoords 5
+	nexts ← ⟨s1‿c1⟩
+	"initial nexts" RLog nexts
+	n1 ← nexts
+	# n ← ⊑nexts
+	# "n" RLog n
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	"Iter res" RLog nexts ↩ ∾´Iter¨ nexts
+	≠⍷nexts
 }
 
 PartTwo ← {𝕊lines:
