@@ -32,10 +32,10 @@ PartOne ← {𝕊lines:
 
 	nbors ← {⌊⊸≠÷⟜2↕≠𝕩}⊸/⥊ ⋈⌜˜ ¯1‿0‿1
 	"nbors" RLog nbors
-	MaxBounds ← (<⟜width)⊸⌊⟜(<⟜height)
-	MinBounds ← (≥⟜0)⊸⌈⟜(≥⟜0)
-	"added" RLog added ← (MinBounds⌊MaxBounds)´¨⊸/ (3‿3⊸≢¨)⊸/ ⥊ 3‿3⊸+¨˘nbors
-
+	MaxB ← (<⟜width)⊸⌊⟜(<⟜height)
+	MinB ← (≥⟜0)⊸⌊⟜(≥⟜0)
+	FindN ← {(MinB⌊MaxB)´¨⊸/ (𝕩⊸≢¨)⊸/ ⥊ 𝕩⊸+¨˘ nbors}
+	"findn" RLog  FindN 0‿0
 	coords ← ⋈⌜˜ ↕width
 	"coords" RLog coords
 
