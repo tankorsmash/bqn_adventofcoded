@@ -20,11 +20,11 @@ PartOne ← {𝕊lines:
 	width‿height
 	grid ← > •ParseFloat∘≍ ¨¨ lines
 
-	LookupIdx ← {𝕊row‿col:
+	LIdx ← {𝕊row‿col:
 		row+height×col
 	}
 
-	LookupCoords ← {𝕊idx:
+	LCoords ← {𝕊idx:
 		row ← ⌊ idx÷height
 		col ← height|idx
 		col‿row
@@ -37,11 +37,32 @@ PartOne ← {𝕊lines:
 	FindN ← {(MinB⌊MaxB)´¨⊸/ (𝕩⊸≢¨)⊸/ ⥊ 𝕩⊸+¨˘ nbors}
 	"findn" RLog  FindN 0‿0
 	coords ← ⋈⌜˜ ↕width
-	"coords" RLog coords
+	# "coords" RLog coords
 
-	heads ← (/0=⥊)grid
-	"heads" RLog heads
-	•Show heads⊏⥊coords
+	heads_idx ← (/0=⥊)grid
+	"heads_idx" RLog heads_idx
+	head_coords ← heads_idx⊏⥊coords
+	"head coords" RLog head_coords
+	"grid" RLog grid
+  Iter ← {step𝕊coord:
+
+		•Out 50/"-"
+		"coord" RLog coord
+		next_ids ← LIdx¨ FindN coord
+		(step+1)‿({((step+1)⊸=) 𝕩⊏⥊grid}⊸/ next_ids)
+	}
+
+	n_step‿n_idxs ← 0‿(0)
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+	"iter res" RLog n_step‿n_idxs ↩ n_step Iter LCoords ⊑ n_idxs
+
 }
 
 PartTwo ← {𝕊lines:
@@ -65,8 +86,6 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg!(expected< answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
-
-•Show <⟜4 4
 
 "part 1: " RLog PartOne data
 # "part 2: " Log PartTwo data
