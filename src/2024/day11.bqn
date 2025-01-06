@@ -41,6 +41,8 @@ PartTwo ← {𝕊lines:
 	memo ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
 	•Show memo
 
+	lines ↩ ⋈"4523 0"
+
 	# Incr ← ⊢
 	# Incr ← {𝕊stone: iters ↩ iters∾stone}
 	Save ← {stone𝕊val:
@@ -54,6 +56,9 @@ PartTwo ← {𝕊lines:
 		𝕊stone: 0=2⊸|≠ repr←•Repr stone ?
 			# Incr stone
 			len ← ÷⟜2≠  repr
+			# "stone" RLog stone
+			!⟨⟩≡≢stone
+
 			res ← (•ParseFloat len↑repr)‿(•ParseFloat len↓repr)
 			# "split" RLog res
 			stone Save res
@@ -69,15 +74,45 @@ PartTwo ← {𝕊lines:
 	}
 
 
+	#      ⌜-------------------------------------⌝
+	# 0 -> 1 -> 2024 -> 20 24 -> 2 0 2 4 -> 4028 1 4028 8096
+	# 0 -> 1 -> 2024 -> 20 -> 2 -> 4028 -> 40 -> 4
+	#                                         -> 0
+	#                                      28 -> 2
+	#                                         -> 8 -> 16192 -> 32772608 -> 3277 -> 32 -> 2
+	#                                                                                 -> 3 -> 6072 -> 60
+	#                                                                                              -> 72
+	#                                                                           -> 77 -> 7
+	#                                                                                 -> 7
+	#                                                                   -> 2608
+	#											    0 -> 1
+	#										24 -> 2 -> 4028
+	#                         4 -> 8096
+
 	start ← •Monotime @
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
-	iterations ← "iterations" Log 25
-	res ← ≠ (∾ Next¨)⍟iterations stones
+	PairORIG ← ∾(Next˘⊸(⋈¨)∘⊑¨)
+	Pair ← {∾ {𝕊s:
+			nums ← (Next˘∘⊑∘("s"⊸Rlog)) s
+			"nums" Rlog nums∾¨(<s)
+		}¨  𝕩}
+	"final"⊸Rlog¨ Pair⍟4 "stones" RLog ⋈¨stones
+	# 45‿4523
+	# 23‿4523
+	# 1‿0
+
+	•Show (↕≠)•Show 11‿22‿33
+	•Show (↕≠"abc")⊸(∾˘)"abc"
+
+	•Exit 0
+	iterations ← "iterations" Log 1
+	res ←  (∾ Next¨)⍟iterations stones
 	"iters" Log (≠iters)‿(≠⍷iters)
 	end ← •Monotime @
 	"elapsed" Log end-start
 
-	res
+	"res"Log res
+	≠res
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
