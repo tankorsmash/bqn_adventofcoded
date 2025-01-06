@@ -39,20 +39,22 @@ PartOne ← {𝕊lines:
 
 PartTwo ← {𝕊lines:
 	memo ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
-	•Show memo
+	knowns ← ⟨⟩
+	# •Show memo
 
-	lines ↩ ⋈"4523 0"
+	# lines ↩ ⋈"125 17"
 
 	# Incr ← ⊢
 	# Incr ← {𝕊stone: iters ↩ iters∾stone}
 	Save ← {stone𝕊val:
 		stone memo.Set val
+		knowns ↩ knowns∾stone
 	}
 	Next ← {
 		𝕊stone: { has← memo.Has stone }? {
 			memo.Get stone
 		};
-		# 0: Incr 0⋄⟨1⟩;
+		0: 0 Save 1 ⋄⟨1⟩;
 		𝕊stone: 0=2⊸|≠ repr←•Repr stone ?
 			# Incr stone
 			len ← ÷⟜2≠  repr
@@ -90,29 +92,44 @@ PartTwo ← {𝕊lines:
 	#                         4 -> 8096
 
 	start ← •Monotime @
+
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
-	PairORIG ← ∾(Next˘⊸(⋈¨)∘⊑¨)
-	Pair ← {∾ {𝕊s:
-			nums ← (Next˘∘⊑∘("s"⊸Rlog)) s
-			"nums" Rlog nums∾¨(<s)
-		}¨  𝕩}
-	"final"⊸Rlog¨ Pair⍟4 "stones" RLog ⋈¨stones
-	# 45‿4523
-	# 23‿4523
-	# 1‿0
+	# PairORIG ← ∾(Next˘⊸(⋈¨)∘⊑¨)
+	Foo ← {𝕊s:
+		nums ← (Next˘∘⊑) s
+		res ← nums∾¨(<s)
+		# "res" Rlog res
+		# "news" Rlog news ← ⊑¨res
 
-	•Show (↕≠)•Show 11‿22‿33
-	•Show (↕≠"abc")⊸(∾˘)"abc"
+		res
+	}
 
-	•Exit 0
-	iterations ← "iterations" Log 1
-	res ←  (∾ Next¨)⍟iterations stones
-	"iters" Log (≠iters)‿(≠⍷iters)
-	end ← •Monotime @
-	"elapsed" Log end-start
+	known_paths ← ⟨⟩
+	Pair ← {
+		firsts ← ⊑¨𝕩
+		is_old ← firsts∊knowns
+		old_paths ← is_old/𝕩
+		known_paths ↩ known_paths∾old_paths
 
-	"res"Log res
-	≠res
+		not_old← (¬is_old)/𝕩
+		∾Foo¨  not_old
+	}
+	# •Show 1= 1∊↕10
+	# •Exit 0
+	"stones" RLog stones
+	unfinished ← Pair⍟25 "stones" RLog ⋈¨stones
+	"unfinished"⊸Rlog ≠unfinished
+	"known_paths" RLog ≠known_paths
+
+	# •Exit 0
+	# iterations ← "iterations" Log 1
+	# res ←  (∾ Next¨)⍟iterations stones
+	# "iters" Log (≠iters)‿(≠⍷iters)
+	# end ← •Monotime @
+	# "elapsed" Log end-start
+  #
+	# "res"Log res
+	# ≠res
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
