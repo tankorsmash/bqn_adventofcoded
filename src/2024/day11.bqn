@@ -109,7 +109,7 @@ PartTwo ← {𝕊lines:
 		firsts ← ⊑¨𝕩
 		is_old ← firsts∊knowns
 		old_paths ← is_old/𝕩
-		known_paths ↩ known_paths∾old_paths
+		known_paths ↩ old_paths∾known_paths
 
 		not_old← (¬is_old)/𝕩
 		∾Foo¨  not_old
@@ -120,6 +120,18 @@ PartTwo ← {𝕊lines:
 	unfinished ← Pair⍟25 "stones" RLog ⋈¨stones
 	"unfinished"⊸Rlog ≠unfinished
 	"known_paths" RLog ≠known_paths
+
+	# •Show ((1⊸=)×(0⊸≠≠))¨(⌈´∾)⊸=(/stone⊸=)¨ known_paths
+	FindPathsContaining ← {𝕊stone:
+		FindRange ← {𝕊path:leftmost‿num ← (⊑⋈(⊑·/stone⊸=))path}
+		# B ← { (((⋈1)⊸≡)∧(0⊸≠≠))¨ (⌈´∾)⊸=(/stone⊸=)¨ 𝕩}
+		•Show¨ FindRange¨ (1⊸⊑∘FindRange¨)⊸/ (((0⊸≠≠)·/stone⊸=˜)¨)⊸/ known_paths
+	}
+  # Bar ⊑stones
+  FindPathsContaining 4
+
+	# •Show¨ known_paths
+	≠known_paths
 
 	# •Exit 0
 	# iterations ← "iterations" Log 1
