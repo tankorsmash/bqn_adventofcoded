@@ -117,21 +117,29 @@ PartTwo ← {𝕊lines:
 	# •Show 1= 1∊↕10
 	# •Exit 0
 	"stones" RLog stones
+	iterations ← 25
 	unfinished ← Pair⍟25 "stones" RLog ⋈¨stones
 	"unfinished"⊸Rlog ≠unfinished
 	"known_paths" RLog ≠known_paths
 
 	# •Show ((1⊸=)×(0⊸≠≠))¨(⌈´∾)⊸=(/stone⊸=)¨ known_paths
-	FindPathsContaining ← {𝕊stone:
-		FindRange ← {𝕊path:leftmost‿num ← (⊑⋈(⊑·/stone⊸=))path}
-		# B ← { (((⋈1)⊸≡)∧(0⊸≠≠))¨ (⌈´∾)⊸=(/stone⊸=)¨ 𝕩}
-		•Show¨ FindRange¨ (1⊸⊑∘FindRange¨)⊸/ (((0⊸≠≠)·/stone⊸=˜)¨)⊸/ known_paths
+	FindPathsContaining ← {𝕊max_range‿stone: max_range > 0? {
+			FindRange ← {𝕊path:leftmost‿num ← (⊑⋈(⊑·/stone⊸=))path}
+			AdjRange ← {
+				leftmost‿num← FindRange 𝕩
+				leftmost‿(max_range-num)
+			}
+			AdjRange¨ (1⊸⊑∘FindRange¨)⊸/ ((0⊸≠≠)·/stone⊸=˜)¨⊸/ known_paths
+		}; 𝕊max_range‿stone: ⟨stone⟩
 	}
-  # Bar ⊑stones
-  FindPathsContaining 4
-
 	# •Show¨ known_paths
-	≠known_paths
+
+  # "len"⊸RLog ≠ ∾FindPathsContaining¨ ⟨iterations‿125,iterations‿17⟩
+  # "len"⊸RLog ≠∾FindPathsContaining¨ ⟨iterations‿125⟩
+  "len"⊸RLog ≠ ∾ FindPathsContaining¨ ⟨iterations‿125⟩
+
+	123
+
 
 	# •Exit 0
 	# iterations ← "iterations" Log 1
