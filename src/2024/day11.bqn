@@ -40,39 +40,27 @@ PartOne ← {𝕊lines:
 PartTwo ← {𝕊lines:
 	memo ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
 	knowns ← ⟨⟩
-	# •Show memo
 
 	# lines ↩ ⋈"125 17"
 
-	# Incr ← ⊢
-	# Incr ← {𝕊stone: iters ↩ iters∾stone}
 	Save ← {stone𝕊val:
 		stone memo.Set val
 		knowns ↩ knowns∾stone
 	}
+
 	Next ← {
-		𝕊stone: { has← memo.Has stone }? {
+		𝕊stone: memo.Has stone ? {
 			memo.Get stone
 		};
-		0: 0 Save 1 ⋄⟨1⟩;
-		𝕊stone: 0=2⊸|≠ repr←•Repr stone ?
-			# Incr stone
+		𝕊stone: 0=2⊸|≠ repr←•Repr stone ? {
 			len ← ÷⟜2≠  repr
-			# "stone" RLog stone
 			!⟨⟩≡≢stone
 
-			res ← (•ParseFloat len↑repr)‿(•ParseFloat len↓repr)
-			# "split" RLog res
-			stone Save res
-			res
-		;
+			stone⊸Save⊸⊢ (len⊸↑•ParseFloat¨∘⋈len⊸↓) repr
+		};
 		𝕊stone: {
-			# Incr stone
-			res ← ⟨stone × 2024⟩
-			# "default" RLog res
-			stone Save res
-			res
-			}
+			stone⊸Save⊸⊢ ⟨stone × 2024⟩
+		}
 	}
 
 
@@ -94,49 +82,50 @@ PartTwo ← {𝕊lines:
 	start ← •Monotime @
 
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
-	# PairORIG ← ∾(Next˘⊸(⋈¨)∘⊑¨)
-	Foo ← {𝕊s:
-		nums ← (Next˘∘⊑) s
-		res ← nums∾¨(<s)
-		# "res" Rlog res
-		# "news" Rlog news ← ⊑¨res
-
-		res
-	}
 
 	known_paths ← ⟨⟩
-	Pair ← {
+	BuildKnownPaths ← {
 		firsts ← ⊑¨𝕩
 		is_old ← firsts∊knowns
 		old_paths ← is_old/𝕩
 		known_paths ↩ old_paths∾known_paths
 
 		not_old← (¬is_old)/𝕩
-		∾Foo¨  not_old
+		∾((Next˘∘⊑)∾¨<)¨  not_old
 	}
-	# •Show 1= 1∊↕10
-	# •Exit 0
-	"stones" RLog stones
-	iterations ← 25
-	unfinished ← Pair⍟25 "stones" RLog ⋈¨stones
-	"unfinished"⊸Rlog ≠unfinished
-	"known_paths" RLog ≠known_paths
 
-	# •Show ((1⊸=)×(0⊸≠≠))¨(⌈´∾)⊸=(/stone⊸=)¨ known_paths
-	FindPathsContaining ← {𝕊max_range‿stone: max_range > 0? {
-			FindRange ← {𝕊path:leftmost‿num ← (⊑⋈(⊑·/stone⊸=))path}
-			AdjRange ← {
-				leftmost‿num← FindRange 𝕩
-				leftmost‿(max_range-num)
+	# "stones" RLog stones
+	iterations ← 25
+	unfinished ← BuildKnownPaths⍟25 "stones" RLog ⋈¨stones
+	# "known_paths"⊸RLog¨ known_paths
+	# "unfinished"⊸Rlog ≠unfinished
+
+	FindPathsContaining ← {𝕊max_range‿old_path: max_range > 0? {
+
+			stone ← ⊑old_path
+			FindRange ← {𝕊path:
+				leftmost‿range ← (⊑⋈(¯1⊸⊑·/stone⊸=))path
 			}
-			AdjRange¨ (1⊸⊑∘FindRange¨)⊸/ ((0⊸≠≠)·/stone⊸=˜)¨⊸/ known_paths
-		}; 𝕊max_range‿stone: ⟨stone⟩
+			AdjRange ← {𝕊new_path:
+				leftmost‿range ← FindRange new_path
+				diff ← max_range⌊range
+				new_range ← (max_range-diff)
+
+				new_range‿((diff↑new_path)∾(old_path))
+			}
+
+			res ← AdjRange¨ ((0⊸≠≠)·/·stone⊸=˜1⊸↓)¨⊸/ known_paths
+			res
+
+		}; 𝕊max_range‿stone: ⟨max_range‿stone⟩
 	}
+
 	# •Show¨ known_paths
 
-  # "len"⊸RLog ≠ ∾FindPathsContaining¨ ⟨iterations‿125,iterations‿17⟩
-  # "len"⊸RLog ≠∾FindPathsContaining¨ ⟨iterations‿125⟩
-  "len"⊸RLog ≠ ∾ FindPathsContaining¨ ⟨iterations‿125⟩
+	•Out ""
+	paired_stones ← •Show iterations⊸(⋈⟜⋈¨)stones
+  "len"⊸Log ≠ {(•Show∘≠⊸⊢)∘∾FindPathsContaining¨}⍟5 paired_stones #⟨25‿⟨125⟩⟩
+	•Out ""
 
 	123
 
@@ -153,7 +142,13 @@ PartTwo ← {𝕊lines:
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← ("Part "∾(•Fmt part)∾" is wrong! Got instead: "∾(•Fmt answer))
+
+	max_length ← expected ⌈○(≠•Fmt)  answer
+	err_msg ← ("
+Part "∾(•Fmt part)∾" is wrong!"∾"
+Expected: "∾({»⍟(max_length⊸-≠𝕩) max_length⊸↑𝕩} •Fmt expected)∾"
+  Actual: "∾({»⍟(max_length⊸-≠𝕩) max_length⊸↑𝕩} •Fmt answer))∾"
+"
 	err_msg!(expected= answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
