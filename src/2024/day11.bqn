@@ -184,7 +184,7 @@ PartTwoAlt ← {𝕊lines:
 
 
 	FuncTwo ← { 𝕊is:
-		paths ← ⟨is⟩
+		paths ← ⟨⋈is⟩
 
 		Func ← {𝕊stone:
 			res ← ∾ Next¨ stone
@@ -195,11 +195,15 @@ PartTwoAlt ← {𝕊lines:
 		paths
 	}
 	unique_paths ← FuncTwo¨ unique_stones
-	"outs" RLog ≠unique_paths
+	# "outs" RLog ≠unique_paths
 	# •Show 10↑buckets
 	# "len bucks"⊸Log⟜≠¨ buckets
 	# •Show ¯1⊑⊑ buckets
-	•Show∘(10⊸↑)¨ ⊑unique_paths
+	path ← 1⊑unique_paths
+	"first" RLog ⊑⊑path
+	# •Show 1⊑ ⌽¨ path
+	# •Show¨ 10⊸↑⟜(((10⌊≠)⊸↑))¨ ⌽ ⊑unique_paths
+	# •Show > (2l0⊸↑)¨ ⌽¨ path
 	•Out 50/"-"
 	# "first uniq" RLog ⊑unique_stones
 	# "first buck" RLog ⊑buckets
