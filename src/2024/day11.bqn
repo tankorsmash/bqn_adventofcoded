@@ -177,34 +177,38 @@ PartTwoAlt ← {𝕊lines:
 		𝕊stone: Incr stone⋄stone⊸Save⊸⊢⟨stone × 2024⟩
 	}
 
-	AccNext ← {num𝕊acc:
-		•Out "---"
-		last_row ← (¯1⊸⊑)⎊⟨⟩ acc
-		"num" RLog num
-		"last_row" RLog last_row
-		next_num ← Next num
-
-		"next_num" RLog next_num
-		next_row ← (<next_num∾num∾last_row)
-		"next_row" RLog next_row
-		s ← acc∾next_row
-	}
-	NextTwo ← ⌽¨{ ⟨⟨⟩⟩ AccNext´ •Show 𝕩}
 
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
 	unique_stones ← ⍷ res ← (∾ Next¨)⍟25 stones
 
-	buckets ← {𝕊is: (NextTwo¨)⍟2 ⋈is } ⊑ unique_stones
+
+
+	FuncTwo ← { 𝕊is:
+		paths ← ⟨is⟩
+
+		Func ← {𝕊stone:
+			res ← ∾ Next¨ stone
+			paths ↩ paths∾ (<(res∾ ¯1⊸⊑ paths))
+			res
+		}
+		Func⍟25 ⋈is
+		paths
+	}
+	unique_paths ← FuncTwo¨ unique_stones
+	"outs" RLog ≠unique_paths
 	# •Show 10↑buckets
 	# "len bucks"⊸Log⟜≠¨ buckets
 	# •Show ¯1⊑⊑ buckets
+	•Show∘(10⊸↑)¨ ⊑unique_paths
 	•Out 50/"-"
-	"first uniq" RLog ⊑unique_stones
-	"first buck" RLog ⊑buckets
+	# "first uniq" RLog ⊑unique_stones
+	# "first buck" RLog ⊑buckets
 	# •Show ⊑unique_stones
 	# "iters" Log (≠iters)‿(≠⍷iters)
 
 	# res
+	•Out "done"
+	•Exit 0
 
 	123
 }
