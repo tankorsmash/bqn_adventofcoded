@@ -188,33 +188,24 @@ PartTwoAlt ← {𝕊lines:
 
 		Func ← {𝕊stone:
 			res ← ∾ Next¨ stone
-			paths ↩ paths∾ (<(res∾ ¯1⊸⊑ paths))
+			paths ↩ paths∾ (<(res))
 			res
 		}
 		Func⍟25 ⋈is
 		paths
 	}
-	unique_paths ← FuncTwo¨ unique_stones
-	# "outs" RLog ≠unique_paths
-	# •Show 10↑buckets
-	# "len bucks"⊸Log⟜≠¨ buckets
-	# •Show ¯1⊑⊑ buckets
-	path ← 1⊑unique_paths
-	"first" RLog ⊑⊑path
-	# •Show 1⊑ ⌽¨ path
-	# •Show¨ 10⊸↑⟜(((10⌊≠)⊸↑))¨ ⌽ ⊑unique_paths
-	# •Show > (2l0⊸↑)¨ ⌽¨ path
+
+	unique_paths ← FuncTwo¨ stones∾unique_stones
+	l←(125= ⊑∘⊑¨)⊸/unique_paths
+	r←(17= ⊑∘⊑¨)⊸/unique_paths
+
+	•Show ls ← ≠ 25⊑⊑l
+	•Show rs ← ≠ 25⊑⊑r
 	•Out 50/"-"
-	# "first uniq" RLog ⊑unique_stones
-	# "first buck" RLog ⊑buckets
-	# •Show ⊑unique_stones
-	# "iters" Log (≠iters)‿(≠⍷iters)
 
-	# res
+	res
 	•Out "done"
-	•Exit 0
-
-	123
+	ls+rs
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
