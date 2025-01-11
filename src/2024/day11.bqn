@@ -204,18 +204,20 @@ PartTwoAlt ← {𝕊lines:
 	# "values" Rlog ∧⍷ ls
 	# "counts" Rlog ≠¨ (0≠≠¨)⊸/ ⊔ ls
 
-	Old ← ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))
 	New ← (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐))
 	ToMap ← ⍉·  >· New · ∾((¯1⊑⊑)∘FindPath)¨
 	Find ← {k𝕊map: (/k=⊏)⊸⊑⟜(1⊸⊏) map}
 	# •Show ⊔⊐ ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
 	# •Exit 0
-	paired ← ToMap ⋈125
-	maps ← ToMap¨ unique_stones
+	maps ← ⋈⟜ToMap¨ unique_stones
+
 	# "paired"⊸Rlog  paired
+	paired ← ToMap ⋈125
 	•Show 0 Find paired
 
 	"keys" RLog ⊏ paired
+
+
 
 	res
 	•Out "done"
@@ -264,11 +266,11 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # 2‿55312 SolutionValidator PartTwo data
 2‿55312 SolutionValidator PartTwoAlt data
 
-•Show ⊔⊐ ∧10‿2‿2‿3‿5‿9
-•Show (⊑¨·⊔⊐)⊸⊏ ∧10‿2‿2‿3‿5‿9
-•Show (≠¨·⊔⊐) ∧10‿2‿2‿3‿5‿9
-•Show (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐)) ∧10‿2‿2‿3‿5‿9
-•Show ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))10‿2‿2‿3‿5‿9
-
+# •Show ⊔⊐ ∧10‿2‿2‿3‿5‿9
+# •Show (⊑¨·⊔⊐)⊸⊏ ∧10‿2‿2‿3‿5‿9
+# •Show (≠¨·⊔⊐) ∧10‿2‿2‿3‿5‿9
+# •Show (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐)) ∧10‿2‿2‿3‿5‿9
+# •Show ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))10‿2‿2‿3‿5‿9
+#
 # input
 # 2‿??? SolutionValidator PartTwo data
