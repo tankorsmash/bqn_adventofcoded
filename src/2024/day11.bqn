@@ -196,16 +196,33 @@ PartTwoAlt ← {𝕊lines:
 	}
 
 	unique_paths ← FuncTwo¨ stones∾unique_stones
-	l←(125= ⊑∘⊑¨)⊸/unique_paths
-	r←(17= ⊑∘⊑¨)⊸/unique_paths
+	FindPath ← {𝕊stone:
+		res ← (/·stone⊸= ⊑∘⊑¨)⊸⊏unique_paths
+	}
 
-	•Show ls ← ≠ 25⊑⊑l
-	•Show rs ← ≠ 25⊑⊑r
 	•Out 50/"-"
+	# "values" Rlog ∧⍷ ls
+	# "counts" Rlog ≠¨ (0≠≠¨)⊸/ ⊔ ls
+
+	Old ← ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))
+	New ← (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐))
+	ToMap ← ⍉·  >· New · ∾((¯1⊑⊑)∘FindPath)¨
+	Find ← {k𝕊map: (/k=⊏)⊸⊑⟜(1⊸⊏) map}
+	# •Show ⊔⊐ ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
+	# •Exit 0
+	paired ← ToMap ⋈125
+	maps ← ToMap¨ unique_stones
+	# "paired"⊸Rlog  paired
+	•Show 0 Find paired
+
+	"keys" RLog ⊏ paired
 
 	res
 	•Out "done"
-	ls+rs
+
+	ls ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
+	rs ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈17
+	ls +○≠ rs
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -241,19 +258,17 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # input
 # 1‿194482 SolutionValidator PartOne data
 
-# •Show ↕5
-# •Show 5+`↕5
-•Show ⌽¨{ ⟨⟨¯1⊑𝕩⟩⟩{
-	next𝕊acc:
-	last_row ← ¯1⊑acc
-	num ←  Next next
-	s ← acc∾(<num∾last_row)
-	}´ ¯1↓𝕩} •Show ⌽↕5
 
 # sample
 # 2‿??? SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwo data
 2‿55312 SolutionValidator PartTwoAlt data
+
+•Show ⊔⊐ ∧10‿2‿2‿3‿5‿9
+•Show (⊑¨·⊔⊐)⊸⊏ ∧10‿2‿2‿3‿5‿9
+•Show (≠¨·⊔⊐) ∧10‿2‿2‿3‿5‿9
+•Show (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐)) ∧10‿2‿2‿3‿5‿9
+•Show ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))10‿2‿2‿3‿5‿9
 
 # input
 # 2‿??? SolutionValidator PartTwo data
