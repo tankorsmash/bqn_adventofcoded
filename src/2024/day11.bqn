@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day11.txt"
 # data ↩ •file.Lines "../../samples/2024/day11_alt.txt"
-# data ↩ •file.Lines "../../inputs/2024/day11.txt"
+data ↩ •file.Lines "../../inputs/2024/day11.txt"
 
 
 
@@ -37,120 +37,6 @@ PartOne ← {𝕊lines:
 
 }
 
-PartTwo ← {𝕊lines:
-	memo ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
-	known_stones ← ⟨⟩
-
-	# lines ↩ ⋈"125 17"
-
-	Save ← {stone𝕊resulting_stones:
-		stone memo.Set resulting_stones
-		known_stones ↩ known_stones∾stone
-	}
-
-	Next ← {
-		𝕊stone: memo.Has stone ? {
-			memo.Get stone
-		};
-		𝕊stone: 0=2⊸|≠ repr←•Repr stone ? {
-			len ← ÷⟜2≠  repr
-			!⟨⟩≡≢stone
-
-			stone⊸Save⊸⊢ (len⊸↑•ParseFloat¨∘⋈len⊸↓) repr
-		};
-		𝕊stone: {
-			stone⊸Save⊸⊢ ⟨stone × 2024⟩
-		}
-	}
-
-
-	#      ⌜-------------------------------------⌝
-	# 0 -> 1 -> 2024 -> 20 24 -> 2 0 2 4 -> 4028 1 4028 8096
-	# 0 -> 1 -> 2024 -> 20 -> 2 -> 4028 -> 40 -> 4
-	#                                         -> 0
-	#                                      28 -> 2
-	#                                         -> 8 -> 16192 -> 32772608 -> 3277 -> 32 -> 2
-	#                                                                                 -> 3 -> 6072 -> 60
-	#                                                                                              -> 72
-	#                                                                           -> 77 -> 7
-	#                                                                                 -> 7
-	#                                                                   -> 2608
-	#											    0 -> 1
-	#										24 -> 2 -> 4028
-	#                         4 -> 8096
-
-	start ← •Monotime @
-
-	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
-
-	known_paths ← ⟨⟩
-	BuildKnownPaths ← {
-		firsts ← ⊑¨𝕩
-		is_old ← firsts∊known_stones
-		old_paths ← is_old/𝕩
-		known_paths ↩ old_paths∾known_paths
-
-		not_old← (¬is_old)/𝕩
-		∾((Next˘∘⊑)∾¨<)¨  not_old
-	}
-
-	# "stones" RLog stones
-	iterations ← 25
-	unfinished ← BuildKnownPaths⍟25 "stones" RLog ⋈¨stones
-	"known_paths"⊸RLog¨ known_paths
-	# "unfinished"⊸Rlog ≠unfinished
-
-	FindPathsContaining ← {𝕊max_range‿old_path: max_range > 0? {
-
-			stone ← ⊑old_path
-			FindRange ← {𝕊path:
-				leftmost‿range ← (⊑⋈(¯1⊸⊑·/stone⊸=))path
-			}
-			AdjRange ← {𝕊new_path:
-				leftmost‿range ← FindRange new_path
-				diff ← max_range⌊range
-				new_range ← (max_range-diff)
-
-				new_range‿((diff↑new_path)∾(old_path))
-			}
-
-			res ← AdjRange¨ ((0⊸≠≠)·/·stone⊸=˜1⊸↓)¨⊸/ known_paths
-			res
-
-		}; 𝕊max_range‿stone: ⟨max_range‿stone⟩
-	}
-
-	# •Show table ← ⌽˘ 14↑ > (⌈´≠¨)⊸(↑¨)known_paths
-	# •Show {
-	# 	n ←𝕨≠𝕩
-	# 	•Show n×𝕩
-	# 	𝕨
-	# }˝ table
-
-	# •Show maxes ← ≠∘•Fmt¨ ( ⌈)˝ table
-		# max_length { »⍟(𝕨⊸-≠𝕩) 𝕨⊸↑𝕩} maxes
-
-	# •Exit 0
-
-	•Out ""
-	paired_stones ← •Show iterations⊸(⋈⟜⋈¨)stones
-  "len"⊸Log ≠ {(•Show∘≠⊸⊢)∘∾FindPathsContaining¨}⍟5 paired_stones #⟨25‿⟨125⟩⟩
-	•Out ""
-
-	123
-
-
-	# •Exit 0
-	# iterations ← "iterations" Log 1
-	# res ←  (∾ Next¨)⍟iterations stones
-	# "iters" Log (≠iters)‿(≠⍷iters)
-	# end ← •Monotime @
-	# "elapsed" Log end-start
-  #
-	# "res"Log res
-	# ≠res
-}
-
 PartTwoAlt ← {𝕊lines:
 	memo ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
 
@@ -179,7 +65,8 @@ PartTwoAlt ← {𝕊lines:
 
 
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
-	unique_stones ← ⍷ res ← (∾ Next¨)⍟25 stones
+	# •Show stones
+	unique_stones ← ⍷ (∾ Next¨)⍟25 stones
 
 
 
@@ -195,7 +82,8 @@ PartTwoAlt ← {𝕊lines:
 		paths
 	}
 
-	unique_paths ← FuncTwo¨ stones∾unique_stones
+	all_stones ← ⍷ stones ∾ unique_stones
+	unique_paths ← FuncTwo¨ all_stones
 	FindPath ← {𝕊stone:
 		res ← (/·stone⊸= ⊑∘⊑¨)⊸⊏unique_paths
 	}
@@ -206,25 +94,100 @@ PartTwoAlt ← {𝕊lines:
 
 	New ← (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐))
 	ToMap ← ⍉·  >· New · ∾((¯1⊑⊑)∘FindPath)¨
-	Find ← {k𝕊map: (/k=⊏)⊸⊑⟜(1⊸⊏) map}
+	Find ← {k𝕊map: (/k=⊏)⊸⊑⟜(1⊸⊏) map}⎊[⟨⟩,⟨⟩]
 	# •Show ⊔⊐ ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
 	# •Exit 0
-	maps ← ⋈⟜ToMap¨ unique_stones
+	maps ← ⍉ > ⋈⟜ToMap¨ all_stones
+	paired ← (⊑stones) Find  maps
+	# paired ← (17) Find  maps
 
-	# "paired"⊸Rlog  paired
-	paired ← ToMap ⋈125
-	•Show 0 Find paired
+	# •Show 20 Find paired
 
-	"keys" RLog ⊏ paired
+	all_vals ← all_stones ({key𝕊m: sum← +´∘(1⊸⊏) key Find m⋄ key‿sum}¨)  <maps
+	# "all_vals" RLog  all_vals
+	keys ← 0⊏paired
+	# "keys" RLog keys
+	# vals ← keys ({key𝕊m: sum← (1⊸⊏) key Find m⋄ key‿sum}¨)  <maps
+	memo2 ← ⟨0⟩ •Hashmap ⟨⟨1⟩⟩
+
+	Save2 ← {stone𝕊resulting_stones:
+		stone memo2.Set resulting_stones
+		# known_stones ↩ known_stones∾stone
+	}
+
+	Iter ← {
+	steps𝕊stone: steps ≤ 75 ?
+			res ← stone Find  maps
+			first_keys ←  ⊏ res
+			first_mults ← 1⊏ res
+			# get first children
+			# "first_keys" RLog first_keys
+
+			# get 1st children of 1st children
+			# second_children ← first_keys Find¨  <maps
+			# "second_children" RLog second_children
+			# "2nd shape" RLog (≢) second_children
+
+			first_vals ← (steps+25)⊸Iter¨ first_keys
+
+			+´ first_mults × first_vals
+		; 𝕨𝕊stone: memo2.Has stone ? {
+			memo2.Get stone
+		}
+
+			; steps𝕊stone:
+
+
+			•Show stone
+  
+			res ← stone Find  maps
+			first_keys ←  ⊏ res
+			first_mults ← 1⊏ res
+			stone⊸Save⟜⊢ +´ first_mults
+	}
+	# "multipliers" RLog multipliers ← ((0⊸(⊏˘))) paired
+	# •Show ⍷ stones∾unique_stones
+
+	res ← +´ 0 Iter¨ stones
 
 
 
-	res
+# # 0  flips
+# 1 -> 3 3
+#
+# # 1	flips
+# 3 -> 5 5 2 2
+# 3 -> 5 5 2 2
+#
+# # 2 flips
+# 5 -> 7 7
+# 5 -> 7 7
+# 2 -> 4 4
+# 2 -> 4 4
+
+
+qwe ← "
+1    3        6    5    2
+2 2  4 4 1    7    6 6  3
+3 3  5 5 2 2  8 8  7 7  4 4
+"
+
+	# 125 maps to 0,1,2
+	#             5,6,7
+
+	# 0 maps to   2,3,4
+	#						  7,8,9
+
+	# 2 maps to   4,5,6
+	#						  9,2,1
+
+
 	•Out "done"
+	res
 
-	ls ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
-	rs ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈17
-	ls +○≠ rs
+	# ls ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈125
+	# rs ← ∾((¯1⊑⊑)∘FindPath)¨ ⋈17
+	# ls +○≠ rs
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -241,13 +204,13 @@ Expected: "∾({»⍟(max_length⊸-≠𝕩) max_length⊸↑𝕩} •Fmt expect
 
 AtLeastPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← ("Part "∾(•Fmt part)∾" is too low! Got instead: "∾(•Fmt answer))
-	err_msg!(expected≥ answer)
+	err_msg!(expected< answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
 AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 	err_msg ← ("Part "∾(•Fmt part)∾" is too high! Got instead: "∾(•Fmt answer))
-	err_msg!(expected< answer)
+	err_msg!(expected> answer)
 	•Show "Correctly solved Part "∾(•Fmt part)∾": "∾(•Fmt answer)
 }
 
@@ -264,7 +227,8 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # sample
 # 2‿??? SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwo data
-2‿55312 SolutionValidator PartTwoAlt data
+# 2‿55312 SolutionValidator PartTwoAlt data
+2‿(232454128072351) AtLeastPartialSolutionValidator PartTwoAlt data
 
 # •Show ⊔⊐ ∧10‿2‿2‿3‿5‿9
 # •Show (⊑¨·⊔⊐)⊸⊏ ∧10‿2‿2‿3‿5‿9
