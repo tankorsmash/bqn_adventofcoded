@@ -19,14 +19,11 @@ PartOne ← {𝕊lines:
 	•Out "--"
 	unique_chars ← ⍷ ∾lines
 
-	•Show mapped ← ((garden⊸=)⊸(⋈˜))¨unique_chars
-
-	char‿plot ← 2⊑mapped
-	"plot" Log char‿plot
+	mapped ← ((garden⊸=)⊸(⋈˜))¨unique_chars
 
 
 	CheckArr ← {𝕊arr:
-		 •Out ""
+		 # •Out ""
 		# "arr" RLog arr
 
 		shr ← +´ ((1⊸«)∘(»⊸≠))⊸× arr
@@ -36,14 +33,32 @@ PartOne ← {𝕊lines:
 		 shr + shl
 	}
 
-	# "rows"⊸RLog rows ← CheckArr 0‿0‿1‿0
-	# "row2"⊸RLog row2 ← CheckArr 0‿0‿1‿1
-	# "row3"⊸RLog row3 ← CheckArr 0‿0‿0‿1
+	Perimeter ← {𝕊plot:
+		# "rows"⊸RLog rows ← CheckArr 0‿0‿1‿0
+		# "row2"⊸RLog row2 ← CheckArr 0‿0‿1‿1
+		# "row3"⊸RLog row3 ← CheckArr 0‿0‿0‿1
 
-	"rows"⊸RLog rows ← CheckArr˘   plot
-	"cols"⊸RLog cols ← CheckArr˘ ⍉ plot
-	# "eql"⊸RLog eql ← ('B'⊸=) first_col
-	123
+		rows ← CheckArr˘   plot
+		cols ← CheckArr˘ ⍉ plot
+
+		rows +○(+´) cols
+	}
+	Area ← {𝕊char‿plot:
+		area ← +´ +´˘ plot
+		"area" RLog area
+		area
+	}
+
+	•Show mapped
+	char‿plot ← 2⊑mapped
+	"plot" Log char‿plot
+	# •Show Perimeter plot
+
+	"peris" RLog peris ← (Perimeter 1⊸⊑)¨ mapped
+	"areas" RLog areas ← (Area)¨ mapped
+
+	+´ peris×areas
+
 }
 
 PartTwo ← {𝕊lines:
