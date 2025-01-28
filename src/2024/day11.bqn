@@ -65,11 +65,57 @@ PartTwoAlt ← {𝕊lines:
 
 
 	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
+	known_stones ← ⟨⟩
+
+	NewIter ← {
+		𝕊paths‿⟨⟩: {
+			•Out 50/"E"
+			•Show (<"EMPTY")
+			< paths ∾ <⟨⟩
+		};
+		𝕊paths‿stone: ∧´ ⥊stone ∊ known_stones ? {
+			•Out 50/"Y"
+			"paths" RLog paths
+			"stone" RLog (stone)
+			new_path ← ⋈stone
+
+			new_paths ←(stone⊸∾˜¨ paths) ∾ (<new_path)
+			res ← < new_paths  ∾ <⟨⟩
+			# "res is known" RLog res
+			# res: [Path[], Stone]
+		};
+		𝕊paths‿stone: {
+			•Out 50/"N"
+			"paths" RLog paths
+			"stone" RLog (stone)
+			known_stones ∾⟜stone ↩
+
+			new_path ← ⋈stone
+			new_paths ←(stone⊸∾˜¨ paths) ∾ (<new_path)
+			new_stones ← Next stone
+			res ← Unify ⟨<new_paths, new_stones⟩
+			# "res " RLog res
+			# res: [Path[], Stone]
+		};
+		𝕊arg: {
+			•Show "no match"
+			•Show arg
+			"Pattern matching failed" !0
+		}
+	}
+
+	Unify ← {𝕊paths‿new_stones:
+		•Show paths
+		•Show new_stones
+		res ← (paths) ∾⌜ new_stones
+		"unify"⊸RLog¨ res
+	}
+	•Show¨  ("Iter"⊸RLog¨ ∘ ∾ ∘(NewIter¨))⍟2 ⟨⟩⊸⋈¨0‿0‿1
+	•Exit 0
+
+
 	# •Show stones
-	unique_stones ← ⍷ (∾ Next¨)⍟25 stones
-
-
-
+	unique_stones ← ⍷ { res ← ∾ Next¨ 𝕩 ⋄ •Show (≠⍷res)‿(≠res)⋄ res}⍟50 stones
 	FuncTwo ← { 𝕊is:
 		paths ← ⟨⋈is⟩
 
@@ -115,35 +161,38 @@ PartTwoAlt ← {𝕊lines:
 		# known_stones ↩ known_stones∾stone
 	}
 
+	i ← 0
 	Iter ← {
-	steps𝕊stone: steps ≤ 75 ?
-			res ← stone Find  maps
-			first_keys ←  ⊏ res
-			first_mults ← 1⊏ res
-			# get first children
-			# "first_keys" RLog first_keys
+			steps𝕊stone: steps ≤ 75 ?
+					i 1⊸+↩
 
-			# get 1st children of 1st children
-			# second_children ← first_keys Find¨  <maps
-			# "second_children" RLog second_children
-			# "2nd shape" RLog (≢) second_children
+					(0⊸=100⊸|)◶⊢‿•Show
+					res ← stone Find  maps
+					first_keys ←  ⊏ res
+					first_mults ← 1⊏ res
+					# get first children
+					# "first_keys" RLog first_keys
 
-			first_vals ← (steps+25)⊸Iter¨ first_keys
+					# get 1st children of 1st children
+					# second_children ← first_keys Find¨  <maps
+					# "second_children" RLog second_children
+					# "2nd shape" RLog (≢) second_children
 
-			+´ first_mults × first_vals
-		; 𝕨𝕊stone: memo2.Has stone ? {
-			memo2.Get stone
-		}
+					first_vals ← (steps+25)⊸Iter¨ first_keys
 
-			; steps𝕊stone:
+					+´ first_mults × first_vals
 
+			; 𝕨𝕊stone: memo2.Has stone ? {
+				memo2.Get stone
+			}
 
-			•Show stone
-  
-			res ← stone Find  maps
-			first_keys ←  ⊏ res
-			first_mults ← 1⊏ res
-			stone⊸Save⟜⊢ +´ first_mults
+			; steps𝕊stone: {
+				res ← stone Find  maps
+				first_keys ←  ⊏ res
+				first_mults ← 1⊏ res
+				stone⊸Save⟜⊢  r ← +´ first_mults
+				r
+			}
 	}
 	# "multipliers" RLog multipliers ← ((0⊸(⊏˘))) paired
 	# •Show ⍷ stones∾unique_stones
@@ -228,13 +277,16 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # 2‿??? SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwoAlt data
+
 2‿(232454128072351) AtLeastPartialSolutionValidator PartTwoAlt data
 
-# •Show ⊔⊐ ∧10‿2‿2‿3‿5‿9
-# •Show (⊑¨·⊔⊐)⊸⊏ ∧10‿2‿2‿3‿5‿9
-# •Show (≠¨·⊔⊐) ∧10‿2‿2‿3‿5‿9
-# •Show (((⊑¨·⊔⊐)⊸⊏) ⋈¨ (≠¨·⊔⊐)) ∧10‿2‿2‿3‿5‿9
-# •Show ((∧⍷)⋈¨(≠¨· (0≠≠¨)⊸/ ⊔))10‿2‿2‿3‿5‿9
-#
+# •Show ∾¨ ⥊ ((< 10+↕5)‿(< 100+↕5))∾⌜ "ab"
+
+
+# Next ← ×⟜2024
+
+# •Show Unify ⟨⟨⟨1⟩⟩,20‿24⟩
+# •Show (<↕3) ∾(<↕3) ∾ <↕3
+
 # input
 # 2‿??? SolutionValidator PartTwo data
