@@ -110,7 +110,12 @@ PartTwo ← {𝕊lines:
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
-	err_msg ← (""Part ""∾(•Fmt part)∾"" is wrong! Got instead: ""∾(•Fmt answer))
+	max_length ← expected ⌈○(≠•Fmt)  answer
+	err_msg ← (""
+Part ""∾(•Fmt part)∾"" is wrong!""∾""
+Expected: ""∾({»⍟(max_length⊸-≠𝕩) max_length⊸↑𝕩} •Fmt expected)∾""
+  Actual: ""∾({»⍟(max_length⊸-≠𝕩) max_length⊸↑𝕩} •Fmt answer))∾""
+""
 	err_msg!(expected= answer)
 	•Show ""Correctly solved Part ""∾(•Fmt part)∾"": ""∾(•Fmt answer)
 }

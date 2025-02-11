@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2024/day11.txt"
 # data ↩ •file.Lines "../../samples/2024/day11_alt.txt"
-data ↩ •file.Lines "../../inputs/2024/day11.txt"
+# data ↩ •file.Lines "../../inputs/2024/day11.txt"
 
 
 
@@ -48,46 +48,40 @@ PartTwoAlt ← {𝕊lines:
 
 	Incr ← {𝕩} #{𝕊stone: iters ↩ iters∾stone}
 	Next ← {
-		𝕊stone: memo.Has stone ? {
-			memo.Get stone
-		};
-		0: Incr 0⋄0⊸Save⊸⊢⟨1⟩;
-		𝕊stone: 0=2⊸|≠•Repr stone ?
+		𝕊stone: memo.Has stone ? { memo.Get stone };
 
-			# "stone" Rlog stone
+		0: Incr 0⋄0⊸Save⊸⊢⟨1⟩;
+
+		𝕊stone: 0=2⊸|≠ repr ← •Repr stone ? {
 			!⟨⟩≡≢stone
 			Incr stone
-			len ← ÷⟜2≠  repr ← •Repr  stone
-			stone⊸Save⊸⊢(•ParseFloat len↑repr)‿(•ParseFloat len↓repr)
-		;
+			len ← ÷⟜2≠  repr
+			stone⊸Save⊸⊢ len(↑⋈○•ParseFloat↓)repr
+		};
+
 		𝕊stone: Incr stone⋄stone⊸Save⊸⊢⟨stone × 2024⟩
 	}
 
 
-	stones ←  •ParseFloat¨ ((' '⊸≠))⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
+	stones ←  •ParseFloat¨ (' '⊸≠)⊸/¨ (+`' '⊸=)⊸⊔ ⊑lines
 	known_stones ← ⟨⟩
 
 	NewIter ← {
 		𝕊paths‿⟨⟩: {
-			•Out 50/"E"
-			•Show (<"EMPTY")
+			# •Out 50/"E"
+			# •Show (<"EMPTY")
 			< paths ∾ <⟨⟩
 		};
-		𝕊paths‿stone: ∧´ ⥊stone ∊ known_stones ? {
-			•Out 50/"Y"
-			"paths" RLog paths
-			"stone" RLog (stone)
+		𝕊paths‿stone: ⊑ stone ∊ known_stones ? {
 			new_path ← ⋈stone
 
 			new_paths ←(stone⊸∾˜¨ paths) ∾ (<new_path)
-			res ← < new_paths  ∾ <⟨⟩
-			# "res is known" RLog res
-			# res: [Path[], Stone]
+			res ← < new_paths 
 		};
 		𝕊paths‿stone: {
-			•Out 50/"N"
-			"paths" RLog paths
-			"stone" RLog (stone)
+			# •Out 50/"N"
+			# "paths" RLog paths
+			# "stone" RLog (stone)
 			known_stones ∾⟜stone ↩
 
 			new_path ← ⋈stone
@@ -98,6 +92,9 @@ PartTwoAlt ← {𝕊lines:
 			# res: [Path[], Stone]
 		};
 		𝕊arg: {
+			arg
+		};
+		𝕊arg: {
 			•Show "no match"
 			•Show arg
 			"Pattern matching failed" !0
@@ -105,17 +102,16 @@ PartTwoAlt ← {𝕊lines:
 	}
 
 	Unify ← {𝕊paths‿new_stones:
-		•Show paths
-		•Show new_stones
+		# •Show paths
+		# •Show new_stones
 		res ← (paths) ∾⌜ new_stones
-		"unify"⊸RLog¨ res
+		# "unify"⊸RLog¨ res
 	}
-	•Show¨  ("Iter"⊸RLog¨ ∘ ∾ ∘(NewIter¨))⍟2 ⟨⟩⊸⋈¨0‿0‿1
-	•Exit 0
+	•Show¨  (∾ ∘(NewIter¨))⍟2 ⟨⟩⊸⋈¨0‿0‿1
 
 
 	# •Show stones
-	unique_stones ← ⍷ { res ← ∾ Next¨ 𝕩 ⋄ •Show (≠⍷res)‿(≠res)⋄ res}⍟50 stones
+	unique_stones ← ⍷ { res ← ∾ Next¨ 𝕩 ⋄ •Show∘•Show (≠⍷res)‿(≠res)⋄ res}⍟50 stones
 	FuncTwo ← { 𝕊is:
 		paths ← ⟨⋈is⟩
 
@@ -201,36 +197,6 @@ PartTwoAlt ← {𝕊lines:
 
 
 
-# # 0  flips
-# 1 -> 3 3
-#
-# # 1	flips
-# 3 -> 5 5 2 2
-# 3 -> 5 5 2 2
-#
-# # 2 flips
-# 5 -> 7 7
-# 5 -> 7 7
-# 2 -> 4 4
-# 2 -> 4 4
-
-
-qwe ← "
-1    3        6    5    2
-2 2  4 4 1    7    6 6  3
-3 3  5 5 2 2  8 8  7 7  4 4
-"
-
-	# 125 maps to 0,1,2
-	#             5,6,7
-
-	# 0 maps to   2,3,4
-	#						  7,8,9
-
-	# 2 maps to   4,5,6
-	#						  9,2,1
-
-
 	•Out "done"
 	res
 
@@ -278,7 +244,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # 2‿55312 SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwoAlt data
 
-2‿(232454128072351) AtLeastPartialSolutionValidator PartTwoAlt data
+# 2‿(232454128072351) AtLeastPartialSolutionValidator PartTwoAlt data
 
 # •Show ∾¨ ⥊ ((< 10+↕5)‿(< 100+↕5))∾⌜ "ab"
 
@@ -290,3 +256,137 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 
 # input
 # 2‿??? SolutionValidator PartTwo data
+
+memo ← ⟨⟩ •Hashmap ⟨⟩
+Save ← {stone𝕊resulting_stones:
+	stone memo.Set resulting_stones
+# known_stones ↩ known_stones∾stone
+}
+NextStone ← {
+	𝕊stone: memo.Has stone ? { memo.Get stone };
+
+	0: 0⊸Save⊸⊢⟨1⟩;
+
+	𝕊stone: 0=2⊸|≠ repr ← •Repr stone ? {
+		!⟨⟩≡≢stone
+		len ← ÷⟜2≠  repr
+		stone⊸Save⊸⊢ len(↑⋈○•ParseFloat↓)repr
+	};
+
+	𝕊stone: stone⊸Save⊸⊢⟨stone × 2024⟩
+}
+
+Next ← {steps_left𝕊stone:
+	{
+		steps_left -↩ (stone ≤  4)
+		steps_left -↩ 2×(stone >  4)
+		steps_left ≤0 ? ⟨1⟩ ;
+		stone = 0 ? ⟨1⟩ ;
+		# {•Show ∾´ ⥊ NextStone¨ 𝕩}⍟(3⌊steps_left) stone
+		{
+		 new_stones ←	∾´ ⥊ NextStone¨ 𝕩
+		 •Show ≠ new_stones
+		 new_stones}⍟(3⌊steps_left) stone
+	}
+}
+
+
+# •Show 3 Next 1
+# •Show NextStone 1
+AddXToY ← {x𝕊y: x + y}
+
+{{•Out (•Fmt ≠)⊸(∾⟜" "⊸∾)⟜(80⊸↑•Fmt)}⊸⊢  ∾NextStone¨ 𝕩}⍟40 ≍1004
+# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍123123123
+# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍503
+# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍1018072
+# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍2060577728
+# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍20605
+•Exit 0
+
+•Show "Start"
+steps ← 35
+stone ← 9
+"result" Rlog ≠ res← steps Next stone
+•Show "done"
+•Exit 0
+
+pseudo ← "
+def blink_digit(digit, steps_left) -> list[new_stones]:
+	if digit <= 4:
+		steps_left -= 1
+	elif digit > 4:
+		steps_left -= 2
+	if steps_left <= 0:
+		return [1]
+	if digit == 0:
+		return [1]
+
+	if digit = 1
+		if steps_left > 2:
+			return [2, 0, 2, 4]
+		else steps_left == 1:
+			return [20, 24]
+		else steps_left == 0:
+			return [1]
+	if digit = 2
+		if steps_left > 2:
+			return [4, 0, 4, 8]
+		else steps_left == 1:
+			return [40, 48]
+		else steps_left == 0:
+			return [2]
+	if digit = 3
+		if steps_left > 2:
+			return [6, 0, 7, 2]
+		else steps_left == 1:
+			return [60, 72]
+		else steps_left == 0:
+			return [3]
+	if digit = 4
+		if steps_left > 2:
+			return [8, 0, 9, 6]
+		else steps_left == 1:
+			return [80, 96]
+		else steps_left == 0:
+			return [4]
+	if digit = 5
+		if steps_left > 2:
+			return [8, 0, 9, 6]
+		else steps_left == 1:
+			return [80, 96]
+		else steps_left == 0:
+			return [4]
+	else:
+		if steps_left > 3:
+			total_stones + 8
+		else if steps_left == 2:
+			total_stones + 4
+		else if steps_left == 1:
+			total_stones + 2
+			
+def iter(number):
+	if str(number) mod 2 == 0:
+		[... iter(number[firt_half]), ...iter(number[second_half])]
+	else if len(str(number)) == 1
+		return [... blink_digit(number, 25)]
+	else:
+		return [number * 2024]
+
+def main():
+	steps_left = 75
+	stones = [17]
+	while init_steps_left <= 0:
+		steps_left -= 1
+		for stone in stones:
+			new_stones = iter(stone, steps_left)
+			stones[stone_idx] = ...new_stones
+
+"
+
+
+•Show table ← >2024⊸×⊸(⋈˜)¨ ↕10
+# •Show > (↕10) ⋈¨ (1⊑˘ table) × 1⌈(1×2024⊸×⍟⊢)¨ ≥⟜5⊑˘ table
+•Show adj_table ← {×⟜2024⌾(1⊸⊏˘∘((≥⟜5  ⊑˘𝕩)⊸/))𝕩}  table
+•Show {•Show 𝕨-𝕩⋄𝕩}`•ParseFloat∘↑´˘ >{ 2÷˜≠¨ }⊸⋈˘ •Repr¨ (4↓  1⊸⊑˘) adj_table
+
+
