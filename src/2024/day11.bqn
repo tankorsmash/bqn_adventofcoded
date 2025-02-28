@@ -282,7 +282,6 @@ Next ← {steps_left𝕊stone:
 		steps_left -↩ 2×(stone >  4)
 		steps_left ≤0 ? ⟨1⟩ ;
 		stone = 0 ? ⟨1⟩ ;
-		# {•Show ∾´ ⥊ NextStone¨ 𝕩}⍟(3⌊steps_left) stone
 		{
 		 new_stones ←	∾´ ⥊ NextStone¨ 𝕩
 		 •Show ≠ new_stones
@@ -295,13 +294,12 @@ Next ← {steps_left𝕊stone:
 # •Show NextStone 1
 AddXToY ← {x𝕊y: x + y}
 
-{{•Out (•Fmt ≠)⊸(∾⟜" "⊸∾)⟜(80⊸↑•Fmt)}⊸⊢  ∾NextStone¨ 𝕩}⍟40 ≍1004
-# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍123123123
+# {{•Out (•Fmt ≠)⊸(∾⟜" "⊸∾)⟜(80⊸↑•Fmt)}⊸⊢  ∾NextStone¨ 𝕩}⍟40 ≍1004
+{{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍123123123
 # {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍503
 # {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍1018072
 # {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍2060577728
 # {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍20605
-•Exit 0
 
 •Show "Start"
 steps ← 35
@@ -309,80 +307,6 @@ stone ← 9
 "result" Rlog ≠ res← steps Next stone
 •Show "done"
 •Exit 0
-
-pseudo ← "
-def blink_digit(digit, steps_left) -> list[new_stones]:
-	if digit <= 4:
-		steps_left -= 1
-	elif digit > 4:
-		steps_left -= 2
-	if steps_left <= 0:
-		return [1]
-	if digit == 0:
-		return [1]
-
-	if digit = 1
-		if steps_left > 2:
-			return [2, 0, 2, 4]
-		else steps_left == 1:
-			return [20, 24]
-		else steps_left == 0:
-			return [1]
-	if digit = 2
-		if steps_left > 2:
-			return [4, 0, 4, 8]
-		else steps_left == 1:
-			return [40, 48]
-		else steps_left == 0:
-			return [2]
-	if digit = 3
-		if steps_left > 2:
-			return [6, 0, 7, 2]
-		else steps_left == 1:
-			return [60, 72]
-		else steps_left == 0:
-			return [3]
-	if digit = 4
-		if steps_left > 2:
-			return [8, 0, 9, 6]
-		else steps_left == 1:
-			return [80, 96]
-		else steps_left == 0:
-			return [4]
-	if digit = 5
-		if steps_left > 2:
-			return [8, 0, 9, 6]
-		else steps_left == 1:
-			return [80, 96]
-		else steps_left == 0:
-			return [4]
-	else:
-		if steps_left > 3:
-			total_stones + 8
-		else if steps_left == 2:
-			total_stones + 4
-		else if steps_left == 1:
-			total_stones + 2
-			
-def iter(number):
-	if str(number) mod 2 == 0:
-		[... iter(number[firt_half]), ...iter(number[second_half])]
-	else if len(str(number)) == 1
-		return [... blink_digit(number, 25)]
-	else:
-		return [number * 2024]
-
-def main():
-	steps_left = 75
-	stones = [17]
-	while init_steps_left <= 0:
-		steps_left -= 1
-		for stone in stones:
-			new_stones = iter(stone, steps_left)
-			stones[stone_idx] = ...new_stones
-
-"
-
 
 •Show table ← >2024⊸×⊸(⋈˜)¨ ↕10
 # •Show > (↕10) ⋈¨ (1⊑˘ table) × 1⌈(1×2024⊸×⍟⊢)¨ ≥⟜5⊑˘ table
