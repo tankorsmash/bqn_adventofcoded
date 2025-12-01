@@ -1,6 +1,6 @@
 data ← •file.Lines "../../samples/2025/day1.txt"
 # data ↩ •file.Lines "../../samples/2026/day1_alt.txt"
-# data ↩ •file.Lines "../../inputs/2025/day1.txt"
+data ↩ •file.Lines "../../inputs/2025/day1.txt"
 
 # dyadic show but returns paired args
 DShow ← {•Show 𝕨‿𝕩⋄ 𝕩}
@@ -15,7 +15,9 @@ RLog ← {msg𝕊val:
 }
 
 PartOne ← {𝕊lines:
-	∞
+	starting_value ← 50
+	ns ← •ParseFloat¨ (' '⊸≠)⊸/¨ {' '¨⌾(('R'⊸=𝕩)⊸/) '-'¨⌾(('L'⊸=𝕩)⊸/)𝕩}¨ data
+	+´ 0= starting_value (100⊸|∘+)` ns
 }
 
 PartTwo ← {𝕊lines:
