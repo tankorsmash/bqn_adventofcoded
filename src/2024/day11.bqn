@@ -16,6 +16,29 @@ RLog ← {msg𝕊val:
 	val
 }
 
+# step, stone -> value
+cache ← ⟨⟩ •Hashmap ⟨⟩
+CacheIt ← {step‿stone𝕊value:
+	step‿stone cache.Set value
+}
+
+pows ← 10⋆ •Show ↕16
+evens ← 0⌾⊑ 0=2|↕16
+rests ← 0⌾⊑ ¬evens
+•Show 10⊸(⋆⁼)500
+
+•Show¨ +´∘⊑¨ { ns𝕊vs:
+  lens ← pows⍋vs
+  rn‿rv ← ∾¨<˘⍉>⟨
+    {ns←(lens=0)/ns ⋄ ⟨ns, 1¨ns⟩}
+    {ns‿vs‿ls: ⟨ns∾ns, ((ls÷2)⊏pows) (| ∾ ⌊∘÷˜) vs⟩} (lens⊏evens)⊸/¨ ns‿vs‿lens
+    2024⊸×⌾(1⊸⊑) (lens⊏rests)⊸/¨ ns‿vs
+  ⟩
+  g ← ⊐ rv
+  ⟨+´¨ g ⊔ rn, (∊g)/rv⟩
+}´⍟(⋈25) 1¨⊸⋈ ⟨0, 27, 5409930, 828979, 4471, 3, 68524, 170⟩
+
+•Exit 0
 iters ← ⟨⟩
 PartOne ← {𝕊lines:
 	Incr ← {𝕩} #{𝕊stone: iters ↩ iters∾stone}
@@ -242,7 +265,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 # sample
 # 2‿??? SolutionValidator PartTwo data
 # 2‿55312 SolutionValidator PartTwo data
-# 2‿55312 SolutionValidator PartTwoAlt data
+2‿55312 SolutionValidator PartTwoAlt data
 
 # 2‿(232454128072351) AtLeastPartialSolutionValidator PartTwoAlt data
 
@@ -295,22 +318,81 @@ Next ← {steps_left𝕊stone:
 AddXToY ← {x𝕊y: x + y}
 
 # {{•Out (•Fmt ≠)⊸(∾⟜" "⊸∾)⟜(80⊸↑•Fmt)}⊸⊢  ∾NextStone¨ 𝕩}⍟40 ≍1004
-{{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍123123123
-# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍503
-# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍1018072
-# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍2060577728
-# {{•Show ≠⊸⋈}⊸⊢  ∾NextStone¨ 𝕩}⍟10 ≍20605
+"starting" Rlog first_stone ← 368
+known_stones ← ⟨first_stone⟩
+known_paths ← ⟨first_stone‿⟨⟩⟩
 
-•Show "Start"
-steps ← 35
-stone ← 9
-"result" Rlog ≠ res← steps Next stone
+pwrs ← 2⊸⋆ 1+↕20
+# "stones" Rlog stones ← ⟨131, 22, 1000, 10120⟩
+# "are pwr2" Rlog ⊏⟜stones / ∊⟜pwrs ≠∘•Repr¨ (stones)
+# "are not pwr2" Rlog ⊏⟜stones / ¬ ∊⟜pwrs ≠∘•Repr¨ (stones)
+
+i ← 0
+# stones ← ⟨0,27,5409930, 828979, 4471, 3, 68524, 170  ⟩
+stones ← ⟨2⟩
+total_steps ← 5
+
+# 30 ScoreDigits 1
+# 4 + 4 + 4 + 4 + 4...
+ScoreDigits ← {
+	current_step𝕊1:
+		# TODO handle less than 4 steps
+		#...
+
+		# else:
+		4
+}
+
+ds ← ⟨⟩ #degrading_stones
+sd ← ⟨⟩ #single digits
+AddAndPrune ← {current_step𝕊stone:
+	new_stones ← NextStone stone
+	# unk_stones ← (new_stones (¬∘∊ (⍷∘/) ⊣) known_stones)
+	# known_stones ∾↩ unk_stones
+	# "i"Rlog i
+	ds ↩ ds ∾⋈ current_step⋈(	⊏⟜new_stones / ∊⟜pwrs ≠∘•Repr¨ (new_stones))
+	# sd ↩  "valid" Rlog (<⟜10)⊸/ new_stones
+	# gt9 ← "gt 9" Rlog  (>⟜9)⊸/ new_stones
+	# "unk" RLog unk_stones
+	# unk_stones
+  ⊏⟜new_stones / ¬ ∊⟜pwrs ≠∘•Repr¨ (new_stones)
+	new_stones
+}
+
+res ← {
+	i↩0
+	•Show {
+		i 1⊸+↩
+		•Show { (≠𝕩)‿(𝕩)}⊸⊢  ∾  (i⊸AddAndPrune)¨ 𝕩 }⍟total_steps 𝕩
+}¨ stones
+"res" RLog res
+# "known stones" RLog ≠ known_stones
+
+"ds1"Rlog >ds
+# "ds"⊸Rlog¨ ∾1⊑¨¨ ⊑¨⊸⊔ ds
+
+# 12340131
+# 1234 131
+# 12 34 265144
+# 1 2 3 4 265 144
+# x x x x 536360 291456
+# x x x x 536 360 291 456
+# x x x x 1084864 728640 588984 922944
+# x x x x 2195764736 728 640 588 984 922 944
+# x x x x 2195764736 1473472 1295360 1190112 1991616 1866128 1910656
+
+
+
+
+# •Show "Start"
+# steps ← 35
+# stone ← 9
+# "result" Rlog ≠ res← steps Next stone
 •Show "done"
-•Exit 0
 
-•Show table ← >2024⊸×⊸(⋈˜)¨ ↕10
-# •Show > (↕10) ⋈¨ (1⊑˘ table) × 1⌈(1×2024⊸×⍟⊢)¨ ≥⟜5⊑˘ table
-•Show adj_table ← {×⟜2024⌾(1⊸⊏˘∘((≥⟜5  ⊑˘𝕩)⊸/))𝕩}  table
-•Show {•Show 𝕨-𝕩⋄𝕩}`•ParseFloat∘↑´˘ >{ 2÷˜≠¨ }⊸⋈˘ •Repr¨ (4↓  1⊸⊑˘) adj_table
+# •Show table ← >2024⊸×⊸(⋈˜)¨ ↕10
+# # •Show > (↕10) ⋈¨ (1⊑˘ table) × 1⌈(1×2024⊸×⍟⊢)¨ ≥⟜5⊑˘ table
+# •Show adj_table ← {×⟜2024⌾(1⊸⊏˘∘((≥⟜5  ⊑˘𝕩)⊸/))𝕩}  table
+# •Show {•Show 𝕨-𝕩⋄𝕩}`•ParseFloat∘↑´˘ >{ 2÷˜≠¨ }⊸⋈˘ •Repr¨ (4↓  1⊸⊑˘) adj_table
 
 

@@ -16,7 +16,7 @@ Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5."
 
 Solution ← {left𝕊right:
 
-	•Show 123
+	•Show "no idea"
 }
 
 2.000 SolutionValidator 1‿3 Solution ⋈2
