@@ -14,38 +14,35 @@ Log ← {msg𝕊val:
 	val
 }
 RLog ← {msg𝕊val:
-	# •Show (msg)⋈val
+	•Show (msg)⋈val
 	val
 }
-"x"Rlog x←"1"
-"d"Rlog d← "121212"
-# "x"Rlog x←"12"
-# "d"Rlog d← "121212"
-# "x"Rlog x←"abc"
-# "d"Rlog d← "abcabc"
-F ← {d𝕊x: 
-"len x"Rlog ≠ x
-"mask" Rlog mask←∾⟜((-⟜1≠x)⥊0)⍟{ 1<  ≠x} "prem" Rlog x⍷d
-"expe" Rlog expected← (1⌾⊑(≠x)⥊0)⥊˜( (≠x)×(≠d)÷(≠x))
-"is valid?" Rlog mask≡ expected
-}
-# "121212" F "12"
 
 
 
 PartOne ← {𝕊lines:
-	"data"RLog data
+	# "data"RLog data
 	ranges←•ParseFloat⚇1 (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
 	+´ •ParseFloat¨ ((÷⟜1∘≠¨)(↑≡↓)¨⊢)⊸/ (0=2|≠¨)⊸/ •Repr¨ ∾ {𝕨+↕ 𝕨¬˜𝕩}´¨ ranges
 }
 
 PartTwo ← {𝕊lines:
-	"data"RLog data
+	F ← {d𝕊x:
+		len ← ≠x
+		mask←∾⟜((-⟜1 len)⥊0)⍟{ 1<  len} x⍷d
+		expected← (1⌾⊑(len)⥊0)⥊˜len×(≠d)÷len
+		mask≡expected
+	}
+
+	# "data"RLog data
 	ranges←•ParseFloat⚇1 (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
+	•Show "ranges"
 	nums ← ∾ {𝕨+↕ 𝕨¬˜𝕩}´¨ ranges
-	# •Show¨ {0≠≠ {r←+´𝕩⍷d⋄((≠d)=r×≠𝕩)}¨⊸/ ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ d←•Repr 𝕩}¨⊸/ nums
-	# •Show {0≠≠ {r←"r"Rlog +´"mask"Rlog𝕩⍷d⋄("valid" Rlog (≠d)=r× "len x"Rlog ≠𝕩)}¨⊸/ •Show ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ •Show d←•Repr 𝕩}¨ ⋈565659
-	+´ {0≠≠ d⊸F¨⊸/ ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ d←•Repr 𝕩}¨⊸/ nums
+	"max nums" RLog ⌈´ nums
+	•Show "nums"
+	res ← +´ {0≠≠ d⊸F¨⊸/ ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ d←•Repr 𝕩}¨⊸/ nums
+	•Show "res"
+	res
 
 }
 
@@ -74,7 +71,7 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 
 
 # "part 1: " Log PartOne data
-"part 2: " Log PartTwo data
+# "part 2: " Log PartTwo data
 
 # sample
 # 1‿29940924880 SolutionValidator PartOne data
@@ -83,6 +80,6 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 
 # too high: 18363057543840
 # sample
-# 2‿??? SolutionValidator PartTwo data
+# 2‿4174379265 SolutionValidator PartTwo data
 # input
-# 2‿??? SolutionValidator PartTwo data
+2‿48631958998 SolutionValidator PartTwo data
