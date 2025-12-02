@@ -1,3 +1,6 @@
+cursor_eraseline ← 1⊑ •Sh "tput"‿"el" #fetch strings once
+•Out cursor_eraseline ∾ 1⊑ •Sh "tput"‿"rmam" #disable linewrap, but only if you print it (I think)
+
 data ← •file.Lines "../../samples/2025/day2.txt"
 # data ↩ •file.Lines "../../samples/2025/day2_alt.txt"
 data ↩ •file.Lines "../../inputs/2025/day2.txt"
@@ -11,21 +14,39 @@ Log ← {msg𝕊val:
 	val
 }
 RLog ← {msg𝕊val:
-	•Show (msg)⋈val
+	# •Show (msg)⋈val
 	val
 }
+"x"Rlog x←"1"
+"d"Rlog d← "121212"
+# "x"Rlog x←"12"
+# "d"Rlog d← "121212"
+# "x"Rlog x←"abc"
+# "d"Rlog d← "abcabc"
+F ← {d𝕊x: 
+"len x"Rlog ≠ x
+"mask" Rlog mask←∾⟜((-⟜1≠x)⥊0)⍟{ 1<  ≠x} "prem" Rlog x⍷d
+"expe" Rlog expected← (1⌾⊑(≠x)⥊0)⥊˜( (≠x)×(≠d)÷(≠x))
+"is valid?" Rlog mask≡ expected
+}
+# "121212" F "12"
+
+
 
 PartOne ← {𝕊lines:
 	"data"RLog data
-	# (•Show∘(•ParseFloat¨))¨ (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
-	"ranges" Rlog 4‿↑⥊ ranges←•ParseFloat⚇1 (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
-	•Show +´ •ParseFloat¨ ((÷⟜2∘≠¨)(↑≡↓)¨⊢)⊸/ (0=2|≠¨)⊸/ •Repr¨ ∾ {𝕨+↕ 𝕨¬˜𝕩}´¨ ranges
-	•Show "ASD"
-	•Exit 0
+	ranges←•ParseFloat⚇1 (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
+	+´ •ParseFloat¨ ((÷⟜1∘≠¨)(↑≡↓)¨⊢)⊸/ (0=2|≠¨)⊸/ •Repr¨ ∾ {𝕨+↕ 𝕨¬˜𝕩}´¨ ranges
 }
 
 PartTwo ← {𝕊lines:
-	∞
+	"data"RLog data
+	ranges←•ParseFloat⚇1 (1⊸↓⌾(1⊸⊑))¨ (+`'-'⊸=)⊸⊔¨ (','⊸≠)⊸/¨ (+`','⊸=)⊸⊔ data
+	nums ← ∾ {𝕨+↕ 𝕨¬˜𝕩}´¨ ranges
+	# •Show¨ {0≠≠ {r←+´𝕩⍷d⋄((≠d)=r×≠𝕩)}¨⊸/ ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ d←•Repr 𝕩}¨⊸/ nums
+	# •Show {0≠≠ {r←"r"Rlog +´"mask"Rlog𝕩⍷d⋄("valid" Rlog (≠d)=r× "len x"Rlog ≠𝕩)}¨⊸/ •Show ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ •Show d←•Repr 𝕩}¨ ⋈565659
+	+´ {0≠≠ d⊸F¨⊸/ ((⌊÷⟜2≠d)⊸≥ ≠¨)⊸/ 1↓↑ d←•Repr 𝕩}¨⊸/ nums
+
 }
 
 SolutionValidator ← {part‿expected𝕊answer:
@@ -52,14 +73,15 @@ AtMostPartialSolutionValidator ← {part‿expected𝕊answer:
 }
 
 
-"part 1: " Log PartOne data
-# "part 2: " Log PartTwo data
+# "part 1: " Log PartOne data
+"part 2: " Log PartTwo data
 
 # sample
-# 1‿??? SolutionValidator PartOne data
+# 1‿29940924880 SolutionValidator PartOne data
 # input
 # 1‿??? SolutionValidator PartOne data
 
+# too high: 18363057543840
 # sample
 # 2‿??? SolutionValidator PartTwo data
 # input
